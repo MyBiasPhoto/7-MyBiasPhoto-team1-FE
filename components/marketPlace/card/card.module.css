@@ -1,0 +1,60 @@
+.cardContainer {
+  width: 440px;
+  height: 600px;
+  border: 1px solid #fff;
+}
+
+.cardBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.cardContainer > div {
+  color: #fff;
+  /* 임시 */
+}
+
+.CardSubTitle {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #fff;
+  margin-bottom: 20px;
+}
+.CardSubTitle2 {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.CardSubTitleBox {
+  display: flex;
+}
+
+.CardTextBox {
+  width: 100%;
+  padding: 0 40px;
+}
+
+.cardImageBox {
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+
+.CardTextBoxTitle {
+  font-size: 22px;
+  padding-bottom: 10px;
+}
+
+.cardLogo {
+  padding-top: 48px;
+}
+
+.subdiv {
+  height: 20px;
+  width: 2px;
+  background-color: var(--gray-400);
+  margin: 0 10px;
+}

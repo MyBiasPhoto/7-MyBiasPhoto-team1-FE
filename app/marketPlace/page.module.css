@@ -1,0 +1,69 @@
+.title_Text {
+  font-size: 62px;
+  color: var(--white);
+  font-weight: 400;
+  font-family: "BR-B", sans-serif;
+}
+
+.title_Button {
+  display: flex;
+  width: 440px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+
+  border-radius: 2px;
+  background: var(--main);
+}
+
+.title_Box {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 20px;
+}
+
+.marketPlace {
+  background-color: var(--gray-500);
+  min-height: 100vh;
+  display: flex;
+}
+
+.filterBox {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.filterContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filterInput {
+  display: flex;
+  width: 320px;
+  height: 50px;
+  padding: 13px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  border: 1px solid var(--gray-gray200, #ddd);
+  background: var(--black-black, #0f0f0f);
+  color: #fff;
+}
+
+.marketPlaceContainer {
+  width: 100%;
+  padding: 0 220px;
+}
+
+.filterSelect {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
