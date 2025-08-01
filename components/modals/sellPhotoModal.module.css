@@ -1,0 +1,124 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 49;
+}
+
+.modal {
+  width: 1160px;
+  height: 1000px;
+  background-color: var(--gray-500);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 50;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.closeButton {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.myGallery {
+  color: var(--gray-300);
+  font-family: "BR B";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.72px;
+  margin-bottom: 40px;
+}
+
+.titleArea {
+  display: flex;
+  width: 920px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  border-bottom: 4px solid var(--white);
+  margin-bottom: 20px;
+}
+
+.titleTxt {
+  color: var(--white);
+  font-family: "BR B";
+  font-size: 46px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -1.38px;
+  margin-bottom: 20px;
+}
+
+.searchArea {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+.searchWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.searchInput {
+  display: flex;
+  width: 320px;
+  height: 50px;
+  padding: 13px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  padding-right: 40px;
+  color: var(--gray-200);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.filters {
+  display: flex;
+  gap: 45px;
+}
+
+.select {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--gray-200);
+}
+
+.card {
+  width: 440px;
+  height: 600px;
+  flex-shrink: 0;
+}

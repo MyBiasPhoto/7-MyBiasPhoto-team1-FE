@@ -1,0 +1,97 @@
+.modal {
+  width: 700px;
+  height: 400px;
+  background-color: var(--black);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 50;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.title {
+  color: var(--white);
+  font-family: "BR-B";
+  font-size: 46px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.description {
+  color: var(--gray-300);
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.successTxt {
+  color: var(--main);
+}
+
+.failTxt {
+  color: var(--gray-300);
+}
+
+.confirmButton {
+  background-color: var(--black);
+  cursor: pointer;
+  border-radius: 2px;
+  border: 1px solid var(--gray-100);
+  padding: 17px 80px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  color: var(--white);
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-decoration: none;
+}
+
+.confirmButton:hover {
+  filter: brightness(0.9);
+}
+
+.closeButton {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 49;
+}

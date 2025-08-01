@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* import Image from "next/image";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -91,5 +91,24 @@ export default function Home() {
         </a>
       </footer>
     </div>
+  );
+} */
+
+"use client";
+
+import { useState } from "react";
+import MakePhotoModal from "@/components/modals/makePhotoModal";
+
+export default function Home() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+
+  return (
+    <main>
+      <button onClick={handleOpen}>버튼</button>
+      {isOpen && <MakePhotoModal onClose={handleClose} />}
+    </main>
   );
 }
