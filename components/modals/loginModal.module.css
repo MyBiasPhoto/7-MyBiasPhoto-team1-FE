@@ -16,6 +16,7 @@
 
 .title {
   color: var(--white);
+  font-family: "Noto Sans KR";
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -26,6 +27,7 @@
 
 .description {
   color: var(--gray-300);
+  font-family: "Noto Sans KR";
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -47,6 +49,7 @@
   flex-shrink: 0;
   color: var(--black-black);
   text-align: center;
+  font-family: "Noto Sans KR";
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
