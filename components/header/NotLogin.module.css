@@ -1,0 +1,57 @@
+.area {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn {
+  background-color: var(--black);
+  border: none;
+  padding: 0;
+  color: var(--gray-200);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.link {
+  color: var(--gray-200);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mobileNav {
+  width: 100%;
+  max-width: 743px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.mobileMenu {
+  width: 22px;
+  height: 22px;
+  background-image: url("/icons/ic_menu.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.mobileLogo {
+  width: 84px;
+  height: 16px;
+  background-image: url("/assets/logo.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  cursor: pointer;
+}
