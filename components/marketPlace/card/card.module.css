@@ -1,60 +1,156 @@
 .cardContainer {
   width: 440px;
   height: 600px;
+  background-color: #111;
+  color: white;
   border: 1px solid #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
 }
 
 .cardBox {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
-.cardContainer > div {
-  color: #fff;
-  /* 임시 */
+.cardImageBox {
+  width: 100%;
+  height: auto;
+  padding-bottom: 16px;
+  position: relative;
+}
+.soldOutLayer {
+  display: none;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  position: absolute;
+  top: -45px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.show {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.responsiveImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.CardTextBox {
+  width: 100%;
+  padding: 0 10px;
+  margin-bottom: 16px;
+}
+
+.CardTextBoxTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .CardSubTitle {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 20px;
+  align-items: center;
+  font-size: 14px;
   border-bottom: 1px solid #fff;
-  margin-bottom: 20px;
-}
-.CardSubTitle2 {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .CardSubTitleBox {
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.CardTextBox {
-  width: 100%;
-  padding: 0 40px;
-}
-
-.cardImageBox {
-  padding-top: 40px;
-  padding-bottom: 20px;
-}
-
-.CardTextBoxTitle {
-  font-size: 22px;
-  padding-bottom: 10px;
-}
-
-.cardLogo {
-  padding-top: 48px;
+.CardSubTitle2 {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
 }
 
 .subdiv {
-  height: 20px;
   width: 2px;
+  height: 14px;
   background-color: var(--gray-400);
-  margin: 0 10px;
+}
+
+.subTitleWriter {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.cardLogo {
+  text-align: center;
+  padding-top: 12px;
+}
+
+.common {
+  color: gray;
+}
+.rare {
+  color: blue;
+}
+.super_rare {
+  color: purple;
+}
+.legendary {
+  color: gold;
+}
+.etc {
+  color: darkgray;
+}
+
+@media (max-width: 1023px) {
+  .cardContainer {
+    width: 300px;
+    height: auto;
+    padding: 16px;
+  }
+
+  .responsiveImage {
+    width: 100%;
+    height: 180px;
+  }
+}
+
+@media (max-width: 767px) {
+  .cardContainer {
+    width: 170px;
+    padding: 12px;
+  }
+
+  .responsiveImage {
+    height: 120px;
+  }
+
+  .cardLogo {
+    display: none;
+  }
+
+  .CardTextBoxTitle {
+    font-size: 16px;
+  }
+
+  .CardSubTitle2 {
+    font-size: 12px;
+  }
+  .soldOutLayer {
+    height: 174px;
+    top: -24px;
+  }
 }

@@ -40,6 +40,7 @@
 .filterContainer {
   display: flex;
   justify-content: space-between;
+  padding-bottom: 50px;
 }
 
 .filterInput {
@@ -59,11 +60,240 @@
 
 .marketPlaceContainer {
   width: 100%;
-  padding: 0 220px;
+  padding: 0 150px;
 }
 
 .filterSelect {
   display: flex;
   align-items: center;
   margin-top: 20px;
+}
+
+.cardList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.cardItem {
+  position: static;
+}
+
+.filterBoxTable {
+  display: none;
+}
+
+.modalOverlay {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%; /* 아래서 위로 절반 차지 */
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* 아래쪽 정렬 */
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #1b1b1b;
+  width: 100%;
+  height: 70%;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  padding: 20px;
+  position: relative;
+}
+.modalClose {
+  font-size: 24px;
+  color: var(--gray-400);
+}
+
+.modalTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modalTitleFont {
+  font-size: 16px;
+  color: var(--gray-400);
+  padding: 15px;
+}
+
+.modalOption {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  color: var(--gray-400);
+}
+.modalOptionLine {
+  background-color: #0f0f0f;
+  width: 100%;
+  height: 2px;
+}
+
+.options {
+  display: flex;
+  padding: 16px 32px;
+}
+
+.common {
+  color: gray;
+}
+.rare {
+  color: blue;
+}
+.super_rare {
+  color: purple;
+}
+.legendary {
+  color: gold;
+}
+
+/* === genreOption === */
+.character {
+  color: #ff7f50; /* coral */
+}
+.landscape {
+  color: #20b2aa; /* lightseagreen */
+}
+.realistic {
+  color: #778899; /* lightslategray */
+}
+.etc {
+  color: #a9a9a9; /* darkgray */
+}
+
+/* === amountOption === */
+.sales {
+  color: #2e8b57; /* seagreen */
+}
+.soldout {
+  color: #b22222; /* firebrick */
+}
+
+/* === sortOption === */
+.price_asc {
+  color: #4682b4; /* steelblue */
+}
+.price_desc {
+  color: #8a2be2; /* blueviolet */
+}
+.newest {
+  color: #ff69b4; /* hotpink */
+}
+
+.options:hover {
+  background-color: #3b3b3b;
+}
+
+.optionItem {
+  color: gray;
+  cursor: pointer;
+  border: 0;
+  padding: 15px;
+}
+
+.optionItemActive {
+  color: white;
+  border-bottom: 1px solid #fff;
+}
+.modalButton {
+  display: flex;
+  width: 417px;
+  height: 65px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--main-main, #efff04);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+}
+.modalButtonBox {
+  display: flex;
+  position: absolute;
+  bottom: 10px;
+}
+
+.filterInputMobile {
+  display: none;
+  width: 100%;
+  height: 50px;
+  padding: 13px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  border: 1px solid var(--gray-gray200, #ddd);
+  background: var(--black-black, #0f0f0f);
+  color: #fff;
+}
+
+/* PC (데스크탑): 1024px 이상 */
+@media (min-width: 1024px) {
+  /* 데스크탑 스타일 */
+}
+
+/* 태블릿: 768px ~ 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* 태블릿 스타일 */
+  .cardList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .title_Button {
+    width: 240px;
+  }
+  .title_Text {
+    font-size: 42px;
+  }
+  .marketPlaceContainer {
+    padding: 0;
+  }
+  .filterInput {
+    width: 190px;
+  }
+}
+
+/* 모바일: 0px ~ 767px */
+@media (max-width: 767px) {
+  /* 모바일 스타일 */
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .filterBox {
+    display: none;
+  }
+  .filterBoxTable {
+    display: flex;
+    background-color: #0f0f0f;
+    border: 1px solid #fff;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    height: 50px;
+  }
+  .title_Text {
+    display: none;
+  }
+  .title_Button {
+    position: fixed;
+    bottom: 10px;
+    z-index: 1;
+  }
+  .filterContainer {
+    padding-top: 16px;
+  }
+  .marketPlaceContainer {
+    padding: 0 30px;
+  }
+  .filterInputMobile {
+    display: flex;
+  }
+  .filterSelect {
+    margin-top: 0;
+  }
 }
