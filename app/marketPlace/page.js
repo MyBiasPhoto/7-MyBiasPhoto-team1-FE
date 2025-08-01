@@ -14,7 +14,7 @@ import Image from "next/image";
 import { useState } from "react";
 import recicle from "../../public/icons/ic_exchange.svg";
 
-export default function marketPlace() {
+export default function MarketPlace() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptionType, setSelectedOptionType] = useState(null);
   const cards = [
@@ -77,14 +77,14 @@ export default function marketPlace() {
     { value: "soldout", label: "매진여부" },
   ];
 
-  const handleOptionClick = (type) => {
+  const handleOptionClick = type => {
     setSelectedOptionType(type);
   };
   const handleButton = () => {
     console.log("로그울림");
-    setIsOpen((prev) => !prev);
+    setIsOpen(prev => !prev);
   };
-  const handleChange = (val) => {
+  const handleChange = val => {
     console.log("선택된 값:", val);
   };
   return (
@@ -131,7 +131,7 @@ export default function marketPlace() {
         <div className={style.cardList}>
           {/* 카드진열대 */}
           {/* 대충 list받아온거 .map 으로 나열할 예정 */}
-          {cards.map((card) => (
+          {cards.map(card => (
             <div className={style.cardItem} key={card.id}>
               <Card {...card} />
             </div>
@@ -147,13 +147,13 @@ export default function marketPlace() {
               <p className={style.modalTitleFont}>필터</p>
               <p
                 className={style.modalClose}
-                onClick={() => setIsOpen((prev) => !prev)}
+                onClick={() => setIsOpen(prev => !prev)}
               >
                 x
               </p>
             </div>
             <div className={style.modalOption}>
-              {optionTypes.map((opt) => (
+              {optionTypes.map(opt => (
                 <p
                   key={opt.value}
                   onClick={() => handleOptionClick(opt.value)}
@@ -170,7 +170,7 @@ export default function marketPlace() {
             <div className={style.modalOptionLine}></div>
             {/* 등급,장르,매진여부 눌렀을 떄 나오는 블럭형식의 option들 */}
             <div className={style.optionBlock}>
-              {optionMap[selectedOptionType]?.map((opt) => (
+              {optionMap[selectedOptionType]?.map(opt => (
                 <div key={opt.value} className={style.options}>
                   <p key={opt.value} className={style[opt.value.toLowerCase()]}>
                     {opt.label}
