@@ -1,0 +1,151 @@
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background: var(--black);
+}
+
+.logo {
+  margin-bottom: 80px;
+}
+
+.email,
+.password,
+.nickname,
+.passwordCheck {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.password,
+.nickname,
+.passwordCheck {
+  margin-top: 34px;
+}
+
+.emailText,
+.passwordText,
+.nicknameText,
+.passwordCheckText {
+  color: var(--white);
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.emailInput,
+.passwordInput,
+.nicknameInput,
+.passwordCheckInput {
+  display: flex;
+  width: 520px;
+  height: 60px;
+  padding: 18px 20px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 2px;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  color: var(--white);
+}
+
+.passwordInput,
+.passwordCheckInput {
+  padding: 18px 50px 18px 20px;
+}
+
+.passwordInputWrapper,
+.passwordCheckInputWrapper {
+  position: relative;
+}
+
+.visibleIcon {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 44px;
+}
+
+.signupbtnText {
+  color: var(--black);
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.button {
+  display: flex;
+  width: 520px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  gap: 10px;
+  cursor: pointer;
+}
+.signupbtn {
+  background: var(--main);
+}
+.googlebtn {
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+}
+
+.googlebtnText {
+  color: var(--black);
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.login {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 44px;
+}
+
+.loginText {
+  color: var(--white);
+  font-family: "Noto Sans KR";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.loginLink {
+  color: var(--main);
+  font-family: "Noto Sans KR";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.error {
+  color: var(--red);
+  font-weight: 700;
+}
