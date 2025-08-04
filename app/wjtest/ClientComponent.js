@@ -12,7 +12,6 @@ export default function ClientComponent() {
   });
   // 서버에서 넘긴 캐시가 존재하면 fetch 없이 즉시 렌더링
   // 없으면 자동으로 fetch 실행
-  
 
   if (isPending) return <p>로딩 중...</p>;
   if (error) return <p>에러 발생: {error.message}</p>;
