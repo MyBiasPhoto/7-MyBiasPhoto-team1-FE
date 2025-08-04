@@ -4,17 +4,22 @@ import Image from "next/image";
 import cardImage from "../../../../public/assets/cardImage.png";
 import style from "./buy.module.css";
 import CustomInput from "../../customInput/customInput.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export default function Buy() {
   const title = "우리집 앞마당";
   const grade = "레전드리";
   const tags = "풍경";
   const writer = "미쓰 쏜";
   const descripiton =
-    "어쩌구저쩌굼ㄴ오ㅓㅁㄴ옴노옴ㄴ옴노옴ㄴ어ㅏㅁ낢나람ㄴ람낢나라";
+    "설명명명명명명명명명명명명명명설명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명명";
   const price = "10";
   const amount = "1";
   const [count, setCount] = useState(1);
+  const [total, setTotal] = useState(price * count);
+
+  useEffect(() => {
+    setTotal(price * count);
+  }, [count]);
   return (
     <div>
       <div>
@@ -31,9 +36,8 @@ export default function Buy() {
             {/* 왼쪽이미지 */}
             <Image
               src={cardImage}
-              width={700}
-              height={700}
               alt={"임시사진"}
+              className={style.ContentImg}
             ></Image>
           </div>
           <div className={style.ContentRight}>
@@ -92,7 +96,7 @@ export default function Buy() {
                 <p>총 가격</p>
                 <div className={style.infoTotalPrice}>
                   {/* amount * 인풋저거 커스텀 결과값 */}
-                  <p>98</p>
+                  <p>{total}</p>
                   <p>P</p>
                   <p className={style.infoTotalPriceDetail}>{`(${count}장)`}</p>
                 </div>

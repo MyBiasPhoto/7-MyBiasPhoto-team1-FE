@@ -2,10 +2,10 @@
 .Container {
   width: 440px;
   height: 626px;
-  border: 1px solid #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  background-color: #000; /* 배경색 (예: 검정) */
+  background-color: #161616;
 }
 
 /* 이미지 영역 */
@@ -51,11 +51,34 @@
   font-weight: 400;
   color: #a4a4a4;
   justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--gray-gray400, #5a5a5a);
 }
 
 /* 등급 (예: COMMON) */
 .grade {
   color: #a1e214;
+  font-weight: 600;
+}
+
+.common {
+  color: gray;
+  font-weight: 600;
+}
+.rare {
+  color: blue;
+  font-weight: 600;
+}
+.super_rare {
+  color: purple;
+  font-weight: 600;
+}
+.legendary {
+  color: gold;
+  font-weight: 600;
+}
+.etc {
+  color: darkgray;
   font-weight: 600;
 }
 
@@ -101,7 +124,7 @@
   height: 60px;
   margin: 30px;
   border-radius: 2px;
-  border: 1px solid #eee;
+  border: 1px solid var(--gray-gray100, #eee);
   background-color: #161616;
   color: #fff;
   font-size: 16px;

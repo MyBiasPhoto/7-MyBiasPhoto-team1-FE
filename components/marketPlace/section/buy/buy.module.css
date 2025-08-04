@@ -225,3 +225,14 @@
   align-items: center;
   margin-top: 80px;
 }
+
+.ContentImg {
+  width: 760px;
+  height: 720px;
+}
+@media (min-width: 743px) and (max-width: 1199px) {
+  .ContentImg {
+    width: 360px;
+    height: 250px;
+  }
+}

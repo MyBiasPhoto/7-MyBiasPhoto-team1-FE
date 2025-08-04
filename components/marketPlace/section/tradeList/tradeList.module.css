@@ -12,4 +12,6 @@
 .list {
   margin-top: 70px;
   margin-bottom: 50px;
+  display: flex;
+  gap: 30px;
 }
