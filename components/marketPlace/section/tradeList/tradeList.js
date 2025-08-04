@@ -1,3 +1,5 @@
+"use client";
+
 import style from "./tradeList.module.css";
 import TradeCard from "../../tradeCard/tradeCard";
 export default function TradeList() {
@@ -6,7 +8,10 @@ export default function TradeList() {
       <div className={style.title}>
         <p>내가 제시한 교환 목록</p>
       </div>
-      <div>{/* 카드리스트 */}</div>
+      <div className={style.list}>
+        {/* 카드리스트 */}
+        <TradeCard></TradeCard>
+      </div>
     </div>
   );
 }

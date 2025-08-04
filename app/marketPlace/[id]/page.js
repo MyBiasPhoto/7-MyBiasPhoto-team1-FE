@@ -6,9 +6,15 @@ import TradeList from "@/components/marketPlace/section/tradeList/tradeList";
 export default function MarketPlaceById() {
   return (
     <div className={style.Container}>
-      <BuyArea></BuyArea>
-      <Trade></Trade>
-      <TradeList></TradeList>
+      <div className={style.Wrapper}>
+        <BuyArea />
+      </div>
+      <div className={style.Wrapper}>
+        <Trade />
+      </div>
+      <div className={style.Wrapper}>
+        <TradeList />
+      </div>
     </div>
   );
 }
