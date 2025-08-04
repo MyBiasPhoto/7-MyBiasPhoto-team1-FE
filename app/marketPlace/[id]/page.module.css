@@ -1,4 +1,7 @@
 .Container {
   background-color: var(--black);
   color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 300px;
 }
