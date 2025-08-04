@@ -26,9 +26,10 @@
 }
 
 .marketPlace {
-  background-color: var(--gray-500);
+  background-color: var(--black);
   min-height: 100vh;
   display: flex;
+  padding-top: 20px;
 }
 
 .filterBox {
@@ -231,13 +232,22 @@
   color: #fff;
 }
 
+@media screen and (max-width: 1513px) {
+  /* 여기에 1513px 이하일 때 적용할 스타일 작성 */
+  .cardList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
 /* PC (데스크탑): 1024px 이상 */
 @media (min-width: 1024px) {
   /* 데스크탑 스타일 */
 }
 
 /* 태블릿: 768px ~ 1023px */
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 746px) and (max-width: 1199px) {
   /* 태블릿 스타일 */
   .cardList {
     display: grid;
@@ -259,7 +269,7 @@
 }
 
 /* 모바일: 0px ~ 767px */
-@media (max-width: 767px) {
+@media (max-width: 746px) {
   /* 모바일 스타일 */
   .cardList {
     grid-template-columns: repeat(2, 1fr);
@@ -282,13 +292,13 @@
   .title_Button {
     position: fixed;
     bottom: 10px;
-    z-index: 1;
+    z-index: 15;
   }
   .filterContainer {
     padding-top: 16px;
   }
   .marketPlaceContainer {
-    padding: 0 30px;
+    padding: 0;
   }
   .filterInputMobile {
     display: flex;

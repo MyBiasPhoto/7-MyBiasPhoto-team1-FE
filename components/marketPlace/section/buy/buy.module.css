@@ -1,0 +1,238 @@
+.Container {
+  display: flex;
+}
+
+.Title {
+  display: flex;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 20px;
+  font-size: 40px;
+  color: var(--white-white, #fff);
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.Content {
+  display: flex;
+  margin-top: 30px;
+}
+
+.ContentRight {
+  display: flex;
+  flex-direction: column;
+  padding-left: 80px;
+}
+
+.ContentHeader {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 20px;
+}
+
+.ContentHeaderTags {
+  display: flex;
+}
+
+.TitleFont {
+  color: var(--gray-gray300, #a4a4a4);
+  font-family: "BR-B";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.72px;
+}
+
+.ContentHeaderGrade {
+  display: flex;
+  width: 141px;
+  height: 35px;
+  padding-bottom: 6px;
+  justify-content: center;
+  align-items: center;
+}
+
+.Line {
+  background-color: #a4a4a4;
+  height: 28px;
+  width: 2px;
+  margin-top: 3px;
+}
+
+.ContentHeaderTag {
+  color: var(--gray-gray300, #a4a4a4);
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding-left: 10px;
+}
+
+.ContentHeaderWriter {
+  color: var(--white-white, #fff);
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+}
+
+.descripiton {
+  color: var(--white-white, #fff);
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #fff;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #fff;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  gap: 10px;
+}
+
+.infoPrice {
+  display: flex;
+  justify-content: space-between;
+  color: var(--gray-gray300, #a4a4a4);
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.infoAmount {
+  display: flex;
+  justify-content: space-between;
+  color: var(--gray-gray300, #a4a4a4);
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.infoPriceDetail {
+  display: flex;
+  color: #fff;
+}
+
+.infoAmountDetail {
+  display: flex;
+}
+
+.infoAmountDetailNumber {
+  color: #fff;
+  padding-right: 5px;
+}
+
+.infoBuyCount {
+  display: flex;
+  justify-content: space-between;
+  color: var(--white-white, #fff);
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.infoTotalPrice {
+  display: flex;
+  color: var(--white-white, #fff);
+  text-align: right;
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.infoTotal {
+  display: flex;
+  justify-content: space-between;
+  color: var(--white-white, #fff);
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-items: center;
+}
+
+.infoTotalPriceDetail {
+  color: var(--gray-gray300, #a4a4a4);
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-left: 10px;
+  align-items: center;
+}
+
+.subInfo {
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+.buyButton {
+  display: flex;
+  width: 440px;
+  height: 80px;
+  padding: 25px 144px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--main-main, #efff04);
+  color: var(--black-black, #0f0f0f);
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.buyButtonBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+}
+
+.ContentImg {
+  width: 760px;
+  height: 720px;
+}
+@media (min-width: 743px) and (max-width: 1199px) {
+  .ContentImg {
+    width: 360px;
+    height: 250px;
+  }
+}

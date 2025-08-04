@@ -34,11 +34,11 @@ export default function Card({ title, grade, writer, kind, amount, price }) {
   //   };
   // }, []);
   return (
-    <div className={style.cardContainer} ref={cardRef}>
+    <div className={`${style.cardContainer}`} ref={cardRef}>
+      {/* ${style[grade]} ${style.glowEffect} */}
       <div className={style.cardBox}>
         <div className={style.cardImageBox}>
           {/* 이미지 */}
-          {console.log(amount)}
           {amount == 0 && (
             <Image
               src={soldout}

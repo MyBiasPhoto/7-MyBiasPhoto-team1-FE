@@ -1,0 +1,138 @@
+/* 전체 카드 */
+.Container {
+  width: 440px;
+  height: 626px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  background-color: #161616;
+}
+
+/* 이미지 영역 */
+.ImageBox {
+  width: 100%;
+  height: 340px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.ImageBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 제목 영역 */
+.Title {
+  padding: 24px 30px 12px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 큰 제목 (예: 스페인 여행) */
+.titleFont {
+  color: #fff;
+  font-family: "Noto Sans KR";
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* 제목 아래 정보 행 */
+.subTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-family: "Noto Sans KR";
+  font-weight: 400;
+  color: #a4a4a4;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--gray-gray400, #5a5a5a);
+}
+
+/* 등급 (예: COMMON) */
+.grade {
+  color: #a1e214;
+  font-weight: 600;
+}
+
+.common {
+  color: gray;
+  font-weight: 600;
+}
+.rare {
+  color: blue;
+  font-weight: 600;
+}
+.super_rare {
+  color: purple;
+  font-weight: 600;
+}
+.legendary {
+  color: gold;
+  font-weight: 600;
+}
+.etc {
+  color: darkgray;
+  font-weight: 600;
+}
+
+/* 구분자 */
+.divider {
+  color: #a4a4a4;
+}
+
+/* 카테고리 */
+.category {
+  color: #a4a4a4;
+}
+
+/* 구매 희망금액 */
+.point {
+  color: #a4a4a4;
+}
+
+.bold {
+  font-weight: 700;
+  color: #fff;
+}
+
+/* 제작자 */
+.writer {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 400;
+}
+
+/* 본문 내용 */
+.content {
+  padding: 0 30px;
+  margin-top: 8px;
+  color: #fff;
+  font-family: "Noto Sans KR";
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.closeButton {
+  height: 60px;
+  margin: 30px;
+  border-radius: 2px;
+  border: 1px solid var(--gray-gray100, #eee);
+  background-color: #161616;
+  color: #fff;
+  font-size: 16px;
+  font-family: "Noto Sans KR";
+  cursor: pointer;
+}
+
+.subTitleTags {
+  display: flex;
+  gap: 3px;
+}
