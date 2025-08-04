@@ -1,5 +1,5 @@
 "use client";
-import style from "./CustomInput.module.css";
+import style from "./customInput.module.css";
 import Image from "next/image";
 import down from "@/public/icons/ic_-.svg";
 import up from "@/public/icons/ic_+.svg";
