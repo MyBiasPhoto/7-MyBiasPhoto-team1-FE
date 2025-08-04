@@ -1,6 +1,6 @@
 // 비동기방식 x 일반적인 클라이언트 컴포넌트
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import iconDown from "../../../public/icons/ic_down.svg";
 import Image from "next/image";
 import style from "./select.module.css";
@@ -8,6 +8,7 @@ import style from "./select.module.css";
 export default function Select({ name, option, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectName, setSelectName] = useState();
+  const ref = useRef(null);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
 
@@ -17,8 +18,18 @@ export default function Select({ name, option, onChange }) {
     onChange(value.value);
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   return (
-    <div className={style.selectContainer}>
+    <div className={style.selectContainer} ref={ref}>
       <div className={style.selectBox} onClick={toggleOpen}>
         <p className={style.selectBoxFont}>{selectName?.label || name}</p>
         <Image
@@ -31,7 +42,11 @@ export default function Select({ name, option, onChange }) {
         {isOpen && (
           <div className={style.modal}>
             {option.map((opt) => (
-              <div key={opt.value} onClick={(e) => handleSelect(opt, e)}>
+              <div
+                className={style.modalEvent}
+                key={opt.value}
+                onClick={(e) => handleSelect(opt, e)}
+              >
                 <p className={style.selectBoxFont}>{opt.label}</p>
               </div>
             ))}
