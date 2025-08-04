@@ -1,11 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import { login } from "@/utils/auth/login";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -25,7 +28,7 @@ export default function LoginPage() {
     return password.length >= 8;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     let valid = true;
 
     if (!validateEmail(email)) {
@@ -42,8 +45,22 @@ export default function LoginPage() {
       setPasswordError("");
     }
 
-    if (valid) {
-      console.log("로그인 요청 보냄");
+    if (!valid) return;
+
+    try {
+      const user = await login({ email, password });
+      alert("로그인 성공!");
+      localStorage.setItem("user", JSON.stringify(user.user));
+      console.log("로그인 성공:", user);
+      router.push("/");
+    } catch (error) {
+      alert("로그인 실패!");
+      console.error("로그인 실패:", error);
+      if (error.response && error.response.data?.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("로그인 중 오류가 발생했습니다.");
+      }
     }
   };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { signup } from "@/utils/auth/signup";
 import styles from "./page.module.css";
 import Image from "next/image";
 import Link from "next/link";
@@ -39,7 +40,7 @@ export default function SignupPage() {
     return nickname.trim() !== "";
   };
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     let valid = true;
 
     if (!validateEmail(email)) {
@@ -71,7 +72,18 @@ export default function SignupPage() {
     }
 
     if (valid) {
-      alert("회원가입 성공!");
+      try {
+        await signup({
+          email,
+          password,
+          confirmPassword: passwordCheck,
+          nickname,
+        });
+        alert("회원가입 성공!");
+      } catch (error) {
+        console.error(error);
+        alert(error.response?.data?.message || "회원가입 실패");
+      }
     }
   };
 
