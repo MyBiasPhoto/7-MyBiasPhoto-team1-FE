@@ -18,9 +18,8 @@ import ClientComponent from "./ClientComponent"; // 클라에서 useQuery 쓸 �
 export default async function WjTestPage() {
   const queryClient = new QueryClient(); // SSR에서도 쓸 수 있도록 새로운 QueryClient 생성
   // 서버전용 (use client 없음 -> 서버클라이언트) prefetch용 임시 인스턴스 클라이언트 해당 페이지에서만 사용
-  //즉 이 queryClient는 데이터를 SSR에서 fetch하고, 
+  //즉 이 queryClient는 데이터를 SSR에서 fetch하고,
   // 클라이언트에 전달할 직렬화 데이터((json으로 만들기) dehydratedState)를 만들기 위한 일회성 객체
-  
 
   // 사전 prefetch
   await queryClient.prefetchQuery({
@@ -28,7 +27,7 @@ export default async function WjTestPage() {
     queryFn: fetchProducts,
   });
 
-  // prefetch로 받은 데이터를 직렬화하여 HydrationBoundary에 넘김
+  // prefetch로 받은 데이터를 직렬화(dehydrate : json화)하여 HydrationBoundary에 넘김
   // 이렇게 넘긴 데이터는 클라이언트에서 캐시로 재사용됨
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

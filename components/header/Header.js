@@ -5,7 +5,7 @@ import styles from "./Header.module.css";
 import UserInfo from "./UserInfo";
 import NotLogin from "./NotLogin";
 import { useEffect, useState } from "react";
-
+//zustand 쓸지말지
 export default function Header() {
   const [isLogin, setIsLogin] = useState(false);
   const [isMobile, setIsMobile] = useState(null);
