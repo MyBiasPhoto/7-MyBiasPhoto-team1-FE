@@ -1,0 +1,263 @@
+.modal {
+  width: 1160px;
+  height: 1000px;
+  background-color: var(--gray-500);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 50;
+  padding-left: 90px;
+  padding-top: 60px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 3px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.closeButton {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.header {
+  color: var(--gray-300);
+  font-family: "BR-B";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.72px;
+  margin-bottom: 40px;
+}
+
+.titleArea {
+  display: flex;
+  width: 980px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  border-bottom: 4px solid var(--white);
+  margin-bottom: 20px;
+}
+
+.titleTxt {
+  color: var(--white);
+  font-family: "BR-B";
+  font-size: 46px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -1.38px;
+  margin-bottom: 20px;
+}
+
+.searchArea {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+.searchWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.searchInput {
+  display: flex;
+  width: 320px;
+  height: 50px;
+  padding: 13px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  padding-right: 40px;
+  color: var(--gray-200);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.filterBox {
+  display: flex;
+  gap: 45px;
+}
+
+.cardList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  height: 600px;
+  margin-top: 40px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.cardList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cardList::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 3px;
+}
+
+.cardList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cardItem {
+  position: static;
+  cursor: pointer;
+}
+
+/* .detailContainer {
+  height: 750px;
+  overflow-y: auto;
+  padding-right: 12px;
+} */
+
+.aboutPhoto {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 50px;
+}
+
+.cardInfo {
+  font-size: 24px;
+}
+
+.saleDetail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 30px;
+  gap: 40px;
+  color: var(--white);
+  font-size: 20px;
+}
+
+.exchangeInput {
+  color: var(--white);
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.memo {
+  width: 498px;
+  height: 159px;
+  margin-top: 10px;
+  background: var(--gray-500);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-200);
+  padding: 12px;
+  font-size: 16px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  border-radius: 2px;
+  resize: none;
+}
+
+.btnArea {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid var(--gray-400);
+  width: 498px;
+  padding-top: 30px;
+  margin-top: 60px;
+  gap: 20px;
+  padding-bottom: 60px;
+}
+
+.cancelBtn {
+  display: flex;
+  width: 239px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  border: 1px solid var(--gray-100);
+  background: var(--gray-500);
+  color: var(--white);
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.confirmBtn {
+  display: flex;
+  width: 239px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border: 1px solid var(--main);
+  border-radius: 2px;
+  background: var(--main);
+  color: var(--black);
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 49;
+}

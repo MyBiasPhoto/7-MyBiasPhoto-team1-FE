@@ -65,9 +65,14 @@ const cards = [
   },
 ];
 
-const SellPhotoModal = ({ onClose }) => {
+export default function SellPhotoModal({ onClose }) {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
+  const [amount, setAmount] = useState(1);
+  const [price, setPrice] = useState("");
+  const [grade, setGrade] = useState("");
+  const [kind, setKind] = useState("");
+  const [exchangeMemo, setExchangeMemo] = useState("");
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
@@ -81,11 +86,6 @@ const SellPhotoModal = ({ onClose }) => {
     setShowResultModal(true);
   };
 
-  const [amount, setAmount] = useState(1);
-  const [price, setPrice] = useState("");
-  const [grade, setGrade] = useState("");
-  const [kind, setKind] = useState("");
-
   const increaseAmount = () => {
     if (amount < selectedCard.amount) setAmount(amount + 1);
   };
@@ -97,8 +97,8 @@ const SellPhotoModal = ({ onClose }) => {
   return (
     <>
       {!showResultModal ? (
-        <div className={styles.overlay}>
-          <div className={styles.modal}>
+        <div className={styles.overlay} onClick={onClose}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <h1 className={styles.header}>
               {selectedCard ? "나의 포토카드 판매하기" : "마이갤러리"}
             </h1>
@@ -302,6 +302,8 @@ const SellPhotoModal = ({ onClose }) => {
                         <textarea
                           placeholder="설명을 입력해 주세요"
                           className={styles.memo}
+                          value={exchangeMemo}
+                          onChange={(e) => setExchangeMemo(e.target.value)}
                         />
                       </div>
                     </div>
@@ -327,12 +329,10 @@ const SellPhotoModal = ({ onClose }) => {
           isSuccess={true}
           onClose={() => {
             setShowResultModal(false);
-            onClose(); // 모달 완전히 닫기
+            onClose();
           }}
         />
       )}
     </>
   );
-};
-
-export default SellPhotoModal;
+}
