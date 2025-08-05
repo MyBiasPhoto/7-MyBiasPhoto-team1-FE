@@ -1,4 +1,4 @@
-import Image from "next/image";
+/*import Image from "next/image";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -91,5 +91,36 @@ export default function Home() {
         </a>
       </footer>
     </div>
+  );
+}*/
+
+//page.js test 용 임시 코드
+
+"use client";
+
+import { useState } from "react";
+import SellPhotoModal from "@/components/modals/sellPhotoModal";
+import ExchangePhotoModal from "@/components/modals/exchangePhotoModal";
+import EditPhotoModal from "@/components/modals/editPhotoModal";
+
+export default function Home() {
+  const [openModal, setOpenModal] = useState(null);
+
+  return (
+    <main>
+      <button onClick={() => setOpenModal("edit")}>수정 버튼</button>
+      <button onClick={() => setOpenModal("sell")}>판매 버튼</button>
+      <button onClick={() => setOpenModal("exchange")}>교환 버튼</button>
+
+      {openModal === "edit" && (
+        <EditPhotoModal onClose={() => setOpenModal(null)} />
+      )}
+      {openModal === "sell" && (
+        <SellPhotoModal onClose={() => setOpenModal(null)} />
+      )}
+      {openModal === "exchange" && (
+        <ExchangePhotoModal onClose={() => setOpenModal(null)} />
+      )}
+    </main>
   );
 }

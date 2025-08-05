@@ -1,0 +1,470 @@
+.modal {
+  width: 1160px;
+  height: 1000px;
+  background-color: var(--gray-500);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 50;
+  padding-left: 90px;
+  padding-top: 60px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 3px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.closeButton {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.header {
+  color: var(--gray-300);
+  font-family: "BR-B";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.72px;
+  margin-bottom: 40px;
+}
+
+.titleArea {
+  display: flex;
+  width: 980px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  border-bottom: 4px solid var(--gray-100);
+  margin-bottom: 20px;
+}
+
+.titleTxt {
+  color: var(--white);
+  font-family: "BR-B";
+  font-size: 46px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -1.38px;
+  margin-bottom: 20px;
+}
+
+/* .detailContainer {
+  height: 750px;
+  overflow-y: auto;
+  padding-right: 12px;
+} */
+
+.responsiveImage {
+  width: 440px;
+  height: 330px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.aboutPhoto {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 50px;
+}
+
+.cardInfo {
+  font-size: 24px;
+}
+
+.cardSubTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--gray-400);
+  padding-bottom: 30px;
+  width: 500px;
+}
+
+.cardSubTitleBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.divider {
+  color: var(--gray-400);
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.common {
+  color: gray;
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.rare {
+  color: blue;
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.super_rare {
+  color: purple;
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.legendary {
+  color: gold;
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.etc {
+  color: darkgray;
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.kind {
+  color: var(--gray-300);
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.subTitleWriter {
+  color: var(--white);
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.saleDetail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 30px;
+  gap: 40px;
+  color: var(--white);
+  font-size: 20px;
+}
+
+.saleDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.amountRow {
+  display: flex;
+  flex-direction: row;
+  gap: 150px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.priceRow {
+  display: flex;
+  flex-direction: row;
+  gap: 174px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.amountControl {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.amountControlBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--gray-200);
+  width: 176px;
+  height: 50px;
+}
+
+.iconButton {
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.priceInput {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  gap: 10px;
+}
+
+.inputField {
+  padding-right: 24px; /* P를 위한 공간 확보 */
+  width: 245px;
+  height: 50px;
+  padding: 13px 20px;
+  font-size: 14px;
+  border: 1px solid var(--gray-200);
+  background: var(--gray-500);
+  color: var(--white);
+}
+
+.inputField::-webkit-inner-spin-button,
+.inputField::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.point {
+  margin-left: -40px;
+  color: var(--white);
+  text-align: right;
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  pointer-events: none;
+}
+
+.amountBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.maxAmount {
+  color: var(--white);
+  font-size: 20px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-align: right;
+}
+
+.maxHint {
+  color: var(--gray-200);
+  font-family: "Noto Sans KR";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.exchangeTitle {
+  color: var(--white);
+  font-size: 28px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-bottom: 2px solid var(--gray-100);
+  width: 980px;
+  padding-bottom: 20px;
+  margin-top: 80px;
+}
+
+.exchangeDetail {
+  color: var(--white);
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.exchangeFilterArea {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 100px;
+  padding-top: 47px;
+}
+
+.exchangeFilter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+}
+
+.exchangeFilterBox {
+  position: relative;
+  display: inline-block;
+}
+
+.gradeSelect {
+  width: 440px;
+  height: 60px;
+  background: var(--gray-500);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-200);
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 2px;
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.genreSelect {
+  width: 440px;
+  height: 60px;
+  background: var(--gray-500);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-200);
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 2px;
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.selectIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.exchangeInput {
+  padding-top: 35px;
+}
+
+.memo {
+  width: 980px;
+  height: 160px;
+  margin-top: 10px;
+  background: var(--gray-500);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-200);
+  padding: 12px;
+  font-size: 16px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  border-radius: 2px;
+  resize: none;
+}
+
+.btnArea {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid var(--gray-400);
+  width: 980px;
+  padding-top: 30px;
+  margin-top: 60px;
+  gap: 100px;
+  padding-bottom: 60px;
+}
+
+.cancelBtn {
+  display: flex;
+  width: 440px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  border: 1px solid var(--gray-100);
+  background: var(--gray-500);
+  color: var(--white);
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.confirmBtn {
+  display: flex;
+  width: 440px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border: 1px solid var(--main);
+  border-radius: 2px;
+  background: var(--main);
+  color: var(--black);
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 49;
+}
