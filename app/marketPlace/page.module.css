@@ -30,6 +30,7 @@
   min-height: 100vh;
   display: flex;
   padding-top: 20px;
+  flex-direction: column;
 }
 
 .filterBox {
