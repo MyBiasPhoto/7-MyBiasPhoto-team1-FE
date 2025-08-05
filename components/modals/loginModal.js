@@ -5,10 +5,10 @@ import Image from "next/image";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import Link from "next/link";
 
-const LoginModal = ({ onClose }) => {
+export default function LoginModal({ onClose }) {
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button className={styles.closeButton} onClick={onClose}>
           <Image src={CloseIcon} alt="Close" width={32} height={32} />
         </button>
@@ -23,6 +23,4 @@ const LoginModal = ({ onClose }) => {
       </div>
     </div>
   );
-};
-
-export default LoginModal;
+}
