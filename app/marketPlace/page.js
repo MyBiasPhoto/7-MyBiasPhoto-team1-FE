@@ -13,57 +13,47 @@ import buttonS from "../../public/icons/ic_filter.svg";
 import Image from "next/image";
 import { useState } from "react";
 import recicle from "../../public/icons/ic_exchange.svg";
+import LoginModal from "@/components/modals/loginModal";
+import SellPhotoModal from "@/components/modals/sellPhotoModal";
+import { useQuery } from "@tanstack/react-query";
 
 export default function MarketPlace() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptionType, setSelectedOptionType] = useState(null);
-  const cards = [
-    {
-      id: "a1",
-      title: "전설의 용사",
-      grade: "legendary",
-      writer: "홍길동",
-      kind: "캐릭터",
-      amount: 3,
-      price: 1000,
+  //
+  const [selectedFilters, setSelectedFilters] = useState({
+    grade: null,
+    genre: null,
+    soldout: null,
+  });
+  //
+  const [loginModal, setLoginModal] = useState(false);
+  const [login, setLogin] = useState(true);
+  // 일단임시 로그인됐을 때
+
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["sales", selectedFilters],
+    queryFn: () => {
+      const query = new URLSearchParams();
+
+      query.append("includeSoldOut", selectedFilters.soldout ?? "false");
+      if (selectedFilters.grade) query.append("grade", selectedFilters.grade);
+      if (selectedFilters.genre) query.append("genre", selectedFilters.genre);
+
+      return fetch(`http://localhost:3000/sales?${query.toString()}`).then(
+        (res) => res.json()
+      );
+      // 주로 함수를 뺴서 한줄로 한다
     },
-    {
-      id: "a2",
-      title: "빛의 정령",
-      grade: "rare",
-      writer: "이몽룡",
-      kind: "캐릭터",
-      amount: 2,
-      price: 500,
-    },
-    {
-      id: "a3",
-      title: "어둠의 숲",
-      grade: "super_rare",
-      writer: "성춘향",
-      kind: "배경",
-      amount: 1,
-      price: 1200,
-    },
-    {
-      id: "a4",
-      title: "현실주의 고양이",
-      grade: "common",
-      writer: "최길동",
-      kind: "캐릭터",
-      amount: 5,
-      price: 300,
-    },
-    {
-      id: "a5",
-      title: "추상적 감정",
-      grade: "etc",
-      writer: "임꺽정",
-      kind: "기타",
-      amount: 0,
-      price: 900,
-    },
-  ];
+    keepPreviousData: true,
+  });
+
+  // if (isLoading) return <p>Loading...</p>;
+  // if (error) return <p>Error occurred</p>;
+
+  const cards = data?.sales || [];
+  //임시로불러오기
 
   const optionMap = {
     grade: gradeOption,
@@ -84,17 +74,53 @@ export default function MarketPlace() {
     console.log("로그울림");
     setIsOpen((prev) => !prev);
   };
-  const handleChange = (val) => {
-    console.log("선택된 값:", val);
+  //
+
+  //
+
+  const handleGradeChange = (val) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      grade: val.value.toUpperCase(),
+    }));
   };
+
+  const handleGenreChange = (val) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      genre: val.value,
+    }));
+  };
+
+  const handleSoldoutChange = (val) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      soldout: val.value,
+    }));
+  };
+  //
+
+  const handleLogin = (e) => {
+    e.stopPropagation();
+    setLoginModal((prev) => !prev);
+    console.log(loginModal);
+  };
+
+  const handleChange = () => {
+    console.log("임시");
+  };
+
   return (
     <div className={style.marketPlace}>
+      {console.log(cards)}
       <div className={style.marketPlaceContainer}>
         <div className={style.title_Box}>
           {/* title */}
           <input placeholder="검색" className={style.filterInputMobile}></input>
           <p className={style.title_Text}>마켓플레이스</p>
-          <button className={style.title_Button}>나의 포토카드 판매</button>
+          <button onClick={handleLogin} className={style.title_Button}>
+            나의 포토카드 판매
+          </button>
         </div>
         <div className={style.filterContainer}>
           <div className={style.filterBox}>
@@ -103,17 +129,17 @@ export default function MarketPlace() {
             <Select
               option={gradeOption}
               name={"등급"}
-              onChange={handleChange}
+              onChange={handleGradeChange}
             ></Select>
             <Select
               option={genreOption}
               name={"장르"}
-              onChange={handleChange}
+              onChange={handleGenreChange}
             ></Select>
             <Select
               option={amountOption}
               name={"매진여부"}
-              onChange={handleChange}
+              onChange={handleSoldoutChange}
             ></Select>
           </div>
           <button className={style.filterBoxTable} onClick={handleButton}>
@@ -132,7 +158,7 @@ export default function MarketPlace() {
           {/* 카드진열대 */}
           {/* 대충 list받아온거 .map 으로 나열할 예정 */}
           {cards.map((card) => (
-            <div className={style.cardItem} key={card.id}>
+            <div className={style.cardItem} key={card.saleId}>
               <Card {...card} />
             </div>
           ))}
@@ -187,6 +213,8 @@ export default function MarketPlace() {
           </div>
         </div>
       )}
+      <div>{loginModal ? login ? <SellPhotoModal /> : <LoginModal /> : ""}</div>
+      {/* 로그인이되었을 때 조건만 추가하면 연결완료 */}
     </div>
   );
 }
