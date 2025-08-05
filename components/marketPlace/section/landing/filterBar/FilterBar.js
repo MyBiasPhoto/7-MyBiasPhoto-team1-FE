@@ -1,5 +1,5 @@
 import Select from "@/components/marketPlace/select/select";
-import SelectFilter from "@/components/marketPlace/select/selectFilter.js";
+import SelectFilter from "@/components/marketPlace/select/selectFilter";
 import style from "@/app/marketPlace/page.module.css";
 import Image from "next/image";
 import buttonS from "../../../../../public/icons/ic_filter.svg";
@@ -44,7 +44,7 @@ export default function FilterBar({
         <SelectFilter
           option={sortOption}
           name={"낮은 가격순"}
-          onChange={onSortChange}
+          onChange={(val) => onFilterChange("orderBy", val)}
         />
       </div>
     </div>

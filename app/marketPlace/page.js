@@ -4,16 +4,18 @@ import {
   amountOption,
   genreOption,
   gradeOption,
+  sortOption,
 } from "@/components/marketPlace/config/config";
 import fetchSales from "@/utils/api/marketPlace";
 import { useQuery } from "@tanstack/react-query";
-import { useReducer, useState } from "react";
-
+import { useReducer, useState, useMemo } from "react";
+import { useEffect } from "react";
 import CardList from "@/components/marketPlace/section/landing/cardList/CardList";
 import FilterBar from "@/components/marketPlace/section/landing/filterBar/FilterBar";
 import FilterModal from "@/components/marketPlace/section/landing/filterModal/FilterModal";
 import Header from "@/components/marketPlace/section/landing/header/Header";
 import LoginModalWrapper from "@/components/marketPlace/section/landing/loginModalWrapper/loginModalWrapper";
+import getCountByOption from "@/components/marketPlace/util/util";
 
 export default function MarketPlace() {
   // 1. 상태 선언
@@ -22,8 +24,8 @@ export default function MarketPlace() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // 임시 로그인 상태
 
   const initialFilterState = {
-    selected: { grade: null, genre: null, soldout: null },
-    temp: { grade: null, genre: null, soldout: null },
+    selected: { grade: null, genre: null, soldout: null, orderBy: null },
+    temp: { grade: null, genre: null, soldout: null, orderBy: null },
     selectedOptionType: null,
   };
 
@@ -57,12 +59,32 @@ export default function MarketPlace() {
     grade: gradeOption,
     genre: genreOption,
     soldout: amountOption,
+    orderBy: sortOption,
   };
   const optionTypes = [
     { value: "grade", label: "등급" },
     { value: "genre", label: "장르" },
     { value: "soldout", label: "매진여부" },
   ];
+
+  const countMap = useMemo(() => {
+    if (!cards || cards.length === 0)
+      return {
+        grade: [],
+        genre: [],
+        soldout: [],
+      };
+
+    const gradeCount = getCountByOption(cards, gradeOption, "grade");
+    const genreCount = getCountByOption(cards, genreOption, "genre");
+    const soldoutCount = getCountByOption(cards, amountOption, "soldout");
+
+    return {
+      grade: gradeCount,
+      genre: genreCount,
+      soldout: soldoutCount,
+    };
+  }, [cards]);
 
   // 5. 이벤트 핸들러 함수 그룹
   const handleOptionClick = (type) => {
@@ -86,9 +108,17 @@ export default function MarketPlace() {
     setLoginModalOpen((prev) => !prev);
   };
 
-  const handleSortChange = () => {
-    console.log("임시 sort change");
+  const handleSortChange = (value) => {
+    dispatch({
+      type: "SET_SELECTED",
+      payload: { orderBy: value },
+    });
   };
+
+  //
+  useEffect(() => {
+    console.log("selected filter changed:", filterState.selected);
+  }, [filterState.selected]);
 
   // 6. JSX (컴포넌트 분리)
   return (
@@ -111,6 +141,7 @@ export default function MarketPlace() {
           dispatch={dispatch}
           optionTypes={optionTypes}
           optionMap={optionMap}
+          countMap={countMap}
           onClose={() => setIsFilterModalOpen(false)}
         />
       )}
