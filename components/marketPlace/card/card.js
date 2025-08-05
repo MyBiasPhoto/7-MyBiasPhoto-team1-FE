@@ -5,7 +5,17 @@ import logo from "../../../public/assets/logo.svg";
 import { useEffect, useRef } from "react";
 import soldout from "../../../public/assets/soldout.svg";
 
-export default function Card({ title, grade, writer, kind, amount, price }) {
+export default function Card({
+  saleId,
+  name,
+  grade,
+  sellerNickname,
+  genre,
+  quantity,
+  price,
+  imageUrl,
+  initialQuantity,
+}) {
   const cardRef = useRef(null);
 
   // useEffect(() => {
@@ -39,31 +49,34 @@ export default function Card({ title, grade, writer, kind, amount, price }) {
       <div className={style.cardBox}>
         <div className={style.cardImageBox}>
           {/* 이미지 */}
-          {amount == 0 && (
+          {quantity == 0 && (
             <Image
               src={soldout}
               alt={"임시2"}
               className={`${style.soldOutLayer} ${
-                amount === 0 ? style.show : style.hide
+                quantity === 0 ? style.show : style.hide
               }`}
             />
           )}
           <Image
-            src={cardImage}
+            src={imageUrl || cardImage}
             alt={"임시"}
+            fill
             className={style.responsiveImage} // 스타일에서 object-fit 등 설정
           />
         </div>
         <div className={style.CardTextBox}>
           {/* 카드정보들 */}
-          <p className={style.CardTextBoxTitle}>{title || "임시 제목."}</p>
+          <p className={style.CardTextBoxTitle}>{name || "임시 제목."}</p>
           <div className={style.CardSubTitle}>
             <div className={style.CardSubTitleBox}>
               <p className={`${style[grade]}`}>{grade || "임시등급."}</p>
               <div className={style.subdiv}></div>
-              <p>{kind || "임시종류."}</p>
+              <p>{genre || "임시종류."}</p>
             </div>
-            <p className={style.subTitleWriter}>{writer || "임시제작자."}</p>
+            <p className={style.subTitleWriter}>
+              {sellerNickname || "임시제작자."}
+            </p>
           </div>
         </div>
         <div className={style.CardTextBox}>
@@ -74,7 +87,9 @@ export default function Card({ title, grade, writer, kind, amount, price }) {
           </div>
           <div className={style.CardSubTitle2}>
             <p>잔여</p>
-            <p>{amount || "0"} / 5</p>
+            <p>
+              {quantity || "0"} / {initialQuantity || "5"}
+            </p>
           </div>
         </div>
         <div className={style.cardLogo}>
