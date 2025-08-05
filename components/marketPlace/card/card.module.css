@@ -20,9 +20,10 @@
 
 .cardImageBox {
   width: 100%;
-  height: auto;
+  height: 300px;
   padding-bottom: 16px;
   position: relative;
+  overflow: hidden;
 }
 .soldOutLayer {
   display: none;
@@ -52,6 +53,7 @@
   width: 100%;
   padding: 0 10px;
   margin-bottom: 16px;
+  margin-top: 32px;
 }
 
 .CardTextBoxTitle {
@@ -145,7 +147,7 @@
   }
 
   .responsiveImage {
-    height: 120px;
+    height: 120px !important;
   }
 
   .cardLogo {
@@ -162,6 +164,13 @@
   .soldOutLayer {
     height: 146px;
     top: -17px;
+  }
+  .CardTextBox {
+    height: 100%;
+    margin: 0;
+  }
+  .cardBox {
+    height: 100%;
   }
 }
 /* @keyframes shimmer {
