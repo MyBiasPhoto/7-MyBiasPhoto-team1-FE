@@ -8,6 +8,7 @@ export default function FilterModal({
   optionTypes,
   optionMap,
   onClose,
+  countMap,
 }) {
   return (
     <div className={style.modalOverlay}>
@@ -58,7 +59,8 @@ export default function FilterModal({
               }
             >
               <p className={style[opt.value.toLowerCase()]}>{opt.label}</p>
-              <p>{0}개</p>
+              <p>개</p>
+              {/* 갯수 넘기는 백엔드만들고 넘겨주기 */}
             </div>
           ))}
         </div>

@@ -23,7 +23,7 @@ export const genreOption = [
 ];
 
 export const sortOption = [
-  { value: "PRICE_ASC", label: "낮은 가격순" },
-  { value: "PRICE_DESC", label: "높은 가격순" },
-  { value: "NEWEST", label: "최신순" },
+  { value: "priceLowToHigh", label: "낮은 가격순" },
+  { value: "priceHighToLow", label: "높은 가격순" },
+  { value: "newest", label: "최신순" },
 ];

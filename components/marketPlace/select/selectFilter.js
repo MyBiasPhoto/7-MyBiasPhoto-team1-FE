@@ -14,7 +14,7 @@ export default function SelectFilter({ name, option, onChange }) {
   const handleSelect = (value, e) => {
     e.stopPropagation();
     setSelectName(value);
-    onChange(value.value);
+    onChange(value);
     setIsOpen(false);
   };
   return (
