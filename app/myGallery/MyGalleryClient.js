@@ -13,7 +13,7 @@ export default function MyGalleryClient() {
     queryKey: ["gallery"],
     queryFn: () => fetchMyGalleryData(),
   });
-  const saleList = data?.saleList ?? [];
+  const saleList = data?.sales ?? []; // saleList -> sales
   if (isPending) return <LoadingSpinner />;
   if (error) return <div>에러 발생: {error.message}</div>;
   return (

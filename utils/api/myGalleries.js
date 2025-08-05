@@ -1,6 +1,6 @@
 // utils/api/myGalleries.js
 export const fetchMyGalleryData = async () => {
-  const res = await fetch("http://localhost:3500/sales");
+  const res = await fetch("http://localhost:3000/sales");
 
   if (!res.ok) {
     throw new Error("판매 목록을 불러오지 못했습니다.");
