@@ -16,6 +16,7 @@ import recicle from "../../public/icons/ic_exchange.svg";
 import LoginModal from "@/components/modals/loginModal";
 import SellPhotoModal from "@/components/modals/sellPhotoModal";
 import { useQuery } from "@tanstack/react-query";
+import fetchSales from "@/utils/api/marketPlace";
 
 export default function MarketPlace() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,25 +27,21 @@ export default function MarketPlace() {
     genre: null,
     soldout: null,
   });
+
+  const [tempFilters, setTempFilters] = useState({
+    grade: null,
+    genre: null,
+    soldout: null,
+  });
   //
   const [loginModal, setLoginModal] = useState(false);
   const [login, setLogin] = useState(true);
   // 일단임시 로그인됐을 때
 
-
   const { data, error, isLoading } = useQuery({
     queryKey: ["sales", selectedFilters],
     queryFn: () => {
-      const query = new URLSearchParams();
-
-      query.append("includeSoldOut", selectedFilters.soldout ?? "false");
-      if (selectedFilters.grade) query.append("grade", selectedFilters.grade);
-      if (selectedFilters.genre) query.append("genre", selectedFilters.genre);
-
-      return fetch(`http://localhost:3000/sales?${query.toString()}`).then(
-        (res) => res.json()
-      );
-      // 주로 함수를 뺴서 한줄로 한다
+      return fetchSales(selectedFilters);
     },
     keepPreviousData: true,
   });
@@ -197,10 +194,32 @@ export default function MarketPlace() {
             {/* 등급,장르,매진여부 눌렀을 떄 나오는 블럭형식의 option들 */}
             <div className={style.optionBlock}>
               {optionMap[selectedOptionType]?.map((opt) => (
-                <div key={opt.value} className={style.options}>
+                <div
+                  key={opt.value}
+                  className={style.options}
+                  onClick={() => {
+                    if (selectedOptionType === "grade") {
+                      setTempFilters((prev) => ({
+                        ...prev,
+                        grade: opt.value.toUpperCase(),
+                      }));
+                    } else if (selectedOptionType === "genre") {
+                      setTempFilters((prev) => ({
+                        ...prev,
+                        genre: opt.value,
+                      }));
+                    } else if (selectedOptionType === "soldout") {
+                      setTempFilters((prev) => ({
+                        ...prev,
+                        soldout: opt.value,
+                      }));
+                    }
+                  }}
+                >
                   <p key={opt.value} className={style[opt.value.toLowerCase()]}>
                     {opt.label}
                   </p>
+                  <p>{0}개</p>
                 </div>
               ))}
             </div>
@@ -208,7 +227,15 @@ export default function MarketPlace() {
               <button>
                 <Image src={recicle} height={50} width={50} alt={"버튼"} />
               </button>
-              <button className={style.modalButton}>포토보기</button>
+              <button
+                onClick={() => {
+                  setSelectedFilters(tempFilters);
+                  setIsOpen(false);
+                }}
+                className={style.modalButton}
+              >
+                포토보기
+              </button>
             </div>
           </div>
         </div>
