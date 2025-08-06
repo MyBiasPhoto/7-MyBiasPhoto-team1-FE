@@ -1,13 +1,15 @@
-import style from "./tradeinfo.module.css";
-export default function TradeInfo({ sale }) {
+import style from "./editTrade.module.css";
+import icon from "@/public/icons/ic_exchange.svg";
+import Image from "next/image";
+
+export default function EditTradeInfo({ sale }) {
   return (
     <div className={style.Container}>
       <div className={style.title}>
+        <Image src={icon} height={28} width={28} alt={"아이콘"} />
         <p className={style.titleFont}>교환 희망 정보</p>
-        <button className={style.titleButton}>포토카드 교환하기</button>
       </div>
       <div className={style.Content}>
-        <p className={style.ContentFont}>{sale?.desiredDesc}</p>
         <div className={style.ContentTagBox}>
           {/* 태그들 */}
           <p className={`${style[sale?.desiredGrade.toLowerCase()]}`}>
@@ -16,8 +18,8 @@ export default function TradeInfo({ sale }) {
           <div className={style.Line}></div>
           <p className={style.Type}>{sale?.desiredGenre}</p>
         </div>
+        <p className={style.ContentFont}>{sale?.desiredDesc}</p>
       </div>
-      <button className={style.MobileButton}>포토카드 교환하기</button>
     </div>
   );
 }

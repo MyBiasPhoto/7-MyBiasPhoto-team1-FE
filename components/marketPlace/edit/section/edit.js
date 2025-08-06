@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import cardImage from "../../../../public/assets/cardImage.png";
-import style from "./buy.module.css";
+import style from "./edit.module.css";
 import CustomInput from "../../customInput/customInput.js";
 import { useEffect, useState } from "react";
-export default function Buy({ sale }) {
+import EditTrade from "@/components/marketPlace/edit/area/editTrade";
+export default function Edit({ sale }) {
   const [count, setCount] = useState(1);
   const [total, setTotal] = useState(sale?.photoCard?.initialPrice * count);
 
@@ -86,26 +87,13 @@ export default function Buy({ sale }) {
               </div>
             </div>
             <div className={style.subInfo}>
-              {/* 구매수량 총 가격 */}
-              <div className={style.infoBuyCount}>
-                <p>구매수량</p>
-                <div>
-                  <CustomInput count={count} setCount={setCount}></CustomInput>
-                  {/* 커스텀으로바꿀예정 */}
-                </div>
-              </div>
-              <div className={style.infoTotal}>
-                <p>총 가격</p>
-                <div className={style.infoTotalPrice}>
-                  {/* amount * 인풋저거 커스텀 결과값 */}
-                  <p>{total}</p>
-                  <p>P</p>
-                  <p className={style.infoTotalPriceDetail}>{`(${count}장)`}</p>
-                </div>
+              <div>
+                <EditTrade sale={sale} />
               </div>
             </div>
             <div className={style.buyButtonBox}>
-              <button className={style.buyButton}>포토카드 구매하기</button>
+              <button className={style.buyButton}>수정하기</button>
+              <button className={style.deleteButton}>판매 내리기</button>
             </div>
           </div>
         </div>

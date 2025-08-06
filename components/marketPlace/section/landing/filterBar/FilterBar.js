@@ -14,11 +14,17 @@ export default function FilterBar({
   onFilterChange,
   onToggleFilterModal,
   onSortChange,
+  searchValue,
 }) {
   return (
     <div className={style.filterContainer}>
       <div className={style.filterBox}>
-        <input placeholder="검색" className={style.filterInput} />
+        <input
+          placeholder="검색"
+          value={searchValue}
+          className={style.filterInput}
+          onChange={(val) => onFilterChange("search", val.target)}
+        />
         <Select
           option={gradeOption}
           name={"등급"}

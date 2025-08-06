@@ -21,11 +21,23 @@ export default function MarketPlace() {
   // 1. 상태 선언
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // 임시 로그인 상태
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 임시 로그인 상태
 
   const initialFilterState = {
-    selected: { grade: null, genre: null, soldout: null, orderBy: null },
-    temp: { grade: null, genre: null, soldout: null, orderBy: null },
+    selected: {
+      grade: null,
+      genre: null,
+      soldout: null,
+      orderBy: null,
+      search: null,
+    },
+    temp: {
+      grade: null,
+      genre: null,
+      soldout: null,
+      orderBy: null,
+      search: null,
+    },
     selectedOptionType: null,
   };
 
@@ -123,13 +135,18 @@ export default function MarketPlace() {
   // 6. JSX (컴포넌트 분리)
   return (
     <div className={style.marketPlace}>
-      <Header onLoginClick={handleLoginClick} />
+      <Header
+        onLoginClick={handleLoginClick}
+        onFilterChange={handleFilterChange}
+        searchValue={filterState.selected.search || ""}
+      />
 
       <div className={style.marketPlaceContainer}>
         <FilterBar
           onFilterChange={handleFilterChange}
           onToggleFilterModal={toggleFilterModal}
           onSortChange={handleSortChange}
+          searchValue={filterState.selected.search || ""}
         />
 
         <CardList cards={cards} />

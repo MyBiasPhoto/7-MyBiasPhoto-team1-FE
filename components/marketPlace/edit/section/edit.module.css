@@ -104,9 +104,8 @@
 .info {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #fff;
   padding-top: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 65px;
   gap: 10px;
 }
 
@@ -221,11 +220,37 @@
   text-overflow: ellipsis;
 }
 
+.deleteButton {
+  display: flex;
+  width: 440px;
+  height: 80px;
+  padding: 25px 144px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--black-black, #0f0f0f);
+  color: #fff;
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid #fff;
+}
+
 .buyButtonBox {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 80px;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .ContentImg {
@@ -279,6 +304,9 @@
     padding-top: 20px;
   }
   .buyButton {
+    width: 100%;
+  }
+  .deleteButton {
     width: 100%;
   }
 }
