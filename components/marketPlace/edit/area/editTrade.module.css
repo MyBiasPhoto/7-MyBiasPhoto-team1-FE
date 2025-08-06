@@ -1,0 +1,117 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  display: flex;
+  border-bottom: 1px solid #fff;
+  align-items: center;
+  padding-bottom: 20px;
+  gap: 10px;
+}
+.titleFont {
+  color: var(--white-white, #fff);
+  font-family: "Noto Sans KR";
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.titleButton {
+  display: flex;
+  width: 440px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--main-main, #efff04);
+}
+
+.ContentFont {
+  color: var(--white-white, #fff);
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-top: 10px;
+}
+
+.Line {
+  width: 3px;
+  height: 28px;
+  background-color: #a4a4a4;
+  margin-left: 15px;
+}
+
+.ContentTagBox {
+  display: flex;
+  margin-top: 20px;
+}
+
+.Type {
+  color: var(--gray-gray300, #a4a4a4);
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  padding-left: 10px;
+}
+
+.Content {
+  margin-top: 0px;
+}
+.common {
+  color: gray;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.rare {
+  color: blue;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.super_rare {
+  color: purple;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.legendary {
+  color: gold;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.MobileButton {
+  display: none;
+  width: 440px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--main-main, #efff04);
+}
+
+@media (max-width: 743px) {
+  .titleButton {
+    display: none;
+  }
+  .MobileButton {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+  }
+}
