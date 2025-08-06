@@ -5,9 +5,11 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { login } from "@/utils/auth/login";
+import { login as loginRequest } from "@/utils/auth/login";
+import { useAuth } from "@/utils/auth/authContext";
 
 export default function LoginPage() {
+  const { login } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,9 +50,9 @@ export default function LoginPage() {
     if (!valid) return;
 
     try {
-      const user = await login({ email, password });
+      const user = await loginRequest({ email, password });
       alert("로그인 성공!");
-      localStorage.setItem("user", JSON.stringify(user.user));
+      login(user);
       console.log("로그인 성공:", user);
       router.push("/");
     } catch (error) {

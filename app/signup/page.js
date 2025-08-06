@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { signup } from "@/utils/auth/signup";
 import styles from "./page.module.css";
 import Image from "next/image";
@@ -18,6 +19,7 @@ export default function SignupPage() {
   const [passwordError, setPasswordError] = useState("");
   const [passwordCheckError, setPasswordCheckError] = useState("");
   const [nicknameError, setNicknameError] = useState("");
+  const router = useRouter();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -80,6 +82,7 @@ export default function SignupPage() {
           nickname,
         });
         alert("회원가입 성공!");
+        router.push("/login");
       } catch (error) {
         console.error(error);
         alert(error.response?.data?.message || "회원가입 실패");
