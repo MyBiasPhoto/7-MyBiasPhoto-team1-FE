@@ -1,3 +1,4 @@
+// app/myGallery/page.js
 import {
   dehydrate,
   HydrationBoundary,
@@ -5,19 +6,18 @@ import {
 } from "@tanstack/react-query";
 import MyGalleryClient from "./MyGalleryClient";
 import { fetchMyGalleryData } from "@/utils/api/myGalleries";
+import { initialMyGalleryFilters } from "@/utils/constants/Filters";
 
-// app/myGallery/page.js
 export default async function myGalleryPage() {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
-    // queryKey: ["gallery", initialFilter],
-    // queryFn: () => fetchMyGalleryData(initialFilter),
-    queryKey: ["gallery"],
-    queryFn: () => fetchMyGalleryData(),
+    
+    queryKey: ["gallery", initialMyGalleryFilters],
+    queryFn: () => fetchMyGalleryData(initialMyGalleryFilters),
   });
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <MyGalleryClient />
+      <MyGalleryClient initialFilters={initialMyGalleryFilters} />
     </HydrationBoundary>
   );
 }

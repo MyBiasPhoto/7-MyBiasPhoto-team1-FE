@@ -1,4 +1,6 @@
 // src/api/sales.js
+// 삭제 예ㅇ
+
 export const fetchSales = async () => {
   const res = await fetch("http://localhost:3500/sales");
 
