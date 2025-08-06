@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./exchangePhotoModal.module.css";
 import Image from "next/image";
 import Select from "@/components/marketPlace/select/select";
@@ -13,69 +14,120 @@ import Card from "@/components/marketPlace/card/card";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import SearchIcon from "@/public/icons/ic_search.svg";
 
-const cards = [
-  {
-    id: "a1",
-    title: "전설의 용사",
-    grade: "legendary",
-    writer: "홍길동",
-    kind: "캐릭터",
-    amount: 3,
-    price: 1000,
-  },
-  {
-    id: "a2",
-    title: "빛의 정령",
-    grade: "rare",
-    writer: "이몽룡",
-    kind: "캐릭터",
-    amount: 2,
-    price: 500,
-  },
-  {
-    id: "a3",
-    title: "어둠의 숲",
-    grade: "super_rare",
-    writer: "성춘향",
-    kind: "배경",
-    amount: 1,
-    price: 1200,
-  },
-  {
-    id: "a4",
-    title: "현실주의 고양이",
-    grade: "common",
-    writer: "최길동",
-    kind: "캐릭터",
-    amount: 5,
-    price: 300,
-  },
-  {
-    id: "a5",
-    title: "추상적 감정",
-    grade: "etc",
-    writer: "임꺽정",
-    kind: "기타",
-    amount: 0,
-    price: 900,
-  },
-];
-
 export default function ExchangePhotoModal({ onClose }) {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
+  const [cards, setCards] = useState([]);
+  const [search, setSearch] = useState("");
+  const [listGrade, setListGrade] = useState("");
+  const [listKind, setListKind] = useState("");
   const [exchangeMemo, setExchangeMemo] = useState("");
+  const [cardDrafts, setCardDrafts] = useState({});
 
-  const handleCardClick = (card) => {
-    setSelectedCard(card);
+  const fetchCards = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/sales", {
+        params: {
+          page: 1,
+          pageSize: 20,
+          includeSoldOut: "true",
+          search: search || "",
+          orderBy: "newest",
+          grade: listGrade ? gradeMap[listGrade] : undefined,
+          genre: listKind ? genreMap[listKind] : undefined,
+        },
+      });
+
+      setCards(res.data.sales);
+    } catch (error) {
+      console.error("판매 리스트 조회 실패:", error);
+    }
   };
 
-  const handleBack = () => {
+  useEffect(() => {
+    fetchCards();
+  }, [search, listGrade, listKind]);
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  function handleCardClick(card) {
+    const formattedCard = {
+      ...card,
+      title: card.name,
+      writer: card.sellerNickname,
+      kind: card.genre,
+      amount: card.quantity,
+    };
+
+    setSelectedCard(formattedCard);
+
+    const draft = cardDrafts[card.saleId] || {};
+    setExchangeMemo(draft.exchangeMemo || "");
+  }
+
+  useEffect(() => {
+    if (!selectedCard) return;
+
+    setCardDrafts((prev) => ({
+      ...prev,
+      [selectedCard.saleId]: {
+        exchangeMemo,
+      },
+    }));
+  }, [exchangeMemo, selectedCard]);
+
+  function handleBack() {
     setSelectedCard(null);
+  }
+
+  useEffect(() => {
+    if (!selectedCard) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        handleBack();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedCard]);
+
+  function handleConfirm() {
+    setShowResultModal({
+      show: true,
+      cardTitle: selectedCard?.title,
+      cardGrade: selectedCard?.grade,
+      userCardCount: 0,
+      currentCardTotal: 0,
+    });
+
+    setCardDrafts({});
+  }
+
+  const gradeMap = {
+    common: "COMMON",
+    rare: "RARE",
+    super_rare: "SUPER RARE",
+    legendary: "LEGENDARY",
   };
 
-  const handleConfirm = () => {
-    setShowResultModal(true);
+  const genreMap = {
+    album: "앨범",
+    special: "특전",
+    fan: "팬싸",
+    season: "시즌그리팅",
+    meet: "팬미팅",
+    concert: "콘서트",
+    md: "MD",
+    collab: "콜라보",
+    club: "팬클럽",
+    etc: "기타",
   };
 
   return (
@@ -104,6 +156,8 @@ export default function ExchangePhotoModal({ onClose }) {
                         type="text"
                         placeholder="검색"
                         className={styles.searchInput}
+                        value={search}
+                        onChange={handleSearchChange}
                       />
                       <Image
                         src={SearchIcon}
@@ -117,12 +171,12 @@ export default function ExchangePhotoModal({ onClose }) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={(val) => console.log("등급 선택:", val)}
+                        onChange={(val) => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={(val) => console.log("장르 선택:", val)}
+                        onChange={(val) => setListKind(val)}
                       />
                     </div>
                   </div>
@@ -131,7 +185,7 @@ export default function ExchangePhotoModal({ onClose }) {
                     {cards.map((card) => (
                       <div
                         className={styles.cardItem}
-                        key={card.id}
+                        key={card.saleId}
                         onClick={() => handleCardClick(card)}
                       >
                         <Card {...card} />

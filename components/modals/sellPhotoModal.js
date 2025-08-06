@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./sellPhotoModal.module.css";
 import Image from "next/image";
 import cardImage from "@/public/assets/cardImage.png";
@@ -17,74 +18,120 @@ import MinusIcon from "@/public/icons/ic_-.svg";
 import PlusIcon from "@/public/icons/ic_+.svg";
 import DownIcon from "@/public/icons/ic_down.svg";
 
-const cards = [
-  {
-    id: "a1",
-    title: "전설의 용사",
-    grade: "legendary",
-    writer: "홍길동",
-    kind: "캐릭터",
-    amount: 3,
-    price: 1000,
-  },
-  {
-    id: "a2",
-    title: "빛의 정령",
-    grade: "rare",
-    writer: "이몽룡",
-    kind: "캐릭터",
-    amount: 2,
-    price: 500,
-  },
-  {
-    id: "a3",
-    title: "어둠의 숲",
-    grade: "super_rare",
-    writer: "성춘향",
-    kind: "배경",
-    amount: 1,
-    price: 1200,
-  },
-  {
-    id: "a4",
-    title: "현실주의 고양이",
-    grade: "common",
-    writer: "최길동",
-    kind: "캐릭터",
-    amount: 5,
-    price: 300,
-  },
-  {
-    id: "a5",
-    title: "추상적 감정",
-    grade: "etc",
-    writer: "임꺽정",
-    kind: "기타",
-    amount: 0,
-    price: 900,
-  },
-];
-
 export default function SellPhotoModal({ onClose }) {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
+  const [cards, setCards] = useState([]);
+  const [search, setSearch] = useState("");
   const [amount, setAmount] = useState(1);
   const [price, setPrice] = useState("");
-  const [grade, setGrade] = useState("");
-  const [kind, setKind] = useState("");
+  const [listGrade, setListGrade] = useState(""); // 카드 리스트 나오는 외부? 모달 필터 용
+  const [listKind, setListKind] = useState(""); // 위와 동일
+  const [grade, setGrade] = useState(""); // 상세 모달
+  const [kind, setKind] = useState(""); // 상세 모달
   const [exchangeMemo, setExchangeMemo] = useState("");
+  const [cardDrafts, setCardDrafts] = useState({});
 
-  const handleCardClick = (card) => {
-    setSelectedCard(card);
+  const fetchCards = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/sales", {
+        params: {
+          page: 1,
+          pageSize: 20,
+          includeSoldOut: "true",
+          search: search || "",
+          orderBy: "newest",
+          grade: listGrade ? gradeMap[listGrade] : undefined,
+          genre: listKind ? genreMap[listKind] : undefined,
+        },
+      });
+
+      setCards(res.data.sales);
+    } catch (error) {
+      console.error("판매 리스트 조회 실패:", error);
+    }
   };
 
-  const handleBack = () => {
+  useEffect(() => {
+    fetchCards();
+  }, [search, listGrade, listKind]);
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  function handleCardClick(card) {
+    const formattedCard = {
+      ...card,
+      title: card.name,
+      writer: card.sellerNickname,
+      kind: card.genre,
+      amount: card.quantity,
+    };
+
+    setSelectedCard(formattedCard);
+
+    const draft = cardDrafts[card.saleId] || {};
+    setAmount(draft.amount || 1);
+    setPrice(draft.price || "");
+    setGrade(draft.grade || "");
+    setKind(draft.kind || "");
+    setExchangeMemo(draft.exchangeMemo || "");
+  }
+
+  useEffect(() => {
+    if (!selectedCard) return;
+
+    setCardDrafts((prev) => ({
+      ...prev,
+      [selectedCard.saleId]: {
+        amount,
+        price,
+        grade,
+        kind,
+        exchangeMemo,
+      },
+    }));
+  }, [amount, price, grade, kind, exchangeMemo, selectedCard]);
+
+  function handleBack() {
     setSelectedCard(null);
-  };
+  }
 
-  const handleConfirm = () => {
-    setShowResultModal(true);
-  };
+  //취소하기 말고 esc로 돌아가기
+  useEffect(() => {
+    if (!selectedCard) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        handleBack();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedCard]);
+
+  function handleConfirm() {
+    setShowResultModal({
+      show: true,
+      cardTitle: selectedCard?.title,
+      cardGrade: selectedCard?.grade,
+      userCardCount: 0,
+      currentCardTotal: 0,
+    });
+
+    setCardDrafts({});
+  }
+
+  function handleCloseModal() {
+    setShowResultModal({ show: false });
+    setCardDrafts({});
+    onClose();
+  }
 
   const increaseAmount = () => {
     if (amount < selectedCard.amount) setAmount(amount + 1);
@@ -94,9 +141,48 @@ export default function SellPhotoModal({ onClose }) {
     if (amount > 1) setAmount(amount - 1);
   };
 
+  const gradeClassMap = {
+    COMMON: styles.common,
+    RARE: styles.rare,
+    "SUPER RARE": styles["super_rare"],
+    LEGENDARY: styles.legendary,
+    ETC: styles.etc,
+  };
+
+  const gradeMap = {
+    common: "COMMON",
+    rare: "RARE",
+    super_rare: "SUPER RARE",
+    legendary: "LEGENDARY",
+  };
+
+  const genreMap = {
+    album: "앨범",
+    special: "특전",
+    fan: "팬싸",
+    season: "시즌그리팅",
+    meet: "팬미팅",
+    concert: "콘서트",
+    md: "MD",
+    collab: "콜라보",
+    club: "팬클럽",
+    etc: "기타",
+  };
+
   return (
     <>
-      {!showResultModal ? (
+      {showResultModal.show ? (
+        <SellResultModal
+          cardTitle={showResultModal.cardTitle}
+          cardGrade={showResultModal.cardGrade}
+          userCardCount={showResultModal.userCardCount}
+          currentCardTotal={showResultModal.currentCardTotal}
+          onClose={() => {
+            setShowResultModal({ show: false });
+            onClose();
+          }}
+        />
+      ) : (
         <div className={styles.overlay} onClick={onClose}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <h1 className={styles.header}>
@@ -122,6 +208,8 @@ export default function SellPhotoModal({ onClose }) {
                         type="text"
                         placeholder="검색"
                         className={styles.searchInput}
+                        value={search}
+                        onChange={handleSearchChange}
                       />
                       <Image
                         src={SearchIcon}
@@ -135,12 +223,12 @@ export default function SellPhotoModal({ onClose }) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={(val) => console.log("등급 선택:", val)}
+                        onChange={(val) => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={(val) => console.log("장르 선택:", val)}
+                        onChange={(val) => setListKind(val)}
                       />
                     </div>
                   </div>
@@ -149,7 +237,7 @@ export default function SellPhotoModal({ onClose }) {
                     {cards.map((card) => (
                       <div
                         className={styles.cardItem}
-                        key={card.id}
+                        key={card.saleId}
                         onClick={() => handleCardClick(card)}
                       >
                         <Card {...card} />
@@ -162,15 +250,17 @@ export default function SellPhotoModal({ onClose }) {
                   <div className={styles.aboutPhoto}>
                     <div className={styles.cardImage}>
                       <Image
-                        src={cardImage}
-                        alt={"임시"}
+                        src={selectedCard.imageUrl || cardImage}
+                        alt="선택된 카드 이미지"
                         className={styles.responsiveImage}
+                        width={360}
+                        height={270}
                       />
                     </div>
                     <div className={styles.cardInfo}>
                       <div className={styles.cardSubTitle}>
                         <div className={styles.cardSubTitleBox}>
-                          <p className={`${styles[selectedCard?.grade]}`}>
+                          <p className={gradeClassMap[selectedCard?.grade]}>
                             {selectedCard?.grade || "임시등급"}
                           </p>
                           <span className={styles.divider}>|</span>
@@ -282,9 +372,15 @@ export default function SellPhotoModal({ onClose }) {
                               <option disabled value="">
                                 장르를 선택해 주세요
                               </option>
-                              <option value="character">캐릭터</option>
-                              <option value="view">풍경</option>
-                              <option value="real">실사화</option>
+                              <option value="album">앨범</option>
+                              <option value="special">특전</option>
+                              <option value="fan">팬싸</option>
+                              <option value="season">시즌그리팅</option>
+                              <option value="meet">팬미팅</option>
+                              <option value="concert">콘서트</option>
+                              <option value="md">MD</option>
+                              <option value="collab">콜라보</option>
+                              <option value="club">팬클럽</option>
                               <option value="etc">기타</option>
                             </select>
                             <Image
@@ -324,14 +420,6 @@ export default function SellPhotoModal({ onClose }) {
             </div>
           </div>
         </div>
-      ) : (
-        <SellResultModal
-          isSuccess={true}
-          onClose={() => {
-            setShowResultModal(false);
-            onClose();
-          }}
-        />
       )}
     </>
   );

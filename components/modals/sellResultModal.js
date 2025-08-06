@@ -6,7 +6,7 @@ import CloseIcon from "@/public/icons/ic_close.svg";
 import Link from "next/link";
 
 // 판매 등록 성공 기준
-const checkSellConditions = ({ userCardCount, currentCardTotal }) => {
+function checkSellConditions({ userCardCount, currentCardTotal }) {
   const MAX_USER_MONTHLY_CREATION = 3;
   const MAX_CARD_SUPPLY = 10;
 
@@ -14,22 +14,22 @@ const checkSellConditions = ({ userCardCount, currentCardTotal }) => {
   const isCardSupplyExceeded = currentCardTotal >= MAX_CARD_SUPPLY;
 
   return !(isUserExceeded || isCardSupplyExceeded);
-};
+}
 
-const SellResultModal = ({
+export default function SellResultModal({
   userCardCount,
   currentCardTotal,
   cardGrade,
   cardTitle,
   onClose,
-}) => {
+}) {
   const isSuccess = checkSellConditions({ userCardCount, currentCardTotal });
 
   const cardInfoText = `[${cardGrade} | ${cardTitle}]`;
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button className={styles.closeButton} onClick={onClose}>
           <Image src={CloseIcon} alt="Close" width={32} height={32} />
         </button>
@@ -55,6 +55,4 @@ const SellResultModal = ({
       </div>
     </div>
   );
-};
-
-export default SellResultModal;
+}
