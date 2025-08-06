@@ -2,6 +2,8 @@
   width: 260px;
   min-height: 231px;
   background-color: var(--gray-500);
+  position: relative;
+  z-index: 10;
 }
 
 .userBox {
