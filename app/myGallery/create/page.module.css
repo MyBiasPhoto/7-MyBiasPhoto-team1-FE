@@ -1,0 +1,85 @@
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background: var(--black);
+}
+
+.title_Box {
+  display: inline-flex;
+  width: 76%;
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: 2px solid #fff;
+  /* padding-left: 150px; */
+  /* padding-right: 150px; */
+  padding-bottom: 20px;
+  margin-top: 60px;
+}
+
+.title_Text {
+  font-size: 62px;
+  color: var(--white);
+  font-weight: 400;
+  font-family: "BR-B", sans-serif;
+}
+
+.photoCardName,
+.photoCardGrade,
+.photoCardGenre {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 65px;
+}
+
+.photoCardName {
+  margin-top: 80px;
+}
+
+.photoCardNameText,
+.photoCardLabelText {
+  color: var(--white);
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.photoCardNameInput {
+  display: flex;
+  width: 520px;
+  height: 60px;
+  padding: 18px 20px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 2px;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  color: var(--white);
+}
+
+.photoCardSelect {
+  display: flex;
+  width: 520px;
+  height: 60px;
+  padding-left: 18px;
+  border-radius: 2px;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  color: var(--white);
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("/icons/ic_down.svg");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+}
