@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import TradeList from "@/components/marketPlace/section/tradeList/tradeList";
 import EditArea from "@/components/marketPlace/edit/section/edit";
+import EditTradeList from "@/components/marketPlace/edit/tradeList/tradeList";
 
 export default function MarketPlaceEdit() {
   const { id } = useParams();
@@ -26,7 +27,7 @@ export default function MarketPlaceEdit() {
         <EditArea sale={sale} />
       </div>
       <div className={style.Wrapper}>
-        <TradeList sale={sale} />
+        <EditTradeList sale={sale} />
       </div>
     </div>
   );

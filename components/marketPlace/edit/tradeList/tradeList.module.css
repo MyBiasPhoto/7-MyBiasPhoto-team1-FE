@@ -1,0 +1,17 @@
+.title {
+  color: var(--white-white, #fff);
+  font-family: "Noto Sans KR";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 20px;
+}
+
+.list {
+  margin-top: 70px;
+  margin-bottom: 50px;
+  display: flex;
+  gap: 30px;
+}
