@@ -7,11 +7,14 @@ import UserMenu from "./UserMenu";
 import SideMenu from "./SideMenu";
 import Link from "next/link";
 import SideAlarm from "./SideAlarm";
+import { useAuth } from "@/utils/auth/authContext";
 
 export default function UserInfo({ isLogin, onLogout }) {
   const [showInfo, setShowInfo] = useState(false);
   const [isMobile, setIsMobile] = useState(null);
   const infoBoxRef = useRef();
+  const { user } = useAuth();
+  const { nickname = "" } = user || {};
 
   const handleAlarmClick = () =>
     setShowInfo(showInfo === "alarm" ? false : "alarm");
@@ -65,7 +68,7 @@ export default function UserInfo({ isLogin, onLogout }) {
         <span className={styles.point}>20,000 P</span>
         <div className={styles.alarm} onClick={handleAlarmClick} />
         <span className={styles.name} onClick={handleUserClick}>
-          탕수육
+          {nickname || "사용자 이름"}
         </span>
         <div className={styles.bar} />
         <button type="button" onClick={onLogout} className={styles.logout}>

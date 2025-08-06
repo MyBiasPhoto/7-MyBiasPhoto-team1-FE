@@ -149,3 +149,31 @@
   color: var(--red);
   font-weight: 700;
 }
+
+/* ============ 태블릿 (M) ============ */
+@media (max-width: 1023px) {
+  .container {
+    padding: 0 16px;
+  }
+  .logo {
+    margin-bottom: 48px;
+    height: auto !important;
+  }
+  .emailInput,
+  .passwordInput,
+  .nicknameInput,
+  .button {
+    width: 340px;
+    min-width: 0;
+    font-size: 16px;
+    padding: 14px 12px;
+  }
+  .loginbtnText,
+  .googlebtnText {
+    font-size: 16px;
+  }
+  .signup {
+    margin-top: 32px;
+    font-size: 15px;
+  }
+}

@@ -41,7 +41,10 @@ export default function NotLogin({ onLogin }) {
         {showInfo && (
           <SideMenu
             open={true}
-            onLogin={onLogin}
+            onLogin={() => {
+              onLogin();
+              setShowInfo(false);
+            }}
             onClose={() => setShowInfo(false)}
           />
         )}
@@ -52,7 +55,7 @@ export default function NotLogin({ onLogin }) {
   return (
     <div className={styles.area}>
       <button className={styles.btn} type="button" onClick={onLogin}>
-        로그인 상태
+        　
       </button>
       <Link className={styles.link} href="/login">
         로그인

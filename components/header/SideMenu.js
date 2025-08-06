@@ -5,6 +5,7 @@ import styles from "./SideMenu.module.css";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import RandomModal from "./RandomModal";
+import { useAuth } from "@/utils/auth/authContext";
 
 function formatTime(seconds) {
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -25,6 +26,7 @@ export default function SideMenu({
   const [showModal, setShowModal] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const intervalRef = useRef(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const lastTry = localStorage.getItem("randomPoint:lastTry");
@@ -41,7 +43,7 @@ export default function SideMenu({
     }
     if (cooldown > 0 && !intervalRef.current) {
       intervalRef.current = setInterval(() => {
-        setCooldown(prev => {
+        setCooldown((prev) => {
           if (prev <= 1) {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
@@ -82,7 +84,9 @@ export default function SideMenu({
         {isLogin ? (
           <div className={styles.area}>
             <div className={styles.userBox}>
-              <span className={styles.title}>안녕하세요, 탕수육님!</span>
+              <span className={styles.title}>
+                안녕하세요, {user?.nickname || "회원"}님!
+              </span>
               <div className={styles.userPoint}>
                 <span className={styles.text}>보유 포인트</span>
                 <span className={styles.point}>20,000 P</span>
