@@ -4,6 +4,7 @@ export default async function fetchSales(filters) {
   if (filters.grade) query.append("grade", filters.grade);
   if (filters.genre) query.append("genre", filters.genre);
   if (filters.orderBy) query.append("orderBy", filters.orderBy);
+  if (filters.search) query.append("search", filters.search);
 
   const res = await fetch(`http://localhost:3000/sales?${query.toString()}`);
 
