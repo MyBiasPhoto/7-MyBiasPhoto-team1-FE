@@ -110,6 +110,7 @@
 .filterBox {
   display: flex;
   gap: 45px;
+  z-index: 100;
 }
 
 .cardList {

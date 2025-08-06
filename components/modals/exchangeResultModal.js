@@ -6,22 +6,22 @@ import CloseIcon from "@/public/icons/ic_close.svg";
 import Link from "next/link";
 
 // 교환 제시 성공 조건
-const checkExchangeConditions = ({
+function checkExchangeConditions({
   myCardGrade,
   myCardGenre,
   desiredGrade,
   desiredGenre,
-}) => {
+}) {
   return myCardGrade === desiredGrade && myCardGenre === desiredGenre;
-};
+}
 
-const ExchangeResultModal = ({
+export default function ExchangeResultModal({
   myCardGrade,
   myCardGenre,
   desiredGrade,
   desiredGenre,
   onClose,
-}) => {
+}) {
   const isSuccess = checkExchangeConditions({
     myCardGrade,
     myCardGenre,
@@ -30,8 +30,8 @@ const ExchangeResultModal = ({
   });
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button className={styles.closeButton} onClick={onClose}>
           <Image src={CloseIcon} alt="Close" width={32} height={32} />
         </button>
@@ -60,6 +60,4 @@ const ExchangeResultModal = ({
       </div>
     </div>
   );
-};
-
-export default ExchangeResultModal;
+}
