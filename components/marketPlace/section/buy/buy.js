@@ -5,7 +5,7 @@ import cardImage from "../../../../public/assets/cardImage.png";
 import style from "./buy.module.css";
 import CustomInput from "../../customInput/customInput.js";
 import { useEffect, useState } from "react";
-export default function Buy() {
+export default function Buy({ sale }) {
   const title = "우리집 앞마당";
   const grade = "레전드리";
   const tags = "풍경";
@@ -15,11 +15,13 @@ export default function Buy() {
   const price = "10";
   const amount = "1";
   const [count, setCount] = useState(1);
-  const [total, setTotal] = useState(price * count);
+  const [total, setTotal] = useState(sale?.photoCard?.initialPrice * count);
 
   useEffect(() => {
-    setTotal(price * count);
-  }, [count]);
+    setTotal(sale?.photoCard.initialPrice * count);
+  }, [count, sale]);
+  if (!sale) return;
+  if (!total) return;
   return (
     <div>
       <div>
@@ -29,13 +31,15 @@ export default function Buy() {
       <div>
         {/* 마켓플레이스 */}
         <div className={style.Title}>
-          <p>{title || "우리집 앞마당"}</p>
+          <p>{sale.photoCard.name || "우리집 앞마당"}</p>
         </div>
         <div className={style.Content}>
           <div>
             {/* 왼쪽이미지 */}
             <Image
-              src={cardImage}
+              src={sale?.photoCard?.imageUrl || cardImage}
+              width={500}
+              height={500}
               alt={"임시사진"}
               className={style.ContentImg}
             ></Image>
@@ -46,22 +50,23 @@ export default function Buy() {
               {/* 등급 태그 제작자 */}
               <div className={style.ContentHeaderTags}>
                 <p className={style.ContentHeaderGrade}>
-                  {grade || "레전드리"}
+                  {sale.photoCard.grade || "등급"}
                 </p>
                 <div className={style.Line}></div>
-                <p className={style.ContentHeaderTag}>{tags || "풍경"}</p>
+                <p className={style.ContentHeaderTag}>
+                  {sale?.photoCard?.genre || "타입"}
+                </p>
               </div>
               <div>
                 <p className={style.ContentHeaderWriter}>
-                  {writer || "미쓰손"}
+                  {sale.seller.nickname || "제작자"}
                 </p>
               </div>
             </div>
             <div>
               {/* 설명 */}
               <p className={style.descripiton}>
-                {descripiton ||
-                  "어쩌주저쩌군ㅁ암나어무무모ㅓ부므ㅝ브므므므므ㅡ므므므ㅡ."}
+                {sale.photoCard.description || "설명"}
               </p>
             </div>
             <div className={style.info}>
@@ -69,7 +74,7 @@ export default function Buy() {
               <div className={style.infoPrice}>
                 <p>가격</p>
                 <div className={style.infoPriceDetail}>
-                  <p>{price || "10"}</p>
+                  <p>{sale.photoCard.initialPrice || "10"}</p>
                   <p>P</p>
                 </div>
               </div>
@@ -77,9 +82,9 @@ export default function Buy() {
                 <p>잔여</p>
                 <div className={style.infoAmountDetail}>
                   <p className={style.infoAmountDetailNumber}>
-                    {amount || "10"}
+                    {sale.quantity || "10"}
                   </p>
-                  <p>/5</p>
+                  <p>/{sale.initialQuantity}</p>
                 </div>
               </div>
             </div>

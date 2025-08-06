@@ -15,3 +15,14 @@ export default async function fetchSales(filters) {
 
   return data;
 }
+
+export async function fetchSaleById(id) {
+  const res = await fetch(`http://localhost:3000/sales/${id}`);
+
+  if (!res.ok) throw new Error("Network response was not ok");
+
+  const data = await res.json();
+  if (data === undefined) throw new Error("No data returned from server");
+
+  return data;
+}

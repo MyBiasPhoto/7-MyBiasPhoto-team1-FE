@@ -1,5 +1,5 @@
 import style from "./tradeinfo.module.css";
-export default function TradeInfo() {
+export default function TradeInfo({ sale }) {
   return (
     <div className={style.Container}>
       <div className={style.title}>
@@ -7,12 +7,12 @@ export default function TradeInfo() {
         <button className={style.titleButton}>포토카드 교환하기</button>
       </div>
       <div className={style.Content}>
-        <p className={style.ContentFont}>설명어쩌구저쩌구</p>
+        <p className={style.ContentFont}>{sale?.desiredDesc}</p>
         <div className={style.ContentTagBox}>
           {/* 태그들 */}
-          <p>등급</p>
+          <p>{sale?.desiredGrade}</p>
           <div className={style.Line}></div>
-          <p className={style.Type}>종류</p>
+          <p className={style.Type}>{sale?.desiredGenre}</p>
         </div>
       </div>
     </div>
