@@ -10,11 +10,14 @@ export default function TradeInfo({ sale }) {
         <p className={style.ContentFont}>{sale?.desiredDesc}</p>
         <div className={style.ContentTagBox}>
           {/* 태그들 */}
-          <p>{sale?.desiredGrade}</p>
+          <p className={`${style[sale?.desiredGrade.toLowerCase()]}`}>
+            {sale?.desiredGrade}
+          </p>
           <div className={style.Line}></div>
           <p className={style.Type}>{sale?.desiredGenre}</p>
         </div>
       </div>
+      <button className={style.MobileButton}>포토카드 교환하기</button>
     </div>
   );
 }

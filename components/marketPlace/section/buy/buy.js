@@ -24,6 +24,7 @@ export default function Buy({ sale }) {
   if (!total) return;
   return (
     <div>
+      {console.log(sale.photoCard.grade)}
       <div>
         {/* 타이틀 */}
         <p className={style.TitleFont}>마켓플레이스</p>
@@ -49,7 +50,11 @@ export default function Buy({ sale }) {
             <div className={style.ContentHeader}>
               {/* 등급 태그 제작자 */}
               <div className={style.ContentHeaderTags}>
-                <p className={style.ContentHeaderGrade}>
+                <p
+                  className={`${style.ContentHeaderGrade} ${
+                    style[sale.photoCard.grade.toLowerCase()]
+                  }`}
+                >
                   {sale.photoCard.grade || "등급"}
                 </p>
                 <div className={style.Line}></div>

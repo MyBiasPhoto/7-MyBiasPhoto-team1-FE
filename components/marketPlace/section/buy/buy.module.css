@@ -53,13 +53,15 @@
   padding-bottom: 6px;
   justify-content: center;
   align-items: center;
+  padding-top: 6px;
 }
 
 .Line {
   background-color: #a4a4a4;
   height: 28px;
   width: 2px;
-  margin-top: 3px;
+  margin-top: 5px;
+  margin-left: 15px;
 }
 
 .ContentHeaderTag {
@@ -230,9 +232,53 @@
   width: 760px;
   height: 720px;
 }
+
+.common {
+  color: gray;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.rare {
+  color: blue;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.super_rare {
+  color: purple;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.legendary {
+  color: gold;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
 @media (min-width: 743px) and (max-width: 1199px) {
   .ContentImg {
     width: 360px;
     height: 250px;
+  }
+}
+@media (max-width: 743px) {
+  .ContentImg {
+    width: 100%;
+    height: 450px;
+  }
+  .Content {
+    flex-direction: column;
+  }
+  .ContentRight {
+    padding: 0;
+    padding-top: 20px;
+  }
+  .buyButton {
+    width: 100%;
   }
 }

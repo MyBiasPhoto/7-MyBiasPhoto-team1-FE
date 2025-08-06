@@ -44,6 +44,7 @@
   width: 3px;
   height: 28px;
   background-color: #a4a4a4;
+  margin-left: 15px;
 }
 
 .ContentTagBox {
@@ -57,10 +58,59 @@
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
   padding-left: 10px;
 }
 
 .Content {
   margin-top: 40px;
+}
+.common {
+  color: gray;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.rare {
+  color: blue;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.super_rare {
+  color: purple;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.legendary {
+  color: gold;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.MobileButton {
+  display: none;
+  width: 440px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--main-main, #efff04);
+}
+
+@media (max-width: 743px) {
+  .titleButton {
+    display: none;
+  }
+  .MobileButton {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+  }
 }
