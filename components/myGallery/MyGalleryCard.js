@@ -10,7 +10,7 @@ import soldout from "@/public/assets/soldout.svg";
 export default function MyGalleryCard({
   name,
   grade,
-  sellerNickname,
+  owner,
   genre,
   quantity,
   price,
@@ -42,15 +42,16 @@ export default function MyGalleryCard({
         </div>
         <div className={style.CardTextBox}>
           {/* 카드정보들 */}
-          <p className={style.CardTextBoxTitle}>{name || "임시 제목."}</p>
+          <p className={style.CardTextBoxTitle}>{name || "제목"}</p>
           <div className={style.CardSubTitle}>
             <div className={style.CardSubTitleBox}>
-              <p className={`${style[grade]}`}>{grade || "임시등급."}</p>
+              <p className={`${style[grade]}`}>{grade || "등급"}</p>
               <div className={style.subdiv}></div>
-              <p>{genre || "임시w"}</p>
+              <p>{genre || "장르"}</p>
             </div>
             <p className={style.subTitleWriter}>
-              {sellerNickname || "임시제작자."}
+              {owner || "판매자 id"}
+              {/* @TODO 추후 id가 아닌 nickname 으로 변경 필요 */}
             </p>
           </div>
         </div>
@@ -59,10 +60,12 @@ export default function MyGalleryCard({
           <div className={style.CardSubTitle2}>
             <p>가격</p>
             <p>{price || "0"} P</p>
+            {/* 가격 추가 예정 */}
           </div>
           <div className={style.CardSubTitle2}>
             <p>수량</p>
-            <p>{quantity || "0"}</p>
+            <p>1</p>
+            {/* <p>{quantity || "1"}</p> */}
           </div>
         </div>
         <div className={style.cardLogo}>

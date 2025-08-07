@@ -8,13 +8,23 @@ export const fetchMyGalleryData = async (filters = {}) => {
   if (filters.sort) params.append("sort", filters.sort); //저는 sort를 안쓰지만 쓰실분들쓰셔요
   if (filters.page) params.append("page", filters.page);
 
-  const queryString = params.toString();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const url = `${baseUrl}/sales${queryString ? `?${queryString}` : ""}`;
-  const res = await fetch(url);
+  const myGalleryPath = "/users/me/userCard/gallery";
+  // const myGalleryPath = "/users/me/userCard/market";
+
+  const queryString = params.toString();
+
+  // GET http://localhost:4000/users/me/userCard/gallery
+  const url = `${baseUrl}${myGalleryPath}${
+    queryString ? `?${queryString}` : ""
+  }`;
+  const res = await fetch(url, {
+    credentials: "include",
+  });
 
   if (!res.ok) {
     throw new Error("판매 목록을 불러오지 못했습니다.");
+    // @TODO 에러발생시 페이지 생성
   }
 
   const data = await res.json();

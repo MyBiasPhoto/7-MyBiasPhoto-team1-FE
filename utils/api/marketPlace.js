@@ -6,7 +6,7 @@ export default async function fetchSales(filters) {
   if (filters.orderBy) query.append("orderBy", filters.orderBy);
   if (filters.search) query.append("search", filters.search);
 
-  const res = await fetch(`http://localhost:3000/sales?${query.toString()}`);
+  const res = await fetch(`http://localhost:4000/sales?${query.toString()}`);
 
   if (!res.ok) throw new Error("Network response was not ok");
 
@@ -17,7 +17,7 @@ export default async function fetchSales(filters) {
 }
 
 export async function fetchSaleById(id) {
-  const res = await fetch(`http://localhost:3000/sales/${id}`);
+  const res = await fetch(`http://localhost:4000/sales/${id}`);
 
   if (!res.ok) throw new Error("Network response was not ok");
 

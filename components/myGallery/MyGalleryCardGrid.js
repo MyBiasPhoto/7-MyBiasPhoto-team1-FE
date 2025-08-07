@@ -6,7 +6,7 @@ export default function MyGalleryCardGrid({ items }) {
   return (
     <div className={style.cardList}>
       {items.map((item) => (
-        <div className={style.cardItem} key={item.saleId}>
+        <div className={style.cardItem} key={item.userCardId}>
           <MyGalleryCard {...item} />
         </div>
       ))}
