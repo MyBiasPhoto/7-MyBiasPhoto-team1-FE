@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import styles from "./exchangePhotoModal.module.css";
 import Image from "next/image";
@@ -10,7 +10,7 @@ import {
   genreOption,
 } from "@/components/marketPlace/config/config";
 import ExchangeResultModal from "./exchangeResultModal";
-import Card from "@/components/marketPlace/card/card";
+import ModalCard from "./card/ModalCard";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import SearchIcon from "@/public/icons/ic_search.svg";
 
@@ -23,6 +23,10 @@ export default function ExchangePhotoModal({ onClose }) {
   const [listKind, setListKind] = useState("");
   const [exchangeMemo, setExchangeMemo] = useState("");
   const [cardDrafts, setCardDrafts] = useState({});
+  const modalRef = useRef(null);
+  const dragStartY = useRef(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   const fetchCards = async () => {
     try {
@@ -48,7 +52,7 @@ export default function ExchangePhotoModal({ onClose }) {
     fetchCards();
   }, [search, listGrade, listKind]);
 
-  const handleSearchChange = e => {
+  const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
 
@@ -70,7 +74,7 @@ export default function ExchangePhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    setCardDrafts(prev => ({
+    setCardDrafts((prev) => ({
       ...prev,
       [selectedCard.saleId]: {
         exchangeMemo,
@@ -85,7 +89,7 @@ export default function ExchangePhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    const handleKeyDown = e => {
+    const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         handleBack();
       }
@@ -109,6 +113,46 @@ export default function ExchangePhotoModal({ onClose }) {
 
     setCardDrafts({});
   }
+
+  const handleTouchStart = (e) => {
+    dragStartY.current = e.touches[0].clientY;
+    setIsDragging(true);
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const currentY = e.touches[0].clientY;
+    const diffY = currentY - dragStartY.current;
+    if (diffY > 0) {
+      setDragOffset(diffY);
+      modalRef.current.style.transform = `translateY(${diffY}px)`;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+
+    if (dragOffset > 150) {
+      modalRef.current.style.transition = "transform 0.3s ease-out";
+      modalRef.current.style.transform = `translateY(100vh)`;
+
+      setTimeout(() => {
+        onClose();
+        setDragOffset(0);
+      }, 300);
+    } else {
+      modalRef.current.style.transition = "transform 0.2s ease-out";
+      modalRef.current.style.transform = "translateY(0px)";
+      setDragOffset(0);
+    }
+  };
 
   const gradeMap = {
     common: "COMMON",
@@ -134,7 +178,17 @@ export default function ExchangePhotoModal({ onClose }) {
     <>
       {!showResultModal ? (
         <div className={styles.overlay} onClick={onClose}>
-          <div className={styles.modal} onClick={e => e.stopPropagation()}>
+          <div
+            className={`${styles.modal} ${selectedCard ? styles.detail : ""}`}
+            onClick={(e) => e.stopPropagation()}
+            ref={modalRef}
+          >
+            <div
+              className={styles.dragBar}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            ></div>
             <h1 className={styles.header}>
               {selectedCard ? "포토카드 교환하기" : "마이갤러리"}
             </h1>
@@ -171,24 +225,24 @@ export default function ExchangePhotoModal({ onClose }) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={val => setListGrade(val)}
+                        onChange={(val) => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={val => setListKind(val)}
+                        onChange={(val) => setListKind(val)}
                       />
                     </div>
                   </div>
 
                   <div className={styles.cardList}>
-                    {cards.map(card => (
+                    {cards.map((card) => (
                       <div
                         className={styles.cardItem}
                         key={card.saleId}
                         onClick={() => handleCardClick(card)}
                       >
-                        <Card {...card} />
+                        <ModalCard {...card} />
                       </div>
                     ))}
                   </div>
@@ -197,7 +251,7 @@ export default function ExchangePhotoModal({ onClose }) {
                 <div className={styles.detailContainer}>
                   <div className={styles.aboutPhoto}>
                     <div className={styles.cardImage}>
-                      <Card {...selectedCard} />
+                      <ModalCard {...selectedCard} />
                     </div>
                     <div className={styles.cardInfo}>
                       <div className={styles.exchangeInput}>
@@ -206,7 +260,7 @@ export default function ExchangePhotoModal({ onClose }) {
                           placeholder="내용을 입력해 주세요"
                           className={styles.memo}
                           value={exchangeMemo}
-                          onChange={e => setExchangeMemo(e.target.value)}
+                          onChange={(e) => setExchangeMemo(e.target.value)}
                         />
                       </div>
                       <div className={styles.btnArea}>
