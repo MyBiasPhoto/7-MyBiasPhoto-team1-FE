@@ -2,7 +2,7 @@
 import style from "./tradeCard.module.css";
 import Image from "next/image";
 import defaultImg from "@/public/assets/cardImage.png";
-
+import { useState } from "react";
 export default function TradeCard({
   image,
   title,

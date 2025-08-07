@@ -5,9 +5,11 @@ import cardImage from "../../../../public/assets/cardImage.png";
 import style from "./buy.module.css";
 import CustomInput from "../../customInput/customInput.js";
 import { useEffect, useState } from "react";
+import PurchasePhotoModal from "@/components/modals/purchasePhotoModal.js";
 export default function Buy({ sale }) {
   const [count, setCount] = useState(1);
   const [total, setTotal] = useState(sale?.photoCard?.initialPrice * count);
+  const [isModal, setIsModal] = useState(false);
 
   useEffect(() => {
     setTotal(sale?.photoCard.initialPrice * count);
@@ -105,10 +107,26 @@ export default function Buy({ sale }) {
               </div>
             </div>
             <div className={style.buyButtonBox}>
-              <button className={style.buyButton}>포토카드 구매하기</button>
+              <button
+                onClick={() => {
+                  setIsModal(true);
+                }}
+                className={style.buyButton}
+              >
+                포토카드 구매하기
+              </button>
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        {isModal && (
+          <PurchasePhotoModal
+            cardGrade={sale.photoCard.grade}
+            cardTitle={sale.photoCard.name}
+            onClose={() => setIsModal(false)}
+          />
+        )}
       </div>
     </div>
   );

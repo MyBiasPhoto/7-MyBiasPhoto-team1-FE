@@ -3,6 +3,8 @@
 import style from "./tradeList.module.css";
 import EditTradeCard from "../card/card";
 import { useState } from "react";
+import AcceptModal from "@/components/modals/exchangeRefuseModal";
+import RejectModal from "@/components/modals/exchangeApproveModal";
 export default function EditTradeList({ sale }) {
   // const [trade, setTrade] = useState(sale?.proposals || []);
 
@@ -19,9 +21,21 @@ export default function EditTradeList({ sale }) {
     },
   ];
   const [trade, setTrade] = useState(mockTrade);
-  
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+
   const handleCancel = (id) => {
-    setTrade((prev) => prev.filter((card) => card.id !== id));
+    // setTrade((prev) => prev.filter((card) => card.id !== id));
+    setIsRejectModalOpen(true);
+  };
+
+  const handleAccept = () => {
+    setIsApproveModalOpen(true);
+  };
+
+  const handleCancles = () => {
+    setIsRejectModalOpen(false);
+    setIsApproveModalOpen(false);
   };
   return (
     <div>
@@ -35,9 +49,12 @@ export default function EditTradeList({ sale }) {
             key={card.id}
             {...card}
             onCancel={() => handleCancel(card.id)}
+            onAccept={handleAccept}
           />
         ))}
       </div>
+      {isRejectModalOpen && <AcceptModal onClose={handleCancles} />}
+      {isApproveModalOpen && <RejectModal onClose={handleCancles} />}
     </div>
   );
 }
