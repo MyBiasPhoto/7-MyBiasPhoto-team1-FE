@@ -21,7 +21,7 @@ export default function MarketPlace() {
   // 1. 상태 선언
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 임시 로그인 상태
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // 임시 로그인 상태
 
   const initialFilterState = {
     selected: {
@@ -52,6 +52,8 @@ export default function MarketPlace() {
         return { ...state, selectedOptionType: action.payload };
       case "APPLY_TEMP":
         return { ...state, selected: { ...state.temp } };
+      case "RESET_TEMP":
+        return { ...state, temp: initialFilterState.temp };
       default:
         return state;
     }
@@ -146,6 +148,7 @@ export default function MarketPlace() {
           onFilterChange={handleFilterChange}
           onToggleFilterModal={toggleFilterModal}
           onSortChange={handleSortChange}
+          dispatch={dispatch}
           searchValue={filterState.selected.search || ""}
         />
 

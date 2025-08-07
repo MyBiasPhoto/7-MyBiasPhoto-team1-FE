@@ -6,8 +6,8 @@ export const gradeOption = [
 ];
 
 export const amountOption = [
-  { value: "true", label: "판매중" },
-  { value: "false", label: "수량없음" },
+  { value: "true", label: "수량없음" },
+  { value: "false", label: "판매중" },
 ];
 export const genreOption = [
   { value: "앨범", label: "앨범" },

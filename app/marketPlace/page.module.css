@@ -77,7 +77,7 @@
 .cardList {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  grid-gap: 16px;
 }
 .cardItem {
   position: static;
@@ -141,6 +141,13 @@
   display: flex;
   padding: 16px 32px;
   justify-content: space-between;
+}
+.optionsActive {
+  background-color: #474747;
+}
+
+.optionItemActive {
+  /* background-color: #474747; */
 }
 
 .common {
@@ -243,6 +250,8 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+    width: max-content;
+    margin: 0 auto;
   }
 }
 
@@ -281,6 +290,8 @@
   /* 모바일 스타일 */
   .cardList {
     grid-template-columns: repeat(2, 1fr);
+    width: max-content;
+    margin: 0 auto;
   }
   .filterBox {
     display: none;
@@ -304,7 +315,7 @@
     left: 10%;
   }
   .filterContainer {
-    padding-top: 16px;
+    padding: 16px;
   }
   .marketPlaceContainer {
     padding: 0;
@@ -316,6 +327,6 @@
     margin-top: 0;
   }
   .title_Box {
-    padding: 0;
+    padding: 10px;
   }
 }
