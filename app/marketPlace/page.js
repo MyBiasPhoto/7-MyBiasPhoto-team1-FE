@@ -22,6 +22,7 @@ export default function MarketPlace() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // 임시 로그인 상태
+  const [master, setMaster] = useState(false); //임시 판매자인상태
   const observerTarget = useRef(null);
 
   const initialFilterState = {
@@ -188,6 +189,12 @@ export default function MarketPlace() {
   // 6. JSX (컴포넌트 분리)
   return (
     <div className={style.marketPlace}>
+      <button
+        className={`${master ? style.masterActive : style.masterInactive}`}
+        onClick={() => setMaster((prev) => !prev)}
+      >
+        {master ? "판매자" : "유저"}
+      </button>
       <Header
         onLoginClick={handleLoginClick}
         onFilterChange={handleFilterChange}
@@ -202,12 +209,19 @@ export default function MarketPlace() {
           dispatch={dispatch}
           searchValue={filterState.selected.search || ""}
         />
-        <CardList cards={filterState.allCards} />
-        <button className={style.scrollButton} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <CardList isMaster={master} cards={filterState.allCards} />
+        <button
+          className={style.scrollButton}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
           맨 위로
         </button>
         <div ref={observerTarget}></div>
-        {isLoading && filterState.page > 1 && <div>로딩 중...</div>}{" "}
+        {isLoading && filterState.page > 1 && (
+          <div className={style.Loading}>
+            <div className={style.spinner}></div>
+          </div>
+        )}{" "}
       </div>
 
       {isFilterModalOpen && (

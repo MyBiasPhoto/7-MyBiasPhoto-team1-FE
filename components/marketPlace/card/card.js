@@ -16,6 +16,7 @@ export default function Card({
   price,
   imageUrl,
   initialQuantity,
+  isMaster,
 }) {
   const cardRef = useRef(null);
 
@@ -44,8 +45,12 @@ export default function Card({
   //     cardElement.removeEventListener("mouseleave", handleMouseLeave);
   //   };
   // }, []);
+
+  const href = isMaster
+    ? `/marketPlace/${saleId}/edit`
+    : `/marketPlace/${saleId}`;
   return (
-    <Link className={style.LinkBox} href={`/marketPlace/${saleId}`}>
+    <Link className={style.LinkBox} href={href}>
       <div className={`${style.cardContainer}`} ref={cardRef}>
         {/* ${style[grade]} ${style.glowEffect} */}
         <div className={style.cardBox}>
