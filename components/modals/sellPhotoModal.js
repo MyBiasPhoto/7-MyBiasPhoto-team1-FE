@@ -34,7 +34,7 @@ export default function SellPhotoModal({ onClose }) {
 
   const fetchCards = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/sales", {
+      const res = await axios.get("http://localhost:4000/sales", {
         params: {
           page: 1,
           pageSize: 20,
@@ -56,7 +56,7 @@ export default function SellPhotoModal({ onClose }) {
     fetchCards();
   }, [search, listGrade, listKind]);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = e => {
     setSearch(e.target.value);
   };
 
@@ -82,7 +82,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    setCardDrafts((prev) => ({
+    setCardDrafts(prev => ({
       ...prev,
       [selectedCard.saleId]: {
         amount,
@@ -102,7 +102,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = e => {
       if (e.key === "Escape") {
         handleBack();
       }
@@ -184,7 +184,7 @@ export default function SellPhotoModal({ onClose }) {
         />
       ) : (
         <div className={styles.overlay} onClick={onClose}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modal} onClick={e => e.stopPropagation()}>
             <h1 className={styles.header}>
               {selectedCard ? "나의 포토카드 판매하기" : "마이갤러리"}
             </h1>
@@ -223,18 +223,18 @@ export default function SellPhotoModal({ onClose }) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={(val) => setListGrade(val)}
+                        onChange={val => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={(val) => setListKind(val)}
+                        onChange={val => setListKind(val)}
                       />
                     </div>
                   </div>
 
                   <div className={styles.cardList}>
-                    {cards.map((card) => (
+                    {cards.map(card => (
                       <div
                         className={styles.cardItem}
                         key={card.saleId}
@@ -318,7 +318,7 @@ export default function SellPhotoModal({ onClose }) {
                               type="number"
                               value={price}
                               min="0"
-                              onChange={(e) => setPrice(e.target.value)}
+                              onChange={e => setPrice(e.target.value)}
                               placeholder="숫자만 입력"
                               className={styles.inputField}
                             />
@@ -340,7 +340,7 @@ export default function SellPhotoModal({ onClose }) {
                             <select
                               className={styles.gradeSelect}
                               value={grade}
-                              onChange={(e) => setGrade(e.target.value)}
+                              onChange={e => setGrade(e.target.value)}
                             >
                               <option disabled value="">
                                 등급을 선택해 주세요
@@ -367,7 +367,7 @@ export default function SellPhotoModal({ onClose }) {
                             <select
                               className={styles.genreSelect}
                               value={kind}
-                              onChange={(e) => setKind(e.target.value)}
+                              onChange={e => setKind(e.target.value)}
                             >
                               <option disabled value="">
                                 장르를 선택해 주세요
@@ -399,7 +399,7 @@ export default function SellPhotoModal({ onClose }) {
                           placeholder="설명을 입력해 주세요"
                           className={styles.memo}
                           value={exchangeMemo}
-                          onChange={(e) => setExchangeMemo(e.target.value)}
+                          onChange={e => setExchangeMemo(e.target.value)}
                         />
                       </div>
                     </div>
