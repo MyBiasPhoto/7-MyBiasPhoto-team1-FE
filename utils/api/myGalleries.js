@@ -10,6 +10,7 @@ export const fetchMyGalleryData = async (filters = {}) => {
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const myGalleryPath = "/users/me/userCard/gallery";
+  // const myGalleryPath = "/users/me/userCard/market";
 
   const queryString = params.toString();
 
@@ -23,6 +24,7 @@ export const fetchMyGalleryData = async (filters = {}) => {
 
   if (!res.ok) {
     throw new Error("판매 목록을 불러오지 못했습니다.");
+    // @TODO 에러발생시 페이지 생성
   }
 
   const data = await res.json();
