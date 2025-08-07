@@ -62,35 +62,6 @@ export default function Home() {
             />
           </div>
           <div className={styles.content}>
-            {/* <div className={styles.btnArea}>
-              <button
-                className={styles.btn}
-                onClick={() => setOpenModal("edit")}
-              >
-                수정 버튼
-              </button>
-              <button
-                className={styles.btn}
-                onClick={() => setOpenModal("sell")}
-              >
-                판매 버튼
-              </button>
-              <button
-                className={styles.btn}
-                onClick={() => setOpenModal("exchange")}
-              >
-                교환 버튼
-              </button>
-              {openModal === "edit" && (
-                <EditPhotoModal onClose={() => setOpenModal(null)} />
-              )}
-              {openModal === "sell" && (
-                <SellPhotoModal onClose={() => setOpenModal(null)} />
-              )}
-              {openModal === "exchange" && (
-                <ExchangePhotoModal onClose={() => setOpenModal(null)} />
-              )}
-            </div> */}
             <Image
               className={styles.hideImg}
               src={"/assets/logo.svg"}
@@ -259,6 +230,35 @@ export default function Home() {
             <span className={styles.footerText}>
               나의 최애를 지금 찾아보세요
             </span>
+            <div className={styles.btnArea}>
+              <button
+                className={styles.btn}
+                onClick={() => setOpenModal("edit")}
+              >
+                수정 버튼
+              </button>
+              <button
+                className={styles.btn}
+                onClick={() => setOpenModal("sell")}
+              >
+                판매 버튼
+              </button>
+              <button
+                className={styles.btn}
+                onClick={() => setOpenModal("exchange")}
+              >
+                교환 버튼
+              </button>
+              {openModal === "edit" && (
+                <EditPhotoModal onClose={() => setOpenModal(null)} />
+              )}
+              {openModal === "sell" && (
+                <SellPhotoModal onClose={() => setOpenModal(null)} />
+              )}
+              {openModal === "exchange" && (
+                <ExchangePhotoModal onClose={() => setOpenModal(null)} />
+              )}
+            </div>
             <Link href="/marketPlace" className={styles.linkBtn}>
               최애 찾으러 가기
             </Link>
