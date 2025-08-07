@@ -17,8 +17,8 @@ export default function CardRarityCount({
 }) {
   return (
     <div className={`${style.container} ${style[color]}`}>
-      <span className={style.grade}>{grade}</span>
-      <span className={style.count}>{value}장</span>
+      <span>{grade}</span>
+      <span>{value}장</span>
     </div>
   );
 }

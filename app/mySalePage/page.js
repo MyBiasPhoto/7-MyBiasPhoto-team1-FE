@@ -1,11 +1,5 @@
-import CardRarityCount from "@/components/common/CardRarityCount";
+import CardRarityCountList from "@/components/common/CardRarityCountList.js";
 
 export default async function MySalePage() {
-  return (
-    <CardRarityCount
-      grade="LEGENDARY"
-      value="20"
-      color="pink"
-    ></CardRarityCount>
-  );
+  return <CardRarityCountList></CardRarityCountList>;
 }
