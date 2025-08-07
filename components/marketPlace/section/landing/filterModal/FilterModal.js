@@ -45,7 +45,14 @@ export default function FilterModal({
           {optionMap[filterState.selectedOptionType]?.map((opt) => (
             <div
               key={opt.value}
-              className={style.options}
+              className={`${style.options} ${
+                filterState.temp[filterState.selectedOptionType] ===
+                (filterState.selectedOptionType === "grade"
+                  ? opt.value.toUpperCase()
+                  : opt.value)
+                  ? style.optionsActive
+                  : ""
+              }`}
               onClick={() =>
                 dispatch({
                   type: "SET_TEMP",
@@ -66,7 +73,11 @@ export default function FilterModal({
         </div>
 
         <div className={style.modalButtonBox}>
-          <button>
+          <button
+            onClick={() => {
+              dispatch({ type: "RESET_TEMP" });
+            }}
+          >
             <Image src={recicle} height={50} width={50} alt={"버튼"} />
           </button>
           <button

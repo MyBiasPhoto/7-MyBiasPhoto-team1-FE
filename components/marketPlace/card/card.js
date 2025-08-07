@@ -45,7 +45,7 @@ export default function Card({
   //   };
   // }, []);
   return (
-    <Link href={`/marketPlace/${saleId}`}>
+    <Link className={style.LinkBox} href={`/marketPlace/${saleId}`}>
       <div className={`${style.cardContainer}`} ref={cardRef}>
         {/* ${style[grade]} ${style.glowEffect} */}
         <div className={style.cardBox}>

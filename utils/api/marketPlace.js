@@ -1,3 +1,5 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default async function fetchSales(filters) {
   const query = new URLSearchParams();
   query.append("includeSoldOut", filters.soldout ?? "false");
@@ -6,7 +8,7 @@ export default async function fetchSales(filters) {
   if (filters.orderBy) query.append("orderBy", filters.orderBy);
   if (filters.search) query.append("search", filters.search);
 
-  const res = await fetch(`http://localhost:3000/sales?${query.toString()}`);
+  const res = await fetch(`${API_URL}/sales?${query.toString()}`);
 
   if (!res.ok) throw new Error("Network response was not ok");
 
@@ -17,7 +19,7 @@ export default async function fetchSales(filters) {
 }
 
 export async function fetchSaleById(id) {
-  const res = await fetch(`http://localhost:3000/sales/${id}`);
+  const res = await fetch(`${API_URL}/sales/${id}`);
 
   if (!res.ok) throw new Error("Network response was not ok");
 

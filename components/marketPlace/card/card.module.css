@@ -121,6 +121,10 @@
   color: darkgray;
   /* border: 1px solid darkgray; */
 }
+.LinkBox {
+  display: inline-block;
+  text-decoration: none;
+}
 
 @media (max-width: 1023px) {
   .cardContainer {
