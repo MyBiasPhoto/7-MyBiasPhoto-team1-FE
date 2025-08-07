@@ -77,7 +77,7 @@
 .cardList {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  grid-gap: 16px;
 }
 .cardItem {
   position: static;
@@ -141,6 +141,13 @@
   display: flex;
   padding: 16px 32px;
   justify-content: space-between;
+}
+.optionsActive {
+  background-color: #474747;
+}
+
+.optionItemActive {
+  /* background-color: #474747; */
 }
 
 .common {
@@ -236,6 +243,12 @@
   background: var(--black-black, #0f0f0f);
   color: #fff;
 }
+.scrollButton {
+  position: fixed;
+  bottom: 120px;
+  right: 20px;
+  z-index: 1000;
+}
 
 @media screen and (max-width: 1513px) {
   /* 여기에 1513px 이하일 때 적용할 스타일 작성 */
@@ -243,6 +256,8 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+    width: max-content;
+    margin: 0 auto;
   }
 }
 
@@ -281,6 +296,8 @@
   /* 모바일 스타일 */
   .cardList {
     grid-template-columns: repeat(2, 1fr);
+    width: max-content;
+    margin: 0 auto;
   }
   .filterBox {
     display: none;
@@ -304,7 +321,7 @@
     left: 10%;
   }
   .filterContainer {
-    padding-top: 16px;
+    padding: 16px;
   }
   .marketPlaceContainer {
     padding: 0;
@@ -316,6 +333,54 @@
     margin-top: 0;
   }
   .title_Box {
-    padding: 0;
+    padding: 10px;
   }
+}
+
+@keyframes shrink {
+  from {
+    height: 200px;
+  }
+  to {
+    height: 0;
+  }
+}
+
+.Loading {
+  width: 100%;
+  height: 200px;
+  animation-name: shrink; /* 사용할 키프레임 이름 */
+  animation-duration: 1s; /* 애니메이션 지속 시간 */
+  animation-timing-function: ease-in-out; /* 속도 곡선 */
+  animation-fill-mode: forwards; /* 애니메이션 끝난 상태 유지 */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); /* 0%일 때 0도 */
+  }
+  100% {
+    transform: rotate(360deg); /* 100%일 때 360도 */
+  }
+}
+
+.spinner {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3; /* 스피너의 회색 배경 */
+  border-top: 5px solid yellow; /* 회전할 파란색 부분 */
+  border-radius: 50%; /* 원형으로 만듦 */
+  animation: spin 1s linear infinite;
+}
+
+.masterActive {
+  background-color: red; /* 빨간색 배경 */
+}
+
+/* master가 false일 때의 스타일 */
+.masterInactive {
+  background-color: blue; /* 파란색 배경 */
 }

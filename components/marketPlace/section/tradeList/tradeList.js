@@ -3,11 +3,15 @@
 import style from "./tradeList.module.css";
 import TradeCard from "../../tradeCard/tradeCard";
 import { useState } from "react";
+import Modal from "@/components/modals/exchangeCancelModal";
+
 export default function TradeList({ sale }) {
   const [trade, setTrade] = useState(sale?.proposals || []);
+  const [isModal, setIsModal] = useState(false);
 
   const handleCancel = (id) => {
     setTrade((prev) => prev.filter((card) => card.id !== id));
+    setIsModal(true);
   };
   return (
     <div>
@@ -24,6 +28,7 @@ export default function TradeList({ sale }) {
           />
         ))}
       </div>
+      {isModal && <Modal></Modal>}
     </div>
   );
 }

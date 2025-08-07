@@ -3,6 +3,7 @@ import SelectFilter from "@/components/marketPlace/select/selectFilter";
 import style from "@/app/marketPlace/page.module.css";
 import Image from "next/image";
 import buttonS from "../../../../../public/icons/ic_filter.svg";
+import recicle from "@/public/icons/ic_exchange.svg";
 import {
   gradeOption,
   genreOption,
@@ -14,6 +15,7 @@ export default function FilterBar({
   onFilterChange,
   onToggleFilterModal,
   onSortChange,
+  dispatch,
   searchValue,
 }) {
   return (
@@ -39,6 +41,16 @@ export default function FilterBar({
           option={amountOption}
           name={"매진여부"}
           onChange={(val) => onFilterChange("soldout", val)}
+        />
+        <Image
+          onClick={() => {
+            dispatch({ type: "RESET_TEMP" });
+            dispatch({ type: "APPLY_TEMP" });
+          }}
+          src={recicle}
+          width={20}
+          height={50}
+          alt="버튼"
         />
       </div>
 
