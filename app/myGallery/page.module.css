@@ -28,7 +28,9 @@
 }
 
 .myGallery {
-  background-color: var(--black);
+  /* background-color: var(--black);
+   */
+  background-color: rgb(196, 230, 244);
   min-height: 100vh;
   display: flex;
   padding-top: 20px;

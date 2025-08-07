@@ -2,7 +2,7 @@
 export const initialMyGalleryFilters = {
   search: "",
   category: "all",
-  sort: "newest",
+  sort: "newest", //남는 쿼리 그냥 있어도 상관없음
   page: 1,
   grade: "",
   genre: "",

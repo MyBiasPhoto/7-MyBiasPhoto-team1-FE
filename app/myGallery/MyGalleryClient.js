@@ -2,9 +2,9 @@
 "use client";
 import FilterBar from "@/components/common/FilterBar";
 import PageHeader from "@/components/common/pageHeader/PageHeader";
-
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import MyGalleryCardGrid from "@/components/myGallery/MyGalleryCardGrid";
+import Pagination from "@/components/common/pagination/Pagination";
 import useDebounce from "@/hooks/useDebounce";
 import useGalleryFilters from "@/hooks/useMyGalleryFilters";
 import { fetchMyGalleryData } from "@/utils/api/myGalleries";
@@ -27,7 +27,10 @@ export default function MyGalleryClient({ initialFilters }) {
     // keepPreviousData: true,
   });
 
-  const saleList = data?.sales ?? []; // saleList -> sales
+  const myGalleryList = data?.MyGalleryList ?? [];
+  const totalCount = data?.totalCount ?? 0;
+  const currentPage = data?.page ?? filters.page;
+  const pageSize = data?.pageSize ?? 5;
 
   return (
     <div className={style.myGallery}>
@@ -50,10 +53,20 @@ export default function MyGalleryClient({ initialFilters }) {
           <div>
             <LoadingSpinner />
           </div>
-        ) : saleList?.length === 0 ? (
+        ) : myGalleryList?.length === 0 ? (
           <div>검색결과 없음</div>
         ) : (
-          <MyGalleryCardGrid items={saleList} />
+          <>
+            <MyGalleryCardGrid items={myGalleryList} />
+            <Pagination
+              page={currentPage}
+              pageSize={pageSize}
+              totalCount={totalCount}
+              onPageChange={(page) => {
+                dispatch({ type: "SET_PAGE", payload: page });
+              }}
+            />
+          </>
         )}
       </div>
     </div>

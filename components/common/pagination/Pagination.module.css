@@ -1,0 +1,36 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 8px;
+}
+
+.pageButton {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+}
+
+.pageButton:hover:not(:disabled):not(.active) {
+  background: #f0f0f0;
+}
+.pageButton:disabled {
+  background: #f8f8f8;
+  color: #aaa;
+  border-color: #eee;
+  cursor: not-allowed;
+}
+
+.active {
+  background-color: #3692ff;
+  color: white;
+  border-color: #147eff;
+}
+
+.ellipsis {
+  padding: 8px 12px;
+  color: gray;
+  user-select: none;
+}
