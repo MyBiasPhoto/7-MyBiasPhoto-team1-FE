@@ -163,6 +163,8 @@
 }
 
 .cardInfo {
+  display: flex;
+  flex-direction: column;
   font-size: 24px;
 }
 
@@ -318,7 +320,7 @@
 }
 
 .inputField {
-  padding-right: 24px; /* P를 위한 공간 확보 */
+  padding-right: 24px;
   width: 245px;
   height: 50px;
   padding: 13px 20px;
@@ -546,9 +548,344 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 49;
+}
+
+/* 반응형 */
+
+/* PC(모달보다 작아질 때) */
+@media (min-width: 1024px) and (max-width: 1159px) {
+  .modal {
+    width: 96vw; /* 예: 96% of viewport */
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .titleArea,
+  .btnArea,
+  .exchangeTitle,
+  .memo {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .exchangeFilterArea {
+    flex-wrap: nowrap;
+    gap: 40px;
+  }
+
+  .aboutPhoto {
+    flex-direction: row;
+    gap: 32px;
+  }
+
+  .cardImage {
+    flex-shrink: 0;
+  }
+
+  .responsiveImage {
+    max-width: 100%;
+  }
+
+  .cardInfo {
+    width: 100%;
+    max-width: 500px;
+    min-width: 300px;
+  }
+
+  .amountRow {
+    width: 100%;
+    gap: 100px;
+  }
+
+  .amountBox {
+    width: 100%;
+  }
+
+  .amountControlBox {
+    width: 100%;
+  }
+}
+
+/* 태블릿 용 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .overlay {
+    align-items: flex-start;
+    padding-top: 40px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .modal {
+    width: 100vw;
+    height: calc(100vh - 40px);
+    margin: 0;
+    border-radius: 0;
+    padding: 40px 24px;
+    transition: transform 0.2s ease-out;
+    position: relative;
+    overflow-y: auto;
+  }
+
+  .titleArea,
+  .memo,
+  .btnArea {
+    width: 100%;
+  }
+
+  .titleTxt {
+    font-size: 32px;
+  }
+
+  .searchArea {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .filterBox {
+    gap: 24px;
+  }
+
+  .cardList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: 16px;
+  }
+
+  /* 기존 구조 유지 + 최소 너비 확보 */
+  .aboutPhoto {
+    flex-direction: row; /* 유지 */
+    gap: 24px; /* 기존보다 살짝 좁힘 */
+    align-items: flex-start;
+  }
+
+  .cardImage {
+    flex-shrink: 0;
+  }
+
+  .cardInfo {
+    width: 100%;
+    min-width: 300px;
+  }
+
+  /* 카드 제목 박스 */
+  .cardSubTitle {
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding-bottom: 16px;
+  }
+
+  .cardSubTitleBox {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .subTitleWriter {
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .saleDetail {
+    width: 100%;
+  }
+
+  /* 판매 정보 줄바꿈 방지 */
+  .amountRow,
+  .priceRow {
+    width: 100%;
+    min-width: 300px;
+    flex-wrap: wrap;
+  }
+
+  /* 숫자 조절 버튼 너비 유지 */
+  .amountControlBox,
+  .priceInput,
+  .inputField {
+    min-width: 200px;
+    max-width: 260px;
+    width: 100%;
+  }
+
+  .amountBox {
+    width: 100%;
+    min-width: 50px;
+    max-width: 80px;
+  }
+
+  /* select 영역도 너비 줄이기만 */
+  .gradeSelect,
+  .genreSelect {
+    width: 100%;
+    max-width: 340px;
+    min-width: 240px;
+  }
+
+  /* 교환 info 영역도 간격만 조정 */
+  .exchangeFilterArea {
+    flex-direction: row;
+    gap: 40px;
+    flex-wrap: nowrap;
+  }
+
+  .memo {
+    width: 100%;
+    height: 120px;
+  }
+
+  /* 버튼 영역 비율 유지 */
+  .btnArea {
+    flex-direction: row;
+    gap: 24px;
+  }
+
+  .cancelBtn,
+  .confirmBtn {
+    width: 100%;
+    max-width: 280px;
+    min-width: 200px;
+  }
+
+  .closeButton {
+    display: none;
+  }
+
+  .dragBar {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 6px;
+    background: var(--gray-400);
+    border-radius: 50px;
+    margin: 0 auto 16px auto;
+    touch-action: none;
+  }
+
+  .modal::-webkit-scrollbar,
+  .cardList::-webkit-scrollbar {
+    display: none;
+  }
+
+  .modal,
+  .cardList {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* 모바일 용 */
+@media (max-width: 767px) {
+  .overlay {
+    align-items: flex-start;
+    padding-top: 40px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .modal {
+    width: 100vw;
+    height: calc(100vh - 40px);
+    margin: 0;
+    border-radius: 0;
+    padding: 40px 24px;
+    transition: transform 0.2s ease-out;
+    position: relative;
+    overflow-y: auto;
+  }
+
+  .titleArea,
+  .memo,
+  .btnArea {
+    width: 100%;
+  }
+
+  .titleTxt {
+    font-size: 32px;
+  }
+
+  .searchArea {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .filterBox {
+    gap: 24px;
+  }
+
+  .cardList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: 16px;
+  }
+
+  .aboutPhoto {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .memo {
+    height: 140px;
+  }
+
+  .btnArea {
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 40px;
+    margin-top: 40px;
+  }
+
+  .cancelBtn,
+  .confirmBtn {
+    width: 100%;
+  }
+
+  .closeButton {
+    display: none;
+  }
+
+  .dragBar {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 6px;
+    background: var(--gray-400);
+    border-radius: 50px;
+    margin: 0 auto 16px auto;
+    touch-action: none;
+  }
+
+  .modal::-webkit-scrollbar,
+  .cardList::-webkit-scrollbar {
+    display: none;
+  }
+
+  .modal,
+  .cardList {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
