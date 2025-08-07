@@ -7,6 +7,7 @@ export default async function fetchSales(filters) {
   if (filters.genre) query.append("genre", filters.genre);
   if (filters.orderBy) query.append("orderBy", filters.orderBy);
   if (filters.search) query.append("search", filters.search);
+  if (filters.page) query.append("page", filters.page);
 
   const res = await fetch(`${API_URL}/sales?${query.toString()}`);
 

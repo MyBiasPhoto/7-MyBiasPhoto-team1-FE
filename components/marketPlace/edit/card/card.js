@@ -12,6 +12,7 @@ export default function EditTradeCard({
   writer,
   content,
   onCancel,
+  onAccept,
 }) {
   return (
     <div className={style.Container}>
@@ -49,7 +50,7 @@ export default function EditTradeCard({
         <button onClick={onCancel} className={style.closeButton}>
           거절하기
         </button>
-        <button onClick={onCancel} className={style.acceptButton}>
+        <button onClick={onAccept} className={style.acceptButton}>
           승인하기
         </button>
       </div>

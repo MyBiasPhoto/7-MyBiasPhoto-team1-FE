@@ -243,6 +243,12 @@
   background: var(--black-black, #0f0f0f);
   color: #fff;
 }
+.scrollButton {
+  position: fixed;
+  bottom: 120px;
+  right: 20px;
+  z-index: 1000;
+}
 
 @media screen and (max-width: 1513px) {
   /* 여기에 1513px 이하일 때 적용할 스타일 작성 */
