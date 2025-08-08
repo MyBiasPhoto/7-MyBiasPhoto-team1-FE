@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useReducer } from "react";
 import styles from "./editPhotoModal.module.css";
 import Image from "next/image";
 import cardImage from "@/public/assets/cardImage.png";
@@ -8,39 +8,80 @@ import CloseIcon from "@/public/icons/ic_close.svg";
 import MinusIcon from "@/public/icons/ic_-.svg";
 import PlusIcon from "@/public/icons/ic_+.svg";
 import DownIcon from "@/public/icons/ic_down.svg";
+import { useMutation } from "@tanstack/react-query";
+import { updatedSale } from "@/utils/api/marketPlace";
 
-export default function EditPhotoModal({ onClose }) {
-  const [selectedCard] = useState({
-    id: "a1",
-    title: "전설의 용사",
-    grade: "legendary",
-    writer: "홍길동",
-    kind: "캐릭터",
-    amount: 3,
-    price: 1000,
+const initialState = {
+  initialQuantity: 1,
+  price: "",
+  desiredGrade: "",
+  desiredGenre: "",
+  desiredDesc: "",
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_FIELD":
+      return { ...state, [action.field]: action.value };
+    case "INCREASE_QUANTITY":
+      return {
+        ...state,
+        initialQuantity: Math.min(state.initialQuantity + 1, action.max),
+      };
+    case "DECREASE_QUANTITY":
+      return {
+        ...state,
+        initialQuantity: Math.max(1, state.initialQuantity - 1),
+      };
+    case "RESET":
+      return initialState;
+    default:
+      return state;
+  }
+}
+
+export default function EditPhotoModal({ sale, onClose }) {
+  const [selectedCard] = [sale]; // sale 그대로 사용
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const increaseQuantity = () => {
+    dispatch({ type: "INCREASE_QUANTITY", max: selectedCard.quantity });
+  };
+
+  const decreaseQuantity = () => {
+    dispatch({ type: "DECREASE_QUANTITY" });
+  };
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: updatedSale,
+    onSuccess: () => {
+      alert("수정 완료");
+      onClose();
+    },
+    onError: (error) => {
+      console.error("수정 실패", error);
+      alert("수정 중 오류가 발생했습니다.");
+    },
   });
 
-  const [amount, setAmount] = useState(1);
-  const [price, setPrice] = useState("");
-  const [grade, setGrade] = useState("");
-  const [kind, setKind] = useState("");
-  const [exchangeMemo, setExchangeMemo] = useState("");
-
-  const increaseAmount = () => {
-    if (amount < selectedCard.amount) setAmount(amount + 1);
-  };
-
-  const decreaseAmount = () => {
-    if (amount > 1) setAmount(amount - 1);
-  };
-
   const handleConfirm = () => {
-    alert("수정 완료");
-    onClose();
+    const saleData = {
+      id: selectedCard.id,
+      data: {
+        initialQuantity: state.initialQuantity,
+        price: Number(state.price),
+        desiredGrade: state.desiredGrade,
+        desiredGenre: state.desiredGenre,
+        desiredDesc: state.desiredDesc,
+      },
+    };
+
+    mutate(saleData);
   };
 
   return (
     <div className={styles.overlay} onClick={onClose}>
+      {console.log("asdasd", selectedCard)}
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <h1 className={styles.header}>{selectedCard && "수정하기"}</h1>
         <button className={styles.closeButton} onClick={onClose}>
@@ -48,7 +89,7 @@ export default function EditPhotoModal({ onClose }) {
         </button>
         <div className={styles.titleArea}>
           <h2 className={styles.titleTxt}>
-            {selectedCard && `${selectedCard.title}`}
+            {selectedCard && `${selectedCard.photoCard.name}`}
           </h2>
         </div>
         <div className={styles.contentArea}>
@@ -56,8 +97,11 @@ export default function EditPhotoModal({ onClose }) {
             <div className={styles.aboutPhoto}>
               <div className={styles.cardImage}>
                 <Image
-                  src={cardImage}
+                  src={`${selectedCard.photoCard.imageUrl}` || cardImage}
                   alt={"임시"}
+                  width={50}
+                  quality={100}
+                  height={50}
                   className={styles.responsiveImage}
                 />
               </div>
@@ -65,15 +109,15 @@ export default function EditPhotoModal({ onClose }) {
                 <div className={styles.cardSubTitle}>
                   <div className={styles.cardSubTitleBox}>
                     <p className={`${styles[selectedCard?.grade]}`}>
-                      {selectedCard?.grade || "임시등급"}
+                      {selectedCard.photoCard.grade || "임시등급"}
                     </p>
                     <span className={styles.divider}>|</span>
                     <p className={styles.kind}>
-                      {selectedCard?.kind || "임시종류"}
+                      {selectedCard.photoCard.genre || "임시종류"}
                     </p>
                   </div>
                   <p className={styles.subTitleWriter}>
-                    {selectedCard?.writer || "임시제작자"}
+                    {selectedCard.seller.nickname || "임시제작자"}
                   </p>
                 </div>
 
@@ -83,7 +127,7 @@ export default function EditPhotoModal({ onClose }) {
                     <div className={styles.amountControl}>
                       <div className={styles.amountControlBox}>
                         <button
-                          onClick={decreaseAmount}
+                          onClick={decreaseQuantity}
                           className={styles.iconButton}
                         >
                           <Image
@@ -93,9 +137,9 @@ export default function EditPhotoModal({ onClose }) {
                             height={20}
                           />
                         </button>
-                        <span>{amount}</span>
+                        <span>{state.initialQuantity}</span>
                         <button
-                          onClick={increaseAmount}
+                          onClick={increaseQuantity}
                           className={styles.iconButton}
                         >
                           <Image
@@ -108,10 +152,10 @@ export default function EditPhotoModal({ onClose }) {
                       </div>
                       <div className={styles.amountBox}>
                         <span className={styles.maxAmount}>
-                          / {selectedCard.amount}
+                          / {selectedCard.photoCard.totalQuantity}
                         </span>
                         <span className={styles.maxHint}>
-                          최대 {selectedCard.amount}장
+                          최대 {selectedCard.photoCard.totalQuantity}장
                         </span>
                       </div>
                     </div>
@@ -122,9 +166,15 @@ export default function EditPhotoModal({ onClose }) {
                     <div className={styles.priceInput}>
                       <input
                         type="number"
-                        value={price}
+                        value={state.price}
                         min="0"
-                        onChange={(e) => setPrice(e.target.value)}
+                        onChange={(e) =>
+                          dispatch({
+                            type: "SET_FIELD",
+                            field: "price",
+                            value: e.target.value,
+                          })
+                        }
                         placeholder="숫자만 입력"
                         className={styles.inputField}
                       />
@@ -146,16 +196,22 @@ export default function EditPhotoModal({ onClose }) {
                     <div className={styles.exchangeFilterBox}>
                       <select
                         className={styles.gradeSelect}
-                        value={grade}
-                        onChange={(e) => setGrade(e.target.value)}
+                        value={state.desiredGrade}
+                        onChange={(e) =>
+                          dispatch({
+                            type: "SET_FIELD",
+                            field: "desiredGrade",
+                            value: e.target.value,
+                          })
+                        }
                       >
                         <option disabled value="">
                           등급을 선택해 주세요
                         </option>
-                        <option value="legendary">Legendary</option>
-                        <option value="super_rare">Super Rare</option>
-                        <option value="rare">Rare</option>
-                        <option value="common">Common</option>
+                        <option value="LEGENDARY">레전드리</option>
+                        <option value="SUPER RARE">슈퍼레어</option>
+                        <option value="RARE">레어</option>
+                        <option value="COMMON">흔한</option>
                       </select>
                       <Image
                         src={DownIcon}
@@ -174,16 +230,28 @@ export default function EditPhotoModal({ onClose }) {
                     <div className={styles.exchangeFilterBox}>
                       <select
                         className={styles.genreSelect}
-                        value={kind}
-                        onChange={(e) => setKind(e.target.value)}
+                        value={state.desiredGenre}
+                        onChange={(e) =>
+                          dispatch({
+                            type: "SET_FIELD",
+                            field: "desiredGenre",
+                            value: e.target.value,
+                          })
+                        }
                       >
                         <option disabled value="">
                           장르를 선택해 주세요
                         </option>
-                        <option value="character">캐릭터</option>
-                        <option value="view">풍경</option>
-                        <option value="real">실사화</option>
-                        <option value="etc">기타</option>
+                        <option value="ALBUM">앨범</option>
+                        <option value="SPECIAL">특전</option>
+                        <option value="FANSIGN">팬싸</option>
+                        <option value="SEASON_GREETING">시즌그리팅</option>
+                        <option value="FANMEETING">팬미팅</option>
+                        <option value="CONCERT">콘서트</option>
+                        <option value="MD">MD</option>
+                        <option value="COLLAB">콜라보</option>
+                        <option value="FANCLUB">팬클럽</option>
+                        <option value="ETC">기타</option>
                       </select>
                       <Image
                         src={DownIcon}
@@ -201,8 +269,14 @@ export default function EditPhotoModal({ onClose }) {
                   <textarea
                     placeholder="설명을 입력해 주세요"
                     className={styles.memo}
-                    value={exchangeMemo}
-                    onChange={(e) => setExchangeMemo(e.target.value)}
+                    value={state.desiredDesc}
+                    onChange={(e) =>
+                      dispatch({
+                        type: "SET_FIELD",
+                        field: "desiredDesc",
+                        value: e.target.value,
+                      })
+                    }
                   />
                 </div>
               </div>

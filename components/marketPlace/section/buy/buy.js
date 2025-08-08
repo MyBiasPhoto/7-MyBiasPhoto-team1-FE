@@ -8,11 +8,11 @@ import { useEffect, useState } from "react";
 import PurchasePhotoModal from "@/components/modals/purchasePhotoModal.js";
 export default function Buy({ sale }) {
   const [count, setCount] = useState(1);
-  const [total, setTotal] = useState(sale?.photoCard?.initialPrice * count);
+  const [total, setTotal] = useState(sale?.price * count);
   const [isModal, setIsModal] = useState(false);
 
   useEffect(() => {
-    setTotal(sale?.photoCard.initialPrice * count);
+    setTotal(sale?.price * count);
   }, [count, sale]);
   if (!sale) return;
   if (!total) return;
@@ -73,7 +73,8 @@ export default function Buy({ sale }) {
               <div className={style.infoPrice}>
                 <p>가격</p>
                 <div className={style.infoPriceDetail}>
-                  <p>{sale.photoCard.initialPrice || "10"}</p>
+                  {console.log(sale)}
+                  <p>{sale.price || "10"}</p>
                   <p>P</p>
                 </div>
               </div>

@@ -78,7 +78,7 @@ export default function Edit({ sale }) {
               <div className={style.infoPrice}>
                 <p>가격</p>
                 <div className={style.infoPriceDetail}>
-                  <p>{sale.photoCard.initialPrice || "10"}</p>
+                  <p>{sale.price || "10"}</p>
                   <p>P</p>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function Edit({ sale }) {
           </div>
         </div>
       </div>
-      {isModal && <Modal onClose={handleCancel} />}
+      {isModal && <Modal sale={sale} onClose={handleCancel} />}
     </div>
   );
 }
