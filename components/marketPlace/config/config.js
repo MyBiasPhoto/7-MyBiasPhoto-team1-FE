@@ -27,3 +27,14 @@ export const sortOption = [
   { value: "priceHighToLow", label: "높은 가격순" },
   { value: "newest", label: "최신순" },
 ];
+
+export const saleTypeOption = [
+  { value: "앨범", label: "교환" },
+  { value: "특전", label: "판매" },
+];
+
+export const soldoutOption = [
+  { value: "aa", label: "전체보기" },
+  { value: "앨범", label: "판매중" },
+  { value: "특전", label: "판매완료" },
+];
