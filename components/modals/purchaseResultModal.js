@@ -10,14 +10,14 @@ const checkPurchaseConditions = ({ userPoint, cardPrice, purchaseCount }) => {
   return userPoint >= cardPrice * purchaseCount;
 };
 
-const PurchaseResultModal = ({
+export default function PurchaseResultModal({
   userPoint,
   cardPrice,
   purchaseCount,
   cardGrade,
   cardTitle,
   onClose,
-}) => {
+}) {
   const isSuccess = checkPurchaseConditions({
     userPoint,
     cardPrice,
@@ -51,6 +51,4 @@ const PurchaseResultModal = ({
       </div>
     </div>
   );
-};
-
-export default PurchaseResultModal;
+}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import styles from "./sellPhotoModal.module.css";
 import Image from "next/image";
 import cardImage from "@/public/assets/cardImage.png";
@@ -17,6 +16,8 @@ import SearchIcon from "@/public/icons/ic_search.svg";
 import MinusIcon from "@/public/icons/ic_-.svg";
 import PlusIcon from "@/public/icons/ic_+.svg";
 import DownIcon from "@/public/icons/ic_down.svg";
+import FilterIcon from "@/public/icons/ic_filter.svg";
+import { fetchMyGalleryData } from "@/utils/api/myGalleries";
 
 export default function SellPhotoModal({ onClose }) {
   const [selectedCard, setSelectedCard] = useState(null);
@@ -35,24 +36,31 @@ export default function SellPhotoModal({ onClose }) {
   const dragStartY = useRef(null);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
 
   const fetchCards = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/sales", {
-        params: {
-          page: 1,
-          pageSize: 20,
-          includeSoldOut: "true",
-          search: search || "",
-          orderBy: "newest",
-          grade: listGrade ? gradeMap[listGrade] : undefined,
-          genre: listKind ? genreMap[listKind] : undefined,
-        },
+      const res = await fetchMyGalleryData({
+        page: 1,
+        search: search || "",
+        grade: listGrade?.value,
+        genre: listKind?.value,
       });
 
-      setCards(res.data.sales);
+      const formattedCards = res.MyGalleryList.map((card) => ({
+        userCardId: card.userCardId,
+        name: card.name,
+        imageUrl: card.imageUrl,
+        grade: card.grade,
+        genre: card.genre,
+        price: 0,
+        quantity: card.count || 1,
+        sellerNickname: card.writer || "나",
+      }));
+
+      setCards(formattedCards);
     } catch (error) {
-      console.error("판매 리스트 조회 실패:", error);
+      console.error("마이갤러리 조회 실패:", error);
     }
   };
 
@@ -75,7 +83,7 @@ export default function SellPhotoModal({ onClose }) {
 
     setSelectedCard(formattedCard);
 
-    const draft = cardDrafts[card.saleId] || {};
+    const draft = cardDrafts[card.userCardId] || {};
     setAmount(draft.amount || 1);
     setPrice(draft.price || "");
     setGrade(draft.grade || "");
@@ -88,7 +96,7 @@ export default function SellPhotoModal({ onClose }) {
 
     setCardDrafts((prev) => ({
       ...prev,
-      [selectedCard.saleId]: {
+      [selectedCard.userCardId]: {
         amount,
         price,
         grade,
@@ -129,12 +137,6 @@ export default function SellPhotoModal({ onClose }) {
     });
 
     setCardDrafts({});
-  }
-
-  function handleCloseModal() {
-    setShowResultModal({ show: false });
-    setCardDrafts({});
-    onClose();
   }
 
   const increaseAmount = () => {
@@ -188,29 +190,9 @@ export default function SellPhotoModal({ onClose }) {
   const gradeClassMap = {
     COMMON: styles.common,
     RARE: styles.rare,
-    "SUPER RARE": styles["super_rare"],
+    "SUPER RARE": styles.super_rare,
     LEGENDARY: styles.legendary,
     ETC: styles.etc,
-  };
-
-  const gradeMap = {
-    common: "COMMON",
-    rare: "RARE",
-    super_rare: "SUPER RARE",
-    legendary: "LEGENDARY",
-  };
-
-  const genreMap = {
-    album: "앨범",
-    special: "특전",
-    fan: "팬싸",
-    season: "시즌그리팅",
-    meet: "팬미팅",
-    concert: "콘서트",
-    md: "MD",
-    collab: "콜라보",
-    club: "팬클럽",
-    etc: "기타",
   };
 
   return (
@@ -257,6 +239,17 @@ export default function SellPhotoModal({ onClose }) {
               {!selectedCard ? (
                 <>
                   <div className={styles.searchArea}>
+                    <button
+                      className={styles.filterToggleBtn}
+                      onClick={() => setShowMobileFilter((prev) => !prev)}
+                    >
+                      <Image
+                        src={FilterIcon}
+                        alt="필터 아이콘"
+                        width={24}
+                        height={24}
+                      />
+                    </button>
                     <div className={styles.searchWrap}>
                       <input
                         type="text"
@@ -286,12 +279,25 @@ export default function SellPhotoModal({ onClose }) {
                       />
                     </div>
                   </div>
-
+                  {showMobileFilter && (
+                    <div className={styles.mobileFilterBox}>
+                      <Select
+                        option={gradeOption}
+                        name={"등급"}
+                        onChange={(val) => setListGrade(val)}
+                      />
+                      <Select
+                        option={genreOption}
+                        name={"장르"}
+                        onChange={(val) => setListKind(val)}
+                      />
+                    </div>
+                  )}
                   <div className={styles.cardList}>
                     {cards.map((card) => (
                       <div
                         className={styles.cardItem}
-                        key={card.saleId}
+                        key={card.userCardId}
                         onClick={() => handleCardClick(card)}
                       >
                         <ModalCard {...card} />

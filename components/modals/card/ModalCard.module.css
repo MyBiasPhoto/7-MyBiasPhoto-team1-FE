@@ -138,9 +138,51 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (min-width: 426px) and (max-width: 767px) {
   .cardContainer {
     width: 206px;
+    height: 311px;
+    padding: 12px;
+  }
+
+  .responsiveImage {
+    height: 180px !important;
+  }
+
+  .cardLogo {
+    display: none;
+  }
+
+  .CardTextBoxTitle {
+    font-size: 16px;
+  }
+
+  .CardSubTitleBox {
+    font-size: 10px;
+    gap: 5px;
+  }
+
+  .subDiv {
+    height: 12px;
+  }
+
+  .CardSubTitle2 {
+    font-size: 12px;
+  }
+  .soldOutLayer {
+    height: 146px;
+    top: -17px;
+  }
+  .CardTextBox {
+    margin: 0;
+  }
+  .cardBox {
+    height: 100%;
+  }
+}
+
+@media (max-width: 425px) {
+  .cardContainer {
     height: 311px;
     padding: 12px;
   }
