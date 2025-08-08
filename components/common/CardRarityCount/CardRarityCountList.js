@@ -3,21 +3,14 @@ import style from "./CardRarityCountList.module.css";
 const gradeColorMap = {
   COMMON: "yellow",
   RARE: "blue",
-  EPIC: "purple",
+  "SUPER RARE": "purple",
   LEGENDARY: "pink",
 };
 
-const grades = [
-  { grade: "COMMON", value: 12 },
-  { grade: "RARE", value: 7 },
-  { grade: "EPIC", value: 3 },
-  { grade: "LEGENDARY", value: 1 },
-];
-
-export default function CardRarityCountList() {
+export default function CardRarityCountList({ gradeCounts }) {
   return (
     <div className={style.CardRarityContainer}>
-      {grades.map(({ grade, value }) => (
+      {gradeCounts.map(({ grade, value }) => (
         <CardRarityCount
           key={grade}
           grade={grade}

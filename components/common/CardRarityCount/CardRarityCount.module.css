@@ -11,6 +11,7 @@
   font-weight: 300;
   line-height: normal;
   background: var(--black);
+  flex-shrink: 0;
 }
 
 .yellow {
