@@ -68,15 +68,16 @@ export default function RandomBox({ cooldown, setCooldown }) {
             alt={"포인트"}
             width={340}
             height={324}
+            sizes="(max-width: 743px) 240px, 340px"
             priority
           />
           <span className={styles.resultText}>
             {result}P <span className={styles.subText}>획득!</span>
           </span>
-          <span className={styles.timeText}>
-            다음 기회까지 남은 시간
+          <div className={styles.timeArea}>
+            <span className={styles.timeText}>다음 기회까지 남은 시간</span>
             <span className={styles.time}>{formatTime(cooldown)}</span>
-          </span>
+          </div>
         </div>
       ) : (
         <div className={styles.area}>
@@ -89,10 +90,10 @@ export default function RandomBox({ cooldown, setCooldown }) {
               <br />
               랜덤 상자 뽑 기를 통해 포인트를 획득하세요!
             </span>
-            <span className={styles.timeText}>
-              다음 기회까지 남은 시간
+            <div className={styles.timeArea}>
+              <span className={styles.timeText}>다음 기회까지 남은 시간</span>
               <span className={styles.time}>{formatTime(cooldown)}</span>
-            </span>
+            </div>
           </div>
           <div className={styles.btnArea}>
             {[0, 1, 2].map(idx => (
