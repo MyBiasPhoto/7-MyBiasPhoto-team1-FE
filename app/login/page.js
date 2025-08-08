@@ -18,15 +18,15 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+    setShowPassword(prev => !prev);
   };
 
-  const validateEmail = (email) => {
+  const validateEmail = email => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const validatePassword = (password) => {
+  const validatePassword = password => {
     return password.length >= 8;
   };
 
@@ -80,7 +80,7 @@ export default function LoginPage() {
           id="email"
           type="email"
           placeholder="이메일을 입력해 주세요"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           className={styles.emailInput}
           required
         />
@@ -96,7 +96,7 @@ export default function LoginPage() {
             id="password"
             type={showPassword ? "text" : "password"}
             placeholder="비밀번호를 입력해 주세요"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             className={styles.passwordInput}
             required
           />
