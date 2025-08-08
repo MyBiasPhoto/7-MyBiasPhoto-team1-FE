@@ -30,7 +30,11 @@
 
 .photoCardName,
 .photoCardGrade,
-.photoCardGenre {
+.photoCardGenre,
+.photoCardPrice,
+.photoCardQuantity,
+.photoCardUpload,
+.photoCardDescription {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
@@ -43,7 +47,11 @@
 }
 
 .photoCardNameText,
-.photoCardLabelText {
+.photoCardLabelText,
+.photoCardPriceText,
+.photoCardQuantityText,
+.photoCardUploadText,
+.photoCardDescriptionText {
   color: var(--white);
   font-family: "Noto Sans KR";
   font-size: 18px;
@@ -52,7 +60,43 @@
   line-height: normal;
 }
 
-.photoCardNameInput {
+.upload {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.photoCardUploadInput {
+  display: flex;
+  width: 390px;
+  height: 60px;
+  padding: 18px 20px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 2px;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  color: var(--white);
+}
+
+.fileSelectBtn {
+  display: flex;
+  width: 120px;
+  height: 60px;
+  padding: 18px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 2px;
+  border: 1px solid var(--main);
+  background: var(--black);
+  color: var(--main);
+  cursor: pointer;
+}
+
+.photoCardNameInput,
+.photoCardPriceInput,
+.photoCardQuantityInput,
+.photoCardDescriptionInput {
   display: flex;
   width: 520px;
   height: 60px;
@@ -63,6 +107,11 @@
   border: 1px solid var(--gray-200);
   background: var(--black);
   color: var(--white);
+}
+
+.photoCardDescriptionInput {
+  height: 180px;
+  align-items: flex-start;
 }
 
 .photoCardSelect {
@@ -82,4 +131,130 @@
   background-image: url("/icons/ic_down.svg");
   background-repeat: no-repeat;
   background-position: right 18px center;
+}
+
+.create {
+  display: flex;
+  width: 520px;
+  height: 60px;
+  padding: 17px 235px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--gray-400);
+  margin-top: 65px;
+  margin-bottom: 80px;
+  cursor: pointer;
+}
+
+.createText {
+  color: var(--gray-300);
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.createText.active {
+  color: var(--black);
+}
+
+.errorInput {
+  border: 1px solid var(--red);
+}
+
+.errorMsg {
+  color: var(--red);
+  font-family: "Noto Sans KR";
+  font-size: 16px;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 0 10px;
+  }
+  .title_Box {
+    width: 90%;
+    margin-top: 32px;
+    padding-bottom: 12px;
+  }
+  .title_Text {
+    font-size: 32px;
+  }
+  .photoCardName,
+  .photoCardGrade,
+  .photoCardGenre,
+  .photoCardPrice,
+  .photoCardQuantity,
+  .photoCardUpload,
+  .photoCardDescription {
+    margin-top: 32px;
+    gap: 8px;
+    width: 80%;
+  }
+  .photoCardName {
+    margin-top: 40px;
+  }
+
+  .photoCardNameInput,
+  .photoCardPriceInput,
+  .photoCardQuantityInput,
+  .photoCardDescriptionInput,
+  .photoCardSelect,
+  .photoCardUploadInput {
+    width: 100%;
+    min-width: 0;
+    font-size: 15px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    height: 55px;
+  }
+  .photoCardDescriptionInput {
+    height: 120px;
+    min-height: 80px;
+  }
+  .fileSelectBtn {
+    width: 100px;
+    height: 55px;
+    font-size: 15px;
+    padding: 0 8px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .create {
+    width: 100%;
+    height: 55px;
+    padding: 10px 12px;
+    margin-top: 32px;
+    margin-bottom: 40px;
+    box-sizing: border-box;
+  }
+  .createText {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .photoCardNameText,
+  .photoCardLabelText,
+  .photoCardPriceText,
+  .photoCardQuantityText,
+  .photoCardUploadText,
+  .photoCardDescriptionText {
+    font-size: 16px;
+  }
+  .errorMsg {
+    font-size: 14px;
+  }
+  .upload {
+    gap: 8px;
+    width: 100%;
+  }
 }
