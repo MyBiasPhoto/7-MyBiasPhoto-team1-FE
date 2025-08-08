@@ -71,6 +71,9 @@
   display: flex;
   gap: 60px;
   align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .searchWrap {

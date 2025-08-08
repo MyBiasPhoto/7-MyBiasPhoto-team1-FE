@@ -125,6 +125,8 @@ export default function Buy({ sale }) {
           <PurchasePhotoModal
             cardGrade={sale.photoCard.grade}
             cardTitle={sale.photoCard.name}
+            purchaseCount={count}
+            cardPrice={sale.photoCard.initialPrice}
             onClose={() => setIsModal(false)}
           />
         )}

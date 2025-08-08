@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import styles from "./exchangePhotoModal.module.css";
 import Image from "next/image";
 import Select from "@/components/marketPlace/select/select";
@@ -13,6 +12,7 @@ import ExchangeResultModal from "./exchangeResultModal";
 import ModalCard from "./card/ModalCard";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import SearchIcon from "@/public/icons/ic_search.svg";
+import { fetchMyGalleryData } from "@/utils/api/myGalleries";
 
 export default function ExchangePhotoModal({ onClose }) {
   const [selectedCard, setSelectedCard] = useState(null);
@@ -27,24 +27,31 @@ export default function ExchangePhotoModal({ onClose }) {
   const dragStartY = useRef(null);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
 
   const fetchCards = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/sales", {
-        params: {
-          page: 1,
-          pageSize: 20,
-          includeSoldOut: "true",
-          search: search || "",
-          orderBy: "newest",
-          grade: listGrade ? gradeMap[listGrade] : undefined,
-          genre: listKind ? genreMap[listKind] : undefined,
-        },
+      const res = await fetchMyGalleryData({
+        page: 1,
+        search: search || "",
+        grade: listGrade?.value,
+        genre: listKind?.value,
       });
 
-      setCards(res.data.sales);
+      const formattedCards = res.MyGalleryList.map((card) => ({
+        userCardId: card.userCardId,
+        name: card.name,
+        imageUrl: card.imageUrl,
+        grade: card.grade,
+        genre: card.genre,
+        price: 0,
+        quantity: card.count || 1,
+        sellerNickname: card.writer || "나",
+      }));
+
+      setCards(formattedCards);
     } catch (error) {
-      console.error("판매 리스트 조회 실패:", error);
+      console.error("마이갤러리 조회 실패:", error);
     }
   };
 
@@ -67,7 +74,7 @@ export default function ExchangePhotoModal({ onClose }) {
 
     setSelectedCard(formattedCard);
 
-    const draft = cardDrafts[card.saleId] || {};
+    const draft = cardDrafts[card.userCardId] || {};
     setExchangeMemo(draft.exchangeMemo || "");
   }
 
@@ -76,7 +83,7 @@ export default function ExchangePhotoModal({ onClose }) {
 
     setCardDrafts((prev) => ({
       ...prev,
-      [selectedCard.saleId]: {
+      [selectedCard.userCardId]: {
         exchangeMemo,
       },
     }));
@@ -154,24 +161,32 @@ export default function ExchangePhotoModal({ onClose }) {
     }
   };
 
+  const gradeClassMap = {
+    COMMON: styles.common,
+    RARE: styles.rare,
+    "SUPER RARE": styles.super_rare,
+    LEGENDARY: styles.legendary,
+    ETC: styles.etc,
+  };
+
   const gradeMap = {
     common: "COMMON",
     rare: "RARE",
-    super_rare: "SUPER RARE",
+    super_rare: "SUPER_RARE",
     legendary: "LEGENDARY",
   };
 
   const genreMap = {
-    album: "앨범",
-    special: "특전",
-    fan: "팬싸",
-    season: "시즌그리팅",
-    meet: "팬미팅",
-    concert: "콘서트",
+    album: "ALBUM",
+    special: "SPECIAL",
+    fan: "FANSIGN",
+    season: "SEASON_GREETING",
+    meet: "FANMEETING",
+    concert: "CONCERT",
     md: "MD",
-    collab: "콜라보",
-    club: "팬클럽",
-    etc: "기타",
+    collab: "COLLAB",
+    club: "FANCLUB",
+    etc: "ETC",
   };
 
   return (
@@ -239,7 +254,7 @@ export default function ExchangePhotoModal({ onClose }) {
                     {cards.map((card) => (
                       <div
                         className={styles.cardItem}
-                        key={card.saleId}
+                        key={card.userCardId}
                         onClick={() => handleCardClick(card)}
                       >
                         <ModalCard {...card} />
