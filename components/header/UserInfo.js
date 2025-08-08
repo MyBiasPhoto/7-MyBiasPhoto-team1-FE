@@ -65,7 +65,7 @@ export default function UserInfo({ isLogin, onLogout }) {
   return (
     <div className={styles.position}>
       <div className={styles.area}>
-        <span className={styles.point}>20,000 P</span>
+        <span className={styles.point}>{user.points} P</span>
         <div className={styles.alarm} onClick={handleAlarmClick} />
         <span className={styles.name} onClick={handleUserClick}>
           {nickname || "사용자 이름"}

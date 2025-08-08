@@ -34,7 +34,7 @@ export default function UserMenu() {
     }
     if (cooldown > 0 && !intervalRef.current) {
       intervalRef.current = setInterval(() => {
-        setCooldown((prev) => {
+        setCooldown(prev => {
           if (prev <= 1) {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
@@ -60,7 +60,7 @@ export default function UserMenu() {
         </span>
         <div className={styles.userPoint}>
           <span className={styles.text}>보유 포인트</span>
-          <span className={styles.point}>20,000</span>
+          <span className={styles.point}>{user.points}</span>
         </div>
         <button className={styles.pointAdd}>포인트 충전</button>
         <button
