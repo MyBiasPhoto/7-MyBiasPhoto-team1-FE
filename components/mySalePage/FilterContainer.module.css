@@ -1,0 +1,11 @@
+.filterContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+}
+
+.selectContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 45px;
+}

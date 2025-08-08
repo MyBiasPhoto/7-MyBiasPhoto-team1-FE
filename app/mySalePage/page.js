@@ -1,5 +1,9 @@
+"use client";
 import CardRaritySummary from "@/components/common/CardRarityCount/CardRaritySummary.js";
-export default async function MySalePage() {
+import FilterContainer from "@/components/mySalePage/FilterContainer.js";
+import style from "./page.module.css";
+
+export default function MySalePage() {
   const gradeCounts = [
     { grade: "COMMON", value: 12 },
     { grade: "RARE", value: 7 },
@@ -8,11 +12,12 @@ export default async function MySalePage() {
   ];
   const nickname = "유디";
   return (
-    <>
+    <div className={style.container}>
       <CardRaritySummary
         gradeCounts={gradeCounts}
         nickname={nickname}
       ></CardRaritySummary>
-    </>
+      <FilterContainer></FilterContainer>
+    </div>
   );
 }
