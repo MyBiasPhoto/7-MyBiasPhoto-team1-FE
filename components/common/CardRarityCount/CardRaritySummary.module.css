@@ -1,0 +1,19 @@
+.raritySummary {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  color: var(--gray-200);
+  font-family: "Noto Sans KR";
+  font-size: 24px;
+  font-weight: 700;
+  flex-shrink: 1;
+}
+
+.total {
+  color: var(--gray-300);
+  font-size: 20px;
+  font-weight: 400;
+}
