@@ -1,6 +1,6 @@
 "use client";
-import SearchInput from "../common/Filter/SearchInput";
-import Select from "@/components/marketPlace/select/select";
+import SearchInput from "../common/filter/SearchInput.js";
+import Select from "@/components/marketPlace/select/select.js";
 import style from "./FilterContainer.module.css";
 import {
   gradeOption,
