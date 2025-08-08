@@ -21,7 +21,7 @@ export default function MarketPlace() {
   // 1. 상태 선언
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // 임시 로그인 상태
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 임시 로그인 상태
   const [master, setMaster] = useState(false); //임시 판매자인상태
   const observerTarget = useRef(null);
 
@@ -154,6 +154,25 @@ export default function MarketPlace() {
     });
   };
 
+  // 판매자랑 내 이름하고 일치했을경우 판매자 OR 구매자로직으로들어가는 형태
+  //하다가망함 user하고 카드올린주인하고 일치하면 true 아니면 false임
+
+  //
+
+  //로그인됐는지 안됐는지 판단하는 로직(로컬스토리지에있는 user값이 있으면 로그인 없으면 로그아웃으로판단하기로함)
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    try {
+      const user = JSON.parse(storedUser);
+      if (user && user.id) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (e) {
+      setIsLoggedIn(false);
+    }
+  }, []);
   //
 
   useEffect(() => {
@@ -209,6 +228,7 @@ export default function MarketPlace() {
           dispatch={dispatch}
           searchValue={filterState.selected.search || ""}
         />
+        {console.log("여기엔 뭐가뜨나요?", filterState.allCards)}
         <CardList isMaster={master} cards={filterState.allCards} />
         <button
           className={style.scrollButton}

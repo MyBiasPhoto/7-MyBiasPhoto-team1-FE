@@ -89,7 +89,7 @@ export default function Edit({ sale }) {
                 <p>잔여</p>
                 <div className={style.infoAmountDetail}>
                   <p className={style.infoAmountDetailNumber}>
-                    {sale.quantity || "10"}
+                    {sale.quantity || "0"}
                   </p>
                   <p>/{sale.initialQuantity}</p>
                 </div>
