@@ -1,0 +1,168 @@
+.cardContainer {
+  width: 440px;
+  height: 600px;
+  color: var(--white);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--gray-500);
+  font-family: "Noto Sans KR";
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.ImageContainer {
+  width: 100%;
+  height: auto;
+  padding-bottom: 32px;
+  position: relative;
+}
+
+/* height 고정 */
+.responsiveImage {
+  width: 100%;
+  height: 301px;
+  object-fit: cover;
+}
+
+.infoBlock {
+  width: 100%;
+  gap: 10px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid #fff;
+  padding-bottom: 20px;
+}
+
+.photoCardInformation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardGrade {
+  font-size: 16px;
+  font-weight: 300;
+  font-style: normal;
+  line-height: normal;
+}
+
+.divider {
+  color: var(--gray-400);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.genre {
+  color: var(--gray-300);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.cardOwner {
+  text-align: right;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+}
+
+.saleInformation {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.InfoTextContainer {
+  display: flex;
+  justify-content: space-between;
+
+  color: var(--gray300);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.cardLogo {
+  text-align: center;
+  padding-top: 12px;
+}
+
+.common {
+  color: var(--main);
+}
+.rare {
+  color: var(--blue);
+}
+.super_rare {
+  color: var(--purple);
+}
+.legendary {
+  color: var(--pink);
+}
+
+@media (max-width: 1023px) {
+  .cardContainer {
+    width: 343px;
+    height: auto;
+    padding: 16px;
+  }
+
+  .responsiveImage {
+    width: 100%;
+    height: 180px;
+  }
+}
+
+@media (max-width: 767px) {
+  .cardContainer {
+    width: 206px;
+    height: 311px;
+    padding: 12px;
+  }
+
+  .responsiveImage {
+    height: 120px;
+  }
+
+  .cardLogo {
+    display: none;
+  }
+
+  .CardTextBoxTitle {
+    font-size: 16px;
+  }
+
+  .InfoTextContainer {
+    font-size: 12px;
+  }
+}
