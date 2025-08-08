@@ -12,9 +12,9 @@
 }
 
 .area {
-  min-width: 455px;
+  min-width: 345px;
   max-width: 1034px;
-  min-height: 646px;
+  min-height: 441px;
   padding: 30px;
   background: var(--gray-500);
 }

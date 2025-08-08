@@ -25,10 +25,6 @@
 
 .point {
   color: var(--main);
-  font-size: 46px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
 }
 
 .text {
@@ -40,6 +36,13 @@
   line-height: normal;
 }
 
+.timeArea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
 .timeText {
   color: var(--gray-300);
   font-size: 16px;
@@ -49,7 +52,6 @@
 }
 
 .time {
-  margin-left: 10px;
   color: var(--main);
   font-size: 16px;
   font-style: normal;
@@ -63,7 +65,6 @@
   justify-content: center;
   align-items: center;
   gap: 40px;
-  margin-bottom: 76px;
 }
 
 .btn {
@@ -101,6 +102,7 @@
 .selectBtn {
   width: 520px;
   height: 60px;
+  margin-top: 76px;
   background-color: var(--main);
   border: none;
   text-align: center;
@@ -121,6 +123,9 @@
 }
 
 .pointImg {
+  display: block;
+  max-width: 100%;
+  height: auto;
   margin: 32px 0 25px;
 }
 
@@ -134,4 +139,84 @@
 }
 .subText {
   color: var(--white);
+}
+
+@media (min-width: 743px) and (max-width: 1199px) {
+  .titleBox {
+    margin: 17px 0 60px;
+    gap: 30px;
+  }
+  .random {
+    font-size: 36px;
+  }
+  .text {
+    font-size: 16px;
+  }
+  .timeArea {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .timeText {
+    font-size: 14px;
+  }
+  .time {
+    font-size: 14px;
+  }
+  .btnArea {
+    width: 530px;
+    height: 132px;
+    gap: 20px;
+  }
+  .selectBtn {
+    width: 440px;
+    height: 55px;
+    margin-top: 60px;
+    font-size: 16px;
+  }
+  .pointImg {
+    margin: 23px 0;
+  }
+  .resultText {
+    font-size: 28px;
+  }
+}
+@media (max-width: 743px) {
+  .titleBox {
+    margin: 17px 0 60px;
+    gap: 30px;
+  }
+  .random {
+    font-size: 30px;
+  }
+  .text {
+    font-size: 16px;
+  }
+  .timeArea {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .timeText {
+    font-size: 14px;
+  }
+  .time {
+    font-size: 14px;
+  }
+  .btnArea {
+    width: 315px;
+    height: 79px;
+    gap: 10px;
+  }
+  .selectBtn {
+    width: 300px;
+    height: 55px;
+    margin-top: 60px;
+    font-size: 16px;
+  }
+  .pointImg {
+    width: 240px;
+    margin: 31px 0 16px;
+  }
+  .resultText {
+    font-size: 24px;
+  }
 }
