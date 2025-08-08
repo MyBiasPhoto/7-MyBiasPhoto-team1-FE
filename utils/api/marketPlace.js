@@ -48,3 +48,20 @@ export async function updatedSale({ id, data }) {
   return responseData;
 }
 
+export async function deletedAtSaleById({ id, data }) {
+  const res = await fetch(`${API_URL}/sales/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) throw new Error("Network response was not ok");
+
+  const responseData = await res.json();
+  if (responseData === undefined)
+    throw new Error("No data returned from server");
+
+  return responseData;
+}

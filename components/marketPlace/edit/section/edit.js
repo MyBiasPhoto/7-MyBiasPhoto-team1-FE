@@ -7,13 +7,16 @@ import CustomInput from "../../customInput/customInput.js";
 import { useEffect, useState } from "react";
 import EditTrade from "@/components/marketPlace/edit/area/editTrade";
 import Modal from "@/components/modals/editPhotoModal";
+import SellCancelModal from "@/components/modals/sellCancelModal";
 export default function Edit({ sale }) {
   const [count, setCount] = useState(1);
   const [total, setTotal] = useState(sale?.photoCard?.initialPrice * count);
   const [isModal, setIsModal] = useState(false);
+  const [cancleModal, setCancleModal] = useState(false);
 
   const handleCancel = () => {
     setIsModal(false);
+    setCancleModal(false);
   };
 
   useEffect(() => {
@@ -104,12 +107,22 @@ export default function Edit({ sale }) {
               >
                 수정하기
               </button>
-              <button className={style.deleteButton}>판매 내리기</button>
+              <button
+                onClick={() => setCancleModal(true)}
+                className={style.deleteButton}
+              >
+                판매 내리기
+              </button>
             </div>
           </div>
         </div>
+        {console.log("sale값 id뭐로할까", sale)}
       </div>
       {isModal && <Modal sale={sale} onClose={handleCancel} />}
+      {cancleModal && (
+        <SellCancelModal saleId={sale.id} onClose={handleCancel} />
+      )}
+      {}
     </div>
   );
 }
