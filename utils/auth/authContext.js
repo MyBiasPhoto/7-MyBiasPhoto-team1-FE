@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { logout as logoutAPI } from "./login";
 
 const AuthContext = createContext();
 
@@ -24,7 +25,12 @@ export function AuthProvider({ children }) {
     setUser(userData);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await logoutAPI();
+    } catch (err) {
+      console.error("로그아웃 실패 :", err);
+    }
     localStorage.removeItem("user");
     setUser(null);
   };

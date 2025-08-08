@@ -10,3 +10,12 @@ export const login = async ({ email, password }) => {
 
   return response.data;
 };
+
+// 로그아웃 요청 함수
+export const logout = async () => {
+  await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
+    {},
+    { withCredentials: true }
+  );
+};
