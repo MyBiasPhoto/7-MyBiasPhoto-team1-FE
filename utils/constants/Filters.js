@@ -27,3 +27,8 @@ export const myGalleryGenreOption = [
   { value: "팬클럽", label: "팬클럽" },
   { value: "기타", label: "기타" },
 ];
+
+export const initialMySaleFilters = {
+  search: "",
+  page: 1,
+};

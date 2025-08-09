@@ -21,6 +21,13 @@ textarea {
   font-family: "Noto Sans KR";
 }
 
+html,
+body,
+#__next {
+  background: var(--black);
+  min-height: 100%;
+}
+
 :root {
   --main: #efff04;
   --black: #0f0f0f;

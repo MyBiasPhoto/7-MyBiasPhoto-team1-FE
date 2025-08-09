@@ -1,4 +1,5 @@
 export const gradeOption = [
+  { value: "", label: "전체" },
   { value: "COMMON", label: "흔한" },
   { value: "RARE", label: "레어" },
   { value: "SUPER RARE", label: "슈퍼레어" },
@@ -10,6 +11,7 @@ export const amountOption = [
   { value: "false", label: "판매중" },
 ];
 export const genreOption = [
+  { value: "", label: "전체" },
   { value: "앨범", label: "앨범" },
   { value: "특전", label: "특전" },
   { value: "팬싸", label: "팬싸" },
@@ -34,7 +36,7 @@ export const saleTypeOption = [
 ];
 
 export const soldoutOption = [
-  { value: "aa", label: "전체보기" },
-  { value: "앨범", label: "판매중" },
-  { value: "특전", label: "판매완료" },
+  { value: "", label: "전체" },
+  { value: "true", label: "판매중" },
+  { value: "false", label: "판매완료" },
 ];
