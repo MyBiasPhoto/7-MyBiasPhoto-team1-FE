@@ -1,0 +1,18 @@
+.pageContainer {
+  background-color: var(--black);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+
+  padding-inline: clamp(15px, calc((100vw - 1480px) / 2), 220px);
+  margin-inline: auto;
+  width: 100%;
+  max-width: calc(1480px + clamp(15px, calc((100vw - 1480px) / 2), 220px) * 2);
+}
+
+.section {
+  width: 100%;
+  margin-inline: auto;
+}

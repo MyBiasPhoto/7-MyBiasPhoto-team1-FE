@@ -1,0 +1,57 @@
+.titleText {
+  font-size: 62px;
+  color: var(--white);
+  font-weight: 400;
+  font-family: "BR-B", sans-serif;
+}
+
+.titleButton {
+  display: flex;
+  width: 440px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--main);
+}
+
+.titleBox {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #fff;
+  width: 100%;
+}
+
+/* 태블릿: 768px ~ 1023px */
+@media (min-width: 746px) and (max-width: 1199px) {
+  /* 태블릿 스타일 */
+
+  .titleButton {
+    width: 240px;
+  }
+  .titleText {
+    font-size: 42px;
+  }
+  .titleBox {
+    padding: 0;
+  }
+}
+
+/* 모바일: 0px ~ 767px */
+@media (max-width: 746px) {
+  /* 모바일 스타일 */
+  .titleText {
+    display: none;
+  }
+  .titleButton {
+    position: fixed;
+    bottom: 10px;
+    z-index: 15;
+    left: 10%;
+  }
+  .titleBox {
+    padding: 10px;
+  }
+}

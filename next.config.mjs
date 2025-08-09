@@ -6,6 +6,7 @@ const nextConfig = {
       "picsum.photos",
       "cdn.example.com",
       "test.com",
+      "localhost",
     ],
   },
 };

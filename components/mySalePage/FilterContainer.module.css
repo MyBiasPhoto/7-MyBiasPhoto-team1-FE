@@ -1,11 +1,38 @@
-.filterContainer {
-  display: flex;
+.rowDesktop {
+  display: none;
+}
+
+.rowMobile {
   flex-direction: row;
-  gap: 60px;
+  align-items: center;
+  gap: 10px;
+  display: flex;
 }
 
 .selectContainer {
   display: flex;
-  flex-direction: row;
-  gap: 45px;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (min-width: 746px) {
+  .rowDesktop {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .rowMobile {
+    display: none;
+  }
+}
+
+.filterBtn {
+  width: 50px;
+  height: 50px;
+  border-radius: 2px;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
