@@ -13,7 +13,10 @@ import style from "./CardRaritySummary.module.css";
  */
 
 export default function CardRaritySummary({ gradeCounts, nickname }) {
-  const totalCount = gradeCounts.reduce((acc, { value }) => acc + value, 0);
+  const totalCount = gradeCounts.reduce(
+    (acc, { count }) => acc + (Number(count) || 0),
+    0
+  );
 
   return (
     <div className={style.raritySummary}>

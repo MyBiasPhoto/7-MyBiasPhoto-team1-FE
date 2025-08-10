@@ -2,17 +2,22 @@
 import CardRaritySummary from "@/components/common/CardRarityCount/CardRaritySummary.js";
 import ContentHeader from "@/components/common/contentHeader/ContentHeader";
 import UserCardList from "@/components/common/userCard/UserCardList";
+import ConnectedFilterModal from "@/components/mySalePage/ConnectedFilterModal";
 import FilterContainer from "@/components/mySalePage/FilterContainer.js";
-import { fetchMySaleData } from "@/utils/api/mySale";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { useState, useEffect, useCallback } from "react";
-import style from "./page.module.css";
 import useDebounce from "@/hooks/useDebounce";
+import { fetchMySaleData } from "@/utils/api/mySale";
 import { useAuth } from "@/utils/auth/authContext";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
+import style from "./page.module.css";
+import Pagination from "@/components/common/pagination/Pagination";
 
 export default function MySaleClient({ initialFilters }) {
   const [filters, setFilters] = useState(initialFilters);
   const [searchDraft, setSearchDraft] = useState(initialFilters.search ?? "");
+
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const openFilterModal = () => setIsFilterModalOpen(true);
 
   {
     /* 마이페이지 이동 버튼에 로그인이 안되어있을때는 로그인 페이지로 이동하고 
@@ -58,39 +63,14 @@ export default function MySaleClient({ initialFilters }) {
     placeholderData: keepPreviousData,
   });
 
-  const user = useAuth();
-  console.log(user);
   const {
+    userNickname,
     myMarketList = [],
     totalCount = 0,
     page = 1,
     pageSize = 0,
-    totalPages = 0,
-    gradeCounts: gradeCountsObj,
+    gradeCounts,
   } = data ?? {};
-
-  const gradeCounts = gradeCountsObj
-    ? [
-        { grade: "COMMON", value: gradeCountsObj.COMMON ?? 0 },
-        { grade: "RARE", value: gradeCountsObj.RARE ?? 0 },
-        { grade: "SUPER RARE", value: gradeCountsObj.SUPER_RARE ?? 0 },
-        { grade: "LEGENDARY", value: gradeCountsObj.LEGENDARY ?? 0 },
-      ]
-    : [
-        { grade: "COMMON", value: 12 },
-        { grade: "RARE", value: 7 },
-        { grade: "SUPER RARE", value: 3 },
-        { grade: "LEGENDARY", value: 1 },
-      ];
-
-  const DummygradeCounts = [
-    { grade: "COMMON", value: 12 },
-    { grade: "RARE", value: 7 },
-    { grade: "SUPER RARE", value: 3 },
-    { grade: "LEGENDARY", value: 1 },
-  ];
-
-  const nickname = "유디";
 
   if (isPending && !data)
     return <div className={style.pageContainer}>불러오는 중…</div>;
@@ -110,8 +90,7 @@ export default function MySaleClient({ initialFilters }) {
       </div>
 
       <div className={style.section}>
-        {/*TODO : 서버에서 gradeCounts 데이터 형식 변경 후 api에서 받은 데이터 사용하기 */}
-        <CardRaritySummary gradeCounts={DummygradeCounts} nickname={nickname} />
+        <CardRaritySummary gradeCounts={gradeCounts} nickname={userNickname} />
       </div>
 
       <div className={style.section}>
@@ -120,12 +99,32 @@ export default function MySaleClient({ initialFilters }) {
           onFilterChange={handleFilterChange}
           onSearchCommit={handleSearchCommit}
           isFetching={isFetching}
+          onOpenFilterModal={openFilterModal}
         />
       </div>
 
       <div className={style.section}>
         <UserCardList cards={myMarketList} />
       </div>
+      <div>
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          totalCount={totalCount}
+          onPageChange={(nextPage) => {
+            setFilters((prev) => ({ ...prev, page: nextPage }));
+          }}
+        ></Pagination>
+      </div>
+      {isFilterModalOpen && (
+        <ConnectedFilterModal
+          value={filters}
+          onApply={(next) =>
+            setFilters((prev) => ({ ...prev, ...next, page: 1 }))
+          }
+          onClose={() => setIsFilterModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

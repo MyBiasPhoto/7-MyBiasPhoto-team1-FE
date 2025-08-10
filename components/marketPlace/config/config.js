@@ -31,8 +31,9 @@ export const sortOption = [
 ];
 
 export const saleTypeOption = [
-  { value: "앨범", label: "교환" },
-  { value: "특전", label: "판매" },
+  { value: "", label: "전체" },
+  { value: "ON_SALE", label: "판매중" },
+  { value: "PROPOSED", label: "교환 대기" },
 ];
 
 export const soldoutOption = [
