@@ -10,11 +10,11 @@ const gradeColorMap = {
 export default function CardRarityCountList({ gradeCounts }) {
   return (
     <div className={style.CardRarityContainer}>
-      {gradeCounts.map(({ grade, value }) => (
+      {gradeCounts.map(({ grade, count }) => (
         <CardRarityCount
           key={grade}
           grade={grade}
-          value={value}
+          value={count}
           color={gradeColorMap[grade]}
         />
       ))}

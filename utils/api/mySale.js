@@ -4,8 +4,8 @@ export const fetchMySaleData = async (filters = {}, extra = {}) => {
   if (filters.search) params.append("search", filters.search);
   if (filters.grade) params.append("grade", filters.grade);
   if (filters.genre) params.append("genre", filters.genre);
-  if (filters.sort) params.append("sort", filters.sort);
   if (filters.page) params.append("page", filters.page);
+  if (filters.saleType) params.append("saleType", filters.saleType);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const mySalePath = "/users/me/userCard/market";
