@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { buySale } from "@/utils/api/sales";
 import PurchaseResultModal from "./purchaseResultModal";
 import styles from "./purchasePhotoModal.module.css";
 import Image from "next/image";
@@ -10,50 +11,58 @@ export default function PurchasePhotoModal({
   saleId,
   cardGrade,
   cardTitle,
-  purchaseCount,
+  purchaseCount = 1,
   cardPrice,
   userPoint,
   onClose,
 }) {
-  const [showResult, setShowResult] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [resultOpen, setResultOpen] = useState(false);
+  const [resultSuccess, setResultSuccess] = useState(null); // true/false
+  const [resultMessage, setResultMessage] = useState("");
 
   const cardInfoText = `[${cardGrade} | ${cardTitle}]`;
 
-  const handlePurchase = () => {
-    setShowResult(true);
-  };
+  async function handlePurchase() {
+    console.log("구매 버튼 클릭됨");
+    console.log("전달될 saleId:", saleId);
 
-  // 구매 api 적용 예시 코드, 추후 변경
-  /*  const handlePurchase = async () => {
-  try {
-    const res = await fetch(`/sales/${saleId}/purchase`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ count: purchaseCount }),
-    });
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/sales/${saleId}/buy`;
+    console.log("구매 요청 URL:", url);
 
-    const result = await res.json();
+    if (!saleId) {
+      setResultSuccess(false);
+      setResultOpen(true);
+      return;
+    }
 
-    if (!res.ok) throw new Error(result.message || '구매 실패');
-  } catch (err) {
-    console.error('구매 실패:', err);
+    try {
+      await buySale(saleId, purchaseCount);
+      setResultSuccess(true);
+    } catch (err) {
+      setResultSuccess(false);
+    } finally {
+      setResultOpen(true);
+    }
   }
-}; */
+
+  function handleCloseResult() {
+    setResultOpen(false);
+    onClose && onClose();
+  }
 
   return (
     <>
-      {showResult ? (
+      {resultOpen ? (
         <PurchaseResultModal
+          isSuccess={resultSuccess}
+          resultMessage={resultMessage}
           userPoint={userPoint}
           cardPrice={cardPrice}
           purchaseCount={purchaseCount}
           cardGrade={cardGrade}
           cardTitle={cardTitle}
-          onClose={() => {
-            setShowResult(false);
-            onClose();
-          }}
+          onClose={handleCloseResult}
         />
       ) : (
         <div className={styles.overlay}>

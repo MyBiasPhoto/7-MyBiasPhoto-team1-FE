@@ -6,9 +6,9 @@ import CloseIcon from "@/public/icons/ic_close.svg";
 import Link from "next/link";
 
 // 구매 성공 조건
-const checkPurchaseConditions = ({ userPoint, cardPrice, purchaseCount }) => {
+function checkPurchaseConditions({ userPoint, cardPrice, purchaseCount }) {
   return userPoint >= cardPrice * purchaseCount;
-};
+}
 
 export default function PurchaseResultModal({
   userPoint,
@@ -17,13 +17,25 @@ export default function PurchaseResultModal({
   cardGrade,
   cardTitle,
   onClose,
+  isSuccess,
+  resultMessage,
 }) {
-  const isSuccess = checkPurchaseConditions({
-    userPoint,
-    cardPrice,
-    purchaseCount,
-  });
+  const computedSuccess =
+    typeof isSuccess === "boolean"
+      ? isSuccess
+      : checkPurchaseConditions({ userPoint, cardPrice, purchaseCount });
+
   const cardInfoText = `[${cardGrade} | ${cardTitle}]`;
+
+  const titleText = computedSuccess ? "성공" : "실패";
+  const bodyText = computedSuccess
+    ? `${cardInfoText} ${purchaseCount}장 구매에 성공했습니다!`
+    : `${cardInfoText} ${purchaseCount}장 구매에 실패했습니다.`;
+
+  const linkHref = computedSuccess ? "/myGallery" : "/marketPlace";
+  const linkLabel = computedSuccess
+    ? "마이갤러리에서 확인하기"
+    : "마켓플레이스로 돌아가기";
 
   return (
     <div className={styles.overlay}>
@@ -33,20 +45,15 @@ export default function PurchaseResultModal({
         </button>
         <h2 className={styles.title}>
           구매{" "}
-          <span className={isSuccess ? styles.successTxt : styles.failTxt}>
-            {isSuccess ? "성공" : "실패"}
+          <span
+            className={computedSuccess ? styles.successTxt : styles.failTxt}
+          >
+            {titleText}
           </span>
         </h2>
-        <p className={styles.description}>
-          {isSuccess
-            ? `${cardInfoText} ${purchaseCount}장 구매에 성공했습니다!`
-            : `${cardInfoText} ${purchaseCount}장 구매에 실패했습니다.`}
-        </p>
-        <Link
-          href={isSuccess ? "/myGallery" : "/marketPlace"}
-          className={styles.confirmButton}
-        >
-          {isSuccess ? "마이갤러리에서 확인하기" : "마켓플레이스로 돌아가기"}
+        <p className={styles.description}>{bodyText}</p>
+        <Link href={linkHref} className={styles.confirmButton}>
+          {linkLabel}
         </Link>
       </div>
     </div>

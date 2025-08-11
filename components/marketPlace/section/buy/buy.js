@@ -123,6 +123,7 @@ export default function Buy({ sale }) {
       <div>
         {isModal && (
           <PurchasePhotoModal
+            saleId={sale.id} // saleId 추가 - KJS
             cardGrade={sale.photoCard.grade}
             cardTitle={sale.photoCard.name}
             purchaseCount={count}
