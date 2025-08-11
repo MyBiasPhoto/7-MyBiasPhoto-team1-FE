@@ -29,6 +29,7 @@
   flex-shrink: 0;
   border-radius: 2px;
   background: var(--main-main, #efff04);
+  cursor: pointer;
 }
 
 .ContentFont {
@@ -102,6 +103,7 @@
   flex-shrink: 0;
   border-radius: 2px;
   background: var(--main-main, #efff04);
+  cursor: pointer;
 }
 
 @media (max-width: 743px) {

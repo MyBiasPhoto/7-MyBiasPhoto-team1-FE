@@ -51,6 +51,7 @@ export default function FilterBar({
           width={20}
           height={50}
           alt="버튼"
+          className={style.recicle}
         />
       </div>
 

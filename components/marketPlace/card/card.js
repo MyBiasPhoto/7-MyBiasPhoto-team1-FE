@@ -51,7 +51,12 @@ export default function Card({
     : `/marketPlace/${saleId}`;
   return (
     <Link className={style.LinkBox} href={href}>
-      <div className={`${style.cardContainer}`} ref={cardRef}>
+      <div
+        className={` ${style.cardContainer} ${
+          style[`glow-${grade.replace(/\s+/g, "_").toLowerCase()}`]
+        }`}
+        ref={cardRef}
+      >
         {/* ${style[grade]} ${style.glowEffect} */}
         <div className={style.cardBox}>
           <div className={style.cardImageBox}>
@@ -72,14 +77,21 @@ export default function Card({
               className={style.responsiveImage} // 스타일에서 object-fit 등 설정
             />
           </div>
-          <div className={style.CardTextBox}>
+          <div className={`${style.CardTextBox} ${style.CardTextBoxUpgrade}`}>
             {/* 카드정보들 */}
+            {console.log("grade", grade)}
             <p className={style.CardTextBoxTitle}>{name || "임시 제목."}</p>
             <div className={style.CardSubTitle}>
               <div className={style.CardSubTitleBox}>
-                <p className={`${style[grade]}`}>{grade || "임시등급."}</p>
+                <p
+                  className={`${
+                    style[grade.replace(/\s+/g, "_").toUpperCase()]
+                  }`}
+                >
+                  {grade || "임시등급."}
+                </p>
                 <div className={style.subdiv}></div>
-                <p>{genre || "임시종류."}</p>
+                <p className={style.subTitleGenre}>{genre || "임시종류."}</p>
               </div>
               <p className={style.subTitleWriter}>
                 {sellerNickname || "임시제작자."}
@@ -89,14 +101,15 @@ export default function Card({
           <div className={style.CardTextBox}>
             {/* 가격및 수량 */}
             <div className={style.CardSubTitle2}>
-              <p>가격</p>
+              <p className={style.cardFontColor}>가격</p>
               <p>{price || "0"} P</p>
             </div>
             <div className={style.CardSubTitle2}>
-              <p>잔여</p>
-              <p>
-                {quantity || "0"} / {initialQuantity || "5"}
-              </p>
+              <p className={style.cardFontColor}>잔여</p>
+              <div className={`${style.priceBox} ${style.cardFontColor}`}>
+                <p className={style.cardFontColorWhite}>{quantity || "0"}</p>
+                <p>/ {initialQuantity || "5"}</p>
+              </div>
             </div>
           </div>
           <div className={style.cardLogo}>

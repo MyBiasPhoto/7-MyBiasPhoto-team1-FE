@@ -211,7 +211,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                           등급을 선택해 주세요
                         </option>
                         <option value="LEGENDARY">레전드리</option>
-                        <option value="SUPER RARE">슈퍼레어</option>
+                        <option value="SUPER_RARE">슈퍼레어</option>
                         <option value="RARE">레어</option>
                         <option value="COMMON">흔한</option>
                       </select>
