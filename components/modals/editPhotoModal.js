@@ -8,7 +8,7 @@ import CloseIcon from "@/public/icons/ic_close.svg";
 import MinusIcon from "@/public/icons/ic_-.svg";
 import PlusIcon from "@/public/icons/ic_+.svg";
 import DownIcon from "@/public/icons/ic_down.svg";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatedSale } from "@/utils/api/marketPlace";
 
 const initialState = {
@@ -43,6 +43,7 @@ function reducer(state, action) {
 export default function EditPhotoModal({ sale, onClose }) {
   const [selectedCard] = [sale]; // sale 그대로 사용
   const [state, dispatch] = useReducer(reducer, initialState);
+  const queryClient = useQueryClient();
 
   const increaseQuantity = () => {
     dispatch({ type: "INCREASE_QUANTITY", max: selectedCard.quantity });
@@ -55,6 +56,7 @@ export default function EditPhotoModal({ sale, onClose }) {
   const { mutate, isLoading } = useMutation({
     mutationFn: updatedSale,
     onSuccess: () => {
+      queryClient.invalidateQueries(["sale", sale.id]);
       alert("수정 완료");
       onClose();
     },
