@@ -24,6 +24,7 @@ export default function MarketPlace() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 임시 로그인 상태
   const [master, setMaster] = useState(false); //임시 판매자인상태
   const observerTarget = useRef(null);
+  const [currentUserNickname, setCurrentUserNickname] = useState("");
 
   const initialFilterState = {
     selected: {
@@ -154,6 +155,16 @@ export default function MarketPlace() {
     });
   };
 
+  const handleCardClick = (card) => {
+    console.log("현재 유저 닉네임:", currentUserNickname);
+    console.log("카드 제작자 닉네임:", card.sellerNickname);
+    if (card.sellerNickname === currentUserNickname) {
+      setMaster(true);
+    } else {
+      setMaster(false);
+    }
+  };
+
   // 판매자랑 내 이름하고 일치했을경우 판매자 OR 구매자로직으로들어가는 형태
   //하다가망함 user하고 카드올린주인하고 일치하면 true 아니면 false임
 
@@ -164,15 +175,18 @@ export default function MarketPlace() {
     const storedUser = localStorage.getItem("user");
     try {
       const user = JSON.parse(storedUser);
-      if (user && user.id) {
+      if (user?.nickname) {
         setIsLoggedIn(true);
+        setCurrentUserNickname(user.nickname);
       } else {
         setIsLoggedIn(false);
+        setCurrentUserNickname("");
       }
-    } catch (e) {
+    } catch {
       setIsLoggedIn(false);
+      setCurrentUserNickname("");
     }
-  }, []);
+  }, [filterState.allCards, currentUserNickname]);
   //
 
   useEffect(() => {
@@ -208,12 +222,12 @@ export default function MarketPlace() {
   // 6. JSX (컴포넌트 분리)
   return (
     <div className={style.marketPlace}>
-      <button
+      {/* <button
         className={`${master ? style.masterActive : style.masterInactive}`}
         onClick={() => setMaster((prev) => !prev)}
       >
         {master ? "판매자" : "유저"}
-      </button>
+      </button> */}
       <Header
         onLoginClick={handleLoginClick}
         onFilterChange={handleFilterChange}
@@ -229,7 +243,11 @@ export default function MarketPlace() {
           searchValue={filterState.selected.search || ""}
         />
         {console.log("여기엔 뭐가뜨나요?", filterState.allCards)}
-        <CardList isMaster={master} cards={filterState.allCards} />
+        <CardList
+          onCardClick={handleCardClick}
+          currentUserNickname={currentUserNickname}
+          cards={filterState.allCards}
+        />
         <button
           className={style.scrollButton}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
