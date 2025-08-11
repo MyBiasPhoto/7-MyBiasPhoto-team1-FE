@@ -4,8 +4,9 @@ import Image from "next/image";
 import down from "@/public/icons/ic_-.svg";
 import up from "@/public/icons/ic_+.svg";
 import { useEffect, useState } from "react";
-export default function CustomInput({ count, setCount }) {
+export default function CustomInput({ sale, count, setCount }) {
   const handlePClick = () => {
+    if (count >= sale.quantity) return;
     setCount(count + 1);
   };
 

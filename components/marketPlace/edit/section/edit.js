@@ -91,7 +91,7 @@ export default function Edit({ sale }) {
                   <p className={style.infoAmountDetailNumber}>
                     {sale.quantity || "0"}
                   </p>
-                  <p>/{sale.initialQuantity}</p>
+                  <p>/{sale.photoCard.totalQuantity}</p>
                 </div>
               </div>
             </div>

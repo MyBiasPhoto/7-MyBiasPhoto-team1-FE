@@ -6,6 +6,7 @@
   flex-shrink: 0;
   position: relative;
   align-items: center;
+  cursor: pointer;
 }
 
 .box {

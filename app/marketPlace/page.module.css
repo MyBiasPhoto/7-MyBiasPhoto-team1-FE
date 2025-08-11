@@ -16,6 +16,7 @@
 
   border-radius: 2px;
   background: var(--main);
+  cursor: pointer;
 }
 
 .title_Box {
@@ -85,8 +86,12 @@
 
 .filterBoxTable {
   display: none;
+  cursor: pointer;
 }
 
+.recicle {
+  cursor: pointer;
+}
 .modalOverlay {
   position: fixed;
   left: 0;
@@ -248,6 +253,7 @@
   bottom: 120px;
   right: 20px;
   z-index: 1000;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1513px) {
@@ -261,17 +267,25 @@
   }
 }
 
-/* PC (데스크탑): 1024px 이상 */
-@media (min-width: 1024px) {
+@media (min-width: 2155px) {
+  /* 데스크탑 스타일 */
+  .cardList {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1347px) {
   /* 데스크탑 스타일 */
 }
 
 /* 태블릿: 768px ~ 1023px */
-@media (min-width: 746px) and (max-width: 1199px) {
+@media (min-width: 746px) and (max-width: 1695px) {
   /* 태블릿 스타일 */
   .cardList {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    width: max-content;
+    margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
   .title_Button {
@@ -288,6 +302,11 @@
   }
   .title_Box {
     padding: 0;
+  }
+  @media (max-width: 1355px) {
+    .cardList {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 
@@ -316,9 +335,10 @@
   }
   .title_Button {
     position: fixed;
-    bottom: 10px;
+    bottom: 1%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 15;
-    left: 10%;
   }
   .filterContainer {
     padding: 16px;

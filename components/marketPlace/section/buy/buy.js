@@ -84,7 +84,7 @@ export default function Buy({ sale }) {
                   <p className={style.infoAmountDetailNumber}>
                     {sale.quantity || "0"}
                   </p>
-                  <p>/{sale.initialQuantity}</p>
+                  <p>/{sale.photoCard.totalQuantity}</p>
                 </div>
               </div>
             </div>
@@ -93,7 +93,11 @@ export default function Buy({ sale }) {
               <div className={style.infoBuyCount}>
                 <p>구매수량</p>
                 <div>
-                  <CustomInput count={count} setCount={setCount}></CustomInput>
+                  <CustomInput
+                    sale={sale}
+                    count={count}
+                    setCount={setCount}
+                  ></CustomInput>
                   {/* 커스텀으로바꿀예정 */}
                 </div>
               </div>

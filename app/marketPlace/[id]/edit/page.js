@@ -21,7 +21,20 @@ export default function MarketPlaceEdit() {
     queryFn: () => fetchSaleById(id),
     enabled: !!id,
   });
-
+  if (isLoading)
+    return (
+      <div
+        style={{
+          width: 150,
+          height: 150,
+          margin: "auto",
+          backgroundColor: "red",
+        }}
+      >
+        로딩 중...
+      </div>
+    );
+  if (isError) return <div>에러: {error.message}</div>;
   return (
     <div className={style.Container}>
       <div className={style.Wrapper}>
