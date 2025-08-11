@@ -12,6 +12,7 @@ import ExchangeResultModal from "./exchangeResultModal";
 import ModalCard from "./card/ModalCard";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import SearchIcon from "@/public/icons/ic_search.svg";
+import FilterIcon from "@/public/icons/ic_filter.svg";
 import { fetchMyGalleryData } from "@/utils/api/myGalleries";
 
 export default function ExchangePhotoModal({ onClose }) {
@@ -59,9 +60,9 @@ export default function ExchangePhotoModal({ onClose }) {
     fetchCards();
   }, [search, listGrade, listKind]);
 
-  const handleSearchChange = (e) => {
+  function handleSearchChange(e) {
     setSearch(e.target.value);
-  };
+  }
 
   function handleCardClick(card) {
     const formattedCard = {
@@ -96,11 +97,11 @@ export default function ExchangePhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    const handleKeyDown = (e) => {
+    function handleKeyDown(e) {
       if (e.key === "Escape") {
         handleBack();
       }
-    };
+    }
 
     window.addEventListener("keydown", handleKeyDown);
 
@@ -121,10 +122,10 @@ export default function ExchangePhotoModal({ onClose }) {
     setCardDrafts({});
   }
 
-  const handleTouchStart = (e) => {
+  function handleTouchStart(e) {
     dragStartY.current = e.touches[0].clientY;
     setIsDragging(true);
-  };
+  }
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -133,7 +134,7 @@ export default function ExchangePhotoModal({ onClose }) {
     };
   }, []);
 
-  const handleTouchMove = (e) => {
+  function handleTouchMove(e) {
     if (!isDragging) return;
     const currentY = e.touches[0].clientY;
     const diffY = currentY - dragStartY.current;
@@ -141,9 +142,9 @@ export default function ExchangePhotoModal({ onClose }) {
       setDragOffset(diffY);
       modalRef.current.style.transform = `translateY(${diffY}px)`;
     }
-  };
+  }
 
-  const handleTouchEnd = () => {
+  function handleTouchEnd() {
     setIsDragging(false);
 
     if (dragOffset > 150) {
@@ -159,7 +160,7 @@ export default function ExchangePhotoModal({ onClose }) {
       modalRef.current.style.transform = "translateY(0px)";
       setDragOffset(0);
     }
-  };
+  }
 
   const gradeClassMap = {
     COMMON: styles.common,
@@ -220,6 +221,18 @@ export default function ExchangePhotoModal({ onClose }) {
               {!selectedCard ? (
                 <>
                   <div className={styles.searchArea}>
+                    {/* 모바일 필터 토글 버튼 (sellPhotoModal.js와 동일한 패턴) */}
+                    <button
+                      className={styles.filterToggleBtn}
+                      onClick={() => setShowMobileFilter((prev) => !prev)}
+                    >
+                      <Image
+                        src={FilterIcon}
+                        alt="필터 아이콘"
+                        width={24}
+                        height={24}
+                      />
+                    </button>
                     <div className={styles.searchWrap}>
                       <input
                         type="text"
@@ -249,7 +262,20 @@ export default function ExchangePhotoModal({ onClose }) {
                       />
                     </div>
                   </div>
-
+                  {showMobileFilter && (
+                    <div className={styles.mobileFilterBox}>
+                      <Select
+                        option={gradeOption}
+                        name={"등급"}
+                        onChange={(val) => setListGrade(val)}
+                      />
+                      <Select
+                        option={genreOption}
+                        name={"장르"}
+                        onChange={(val) => setListKind(val)}
+                      />
+                    </div>
+                  )}
                   <div className={styles.cardList}>
                     {cards.map((card) => (
                       <div
