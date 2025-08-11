@@ -1,9 +1,9 @@
 "use client";
 import style from "./page.module.css";
 
-import { fetchSaleById } from "@/utils/api/marketPlace";
+import { fetchSaleById, updatedSale } from "@/utils/api/marketPlace";
 import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import TradeList from "@/components/marketPlace/section/tradeList/tradeList";
 import EditArea from "@/components/marketPlace/edit/section/edit";
 import EditTradeList from "@/components/marketPlace/edit/tradeList/tradeList";
@@ -21,6 +21,7 @@ export default function MarketPlaceEdit() {
     queryFn: () => fetchSaleById(id),
     enabled: !!id,
   });
+
   return (
     <div className={style.Container}>
       <div className={style.Wrapper}>
