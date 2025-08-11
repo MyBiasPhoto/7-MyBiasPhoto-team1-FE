@@ -34,7 +34,7 @@ export default function UserMenu() {
     }
     if (cooldown > 0 && !intervalRef.current) {
       intervalRef.current = setInterval(() => {
-        setCooldown(prev => {
+        setCooldown((prev) => {
           if (prev <= 1) {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
@@ -82,7 +82,7 @@ export default function UserMenu() {
         <Link className={styles.link} href="/myGallery">
           마이갤러리
         </Link>
-        <Link className={styles.link} href="/mySalePage">
+        <Link className={styles.link} href="/mySale">
           판매 중인 포토카드
         </Link>
       </div>
