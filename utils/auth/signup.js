@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../lib/axiosAuth.js";
 
 export const signup = async ({
   email,
@@ -6,11 +6,12 @@ export const signup = async ({
   confirmPassword,
   nickname,
 }) => {
-  const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
-    { email, password, confirmPassword, nickname },
-    { withCredentials: true }
-  );
+  const response = await api.post("/auth/signup", {
+    email,
+    password,
+    confirmPassword,
+    nickname,
+  });
 
   return response.data;
 };
