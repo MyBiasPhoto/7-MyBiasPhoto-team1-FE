@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let mounted = true;
     api
-      .get("/me")
+      .get("/users/me")
       .then(res => {
         if (!mounted) return;
         setUser(res.data?.me ?? null);

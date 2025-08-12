@@ -9,6 +9,7 @@ export function useMeQuery(options = {}) {
       const res = await api.get("/users/me");
       return res.data.me ?? null;
     },
+    staleTime: 0,
     refetchOnWindowFocus: true,
     ...options,
   });
