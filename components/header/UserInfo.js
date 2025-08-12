@@ -7,14 +7,15 @@ import UserMenu from "./UserMenu";
 import SideMenu from "./SideMenu";
 import Link from "next/link";
 import SideAlarm from "./SideAlarm";
-import { useAuth } from "@/utils/auth/authContext";
+import { useMeQuery } from "@/hooks/useMeQuery";
 
 export default function UserInfo({ isLogin, onLogout }) {
   const [showInfo, setShowInfo] = useState(false);
   const [isMobile, setIsMobile] = useState(null);
   const infoBoxRef = useRef();
-  const { user } = useAuth();
-  const { nickname = "" } = user || {};
+  const { data: me, isLoading: meLoading } = useMeQuery();
+  const nickname = me?.nickname || "";
+  const points = me?.points ?? 0;
 
   const handleAlarmClick = () =>
     setShowInfo(showInfo === "alarm" ? false : "alarm");
@@ -65,7 +66,9 @@ export default function UserInfo({ isLogin, onLogout }) {
   return (
     <div className={styles.position}>
       <div className={styles.area}>
-        <span className={styles.point}>{user.points} P</span>
+        <span className={styles.point}>
+          {meLoading ? "..." : `${points} P`}
+        </span>
         <div className={styles.alarm} onClick={handleAlarmClick} />
         <span className={styles.name} onClick={handleUserClick}>
           {nickname || "사용자 이름"}
