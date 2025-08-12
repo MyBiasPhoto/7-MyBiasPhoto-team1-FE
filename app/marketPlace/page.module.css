@@ -146,9 +146,11 @@
   display: flex;
   padding: 16px 32px;
   justify-content: space-between;
+  color: var(--gray-gray300, #a4a4a4);
 }
 .optionsActive {
   background-color: #474747;
+  color: #fff;
 }
 
 .optionItemActive {
@@ -168,39 +170,6 @@
   color: gold;
 }
 
-/* === genreOption === */
-.character {
-  color: #ff7f50; /* coral */
-}
-.landscape {
-  color: #20b2aa; /* lightseagreen */
-}
-.realistic {
-  color: #778899; /* lightslategray */
-}
-.etc {
-  color: #a9a9a9; /* darkgray */
-}
-
-/* === amountOption === */
-.sales {
-  color: #2e8b57; /* seagreen */
-}
-.soldout {
-  color: #b22222; /* firebrick */
-}
-
-/* === sortOption === */
-.price_asc {
-  color: #4682b4; /* steelblue */
-}
-.price_desc {
-  color: #8a2be2; /* blueviolet */
-}
-.newest {
-  color: #ff69b4; /* hotpink */
-}
-
 .options:hover {
   background-color: #3b3b3b;
 }
@@ -218,7 +187,7 @@
 }
 .modalButton {
   display: flex;
-  width: 417px;
+  width: 372px;
   height: 65px;
   justify-content: center;
   align-items: center;
@@ -232,6 +201,10 @@
   display: flex;
   position: absolute;
   bottom: 10px;
+  align-items: center;
+  gap: 10px;
+  right: 10px;
+  /* 수정 */
 }
 
 .filterInputMobile {
@@ -396,11 +369,6 @@
   animation: spin 1s linear infinite;
 }
 
-.masterActive {
-  background-color: red; /* 빨간색 배경 */
-}
-
-/* master가 false일 때의 스타일 */
-.masterInactive {
-  background-color: blue; /* 파란색 배경 */
+.modalButtonImg {
+  display: flex;
 }

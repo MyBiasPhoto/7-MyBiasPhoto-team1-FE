@@ -4,7 +4,7 @@ import recicle from "../../../../../public/icons/ic_exchange.svg";
 
 export default function FilterModal({
   temp,
-  selectedOptionType, 
+  selectedOptionType,
   dispatch,
   optionTypes,
   optionMap,
@@ -30,9 +30,7 @@ export default function FilterModal({
                 dispatch({ type: "SET_OPTION_TYPE", payload: opt.value })
               }
               className={`${style.optionItem} ${
-                selectedOptionType === opt.value
-                  ? style.optionItemActive
-                  : ""
+                selectedOptionType === opt.value ? style.optionItemActive : ""
               }`}
             >
               {opt.label}
@@ -66,7 +64,11 @@ export default function FilterModal({
                 })
               }
             >
-              <p className={style[opt.value.toLowerCase()]}>{opt.label}</p>
+              <p
+                className={style[opt.value.replace(/\s+/g, "_").toLowerCase()]}
+              >
+                {opt.label}
+              </p>
               <p>개</p>
               {/* 갯수 넘기는 백엔드만들고 넘겨주기 */}
             </div>
@@ -74,13 +76,16 @@ export default function FilterModal({
         </div>
 
         <div className={style.modalButtonBox}>
-          <button
+          <Image
             onClick={() => {
               dispatch({ type: "RESET_TEMP" });
             }}
-          >
-            <Image src={recicle} height={50} width={50} alt={"버튼"} />
-          </button>
+            src={recicle}
+            height={30}
+            width={30}
+            alt={"버튼"}
+            className={style.modalButtonImg}
+          />
           <button
             className={style.modalButton}
             onClick={() => {
