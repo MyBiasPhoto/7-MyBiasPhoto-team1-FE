@@ -6,6 +6,7 @@ import PurchaseResultModal from "./purchaseResultModal";
 import styles from "./purchasePhotoModal.module.css";
 import Image from "next/image";
 import CloseIcon from "@/public/icons/ic_close.svg";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function PurchasePhotoModal({
   saleId,
@@ -20,6 +21,7 @@ export default function PurchasePhotoModal({
   const [resultOpen, setResultOpen] = useState(false);
   const [resultSuccess, setResultSuccess] = useState(null); // true/false
   const [resultMessage, setResultMessage] = useState("");
+  const queryClient = useQueryClient(); //구매 후 유저 point 반영
 
   const cardInfoText = `[${cardGrade} | ${cardTitle}]`;
 
@@ -39,6 +41,7 @@ export default function PurchasePhotoModal({
     try {
       await buySale(saleId, purchaseCount);
       setResultSuccess(true);
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
     } catch (err) {
       setResultSuccess(false);
     } finally {

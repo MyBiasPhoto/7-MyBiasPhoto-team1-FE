@@ -3,12 +3,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "@/lib/axiosAuth.js";
 import { login as loginAPI, logout as logoutAPI } from "./login";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [bootstrapped, setBootstrapped] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     let mounted = true;
@@ -31,6 +33,7 @@ export function AuthProvider({ children }) {
   const login = async ({ email, password, strategy = "sliding" }) => {
     const user = await loginAPI({ email, password, strategy });
     setUser(user);
+    queryClient.invalidateQueries({ queryKey: ["me"] });
     return user;
   };
 
@@ -41,6 +44,7 @@ export function AuthProvider({ children }) {
       console.error("로그아웃 실패 :", err);
     }
     setUser(null);
+    queryClient.removeQueries({ queryKey: ["me"] });
   };
 
   return (
