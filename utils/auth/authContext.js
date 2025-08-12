@@ -1,28 +1,37 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { logout as logoutAPI } from "./login";
+import api from "@/lib/axiosAuth.js";
+import { login as loginAPI, logout as logoutAPI } from "./login";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [bootstrapped, setBootstrapped] = useState(false);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      try {
-        const parsedUser = JSON.parse(savedUser);
-        setUser(parsedUser);
-      } catch (err) {
-        localStorage.removeItem("user");
-      }
-    }
+    let mounted = true;
+    api
+      .get("/me")
+      .then(res => {
+        if (!mounted) return;
+        setUser(res.data?.me ?? null);
+      })
+      .catch(() => {
+        if (!mounted) return;
+        setUser(null);
+      })
+      .finally(() => setBootstrapped(true));
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  const login = (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    setUser(userData);
+  const login = async ({ email, password, strategy = "sliding" }) => {
+    const user = await loginAPI({ email, password, strategy });
+    setUser(user);
+    return user;
   };
 
   const logout = async () => {
@@ -31,12 +40,13 @@ export function AuthProvider({ children }) {
     } catch (err) {
       console.error("로그아웃 실패 :", err);
     }
-    localStorage.removeItem("user");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLogin: !!user }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, isLogin: !!user, bootstrapped }}
+    >
       {children}
     </AuthContext.Provider>
   );

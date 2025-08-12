@@ -5,7 +5,6 @@ import { useState } from "react";
 import styles from "@/app/login/page.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { login as loginRequest } from "@/utils/auth/login";
 import { useAuth } from "@/utils/auth/authContext";
 
 import LoginInput from "./LoginInput";
@@ -17,12 +16,13 @@ export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [strategy, setStrategy] = useState("sliding");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePassword = (password) => password.length >= 8;
+  const validateEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePassword = password => password.length >= 8;
 
   const handleLogin = async () => {
     let valid = true;
@@ -42,21 +42,17 @@ export default function LoginForm() {
     if (!valid) return;
 
     try {
-      const user = await loginRequest({ email, password });
+      await login({ email, password, strategy });
       alert("로그인 성공!");
-      login(user);
       router.push("/");
     } catch (error) {
-      alert("로그인 실패!");
-      if (error.response && error.response.data?.message) {
-        alert(error.response.data.message);
-      } else {
-        alert("로그인 중 오류가 발생했습니다.");
-      }
+      const msg =
+        error?.response?.data?.message || "로그인 중 오류가 발생했습니다.";
+      alert(`로그인 실패! ${msg}`);
     }
   };
 
-  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
 
   return (
     <div className={styles.container}>
@@ -69,7 +65,7 @@ export default function LoginForm() {
         label="이메일"
         type="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
         error={emailError}
         placeholder="이메일을 입력해 주세요"
         className={styles.email}
@@ -82,7 +78,7 @@ export default function LoginForm() {
         label="비밀번호"
         type={showPassword ? "text" : "password"}
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
         error={passwordError}
         placeholder="비밀번호를 입력해 주세요"
         className={styles.password}
@@ -103,7 +99,7 @@ export default function LoginForm() {
             style={{ cursor: "pointer" }}
           />
         }
-        onKeyDown={(e) => {
+        onKeyDown={e => {
           if (e.key === "Enter") handleLogin();
         }}
       />

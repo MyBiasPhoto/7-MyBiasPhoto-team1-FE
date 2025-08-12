@@ -1,11 +1,11 @@
-import axios from "axios";
+import api from "@/lib/axiosAuth.js";
 
 // 로그인 요청
-export const login = async ({ email, password }) => {
-  const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+export const login = async ({ email, password, strategy = "sliding" }) => {
+  const response = await api.post(
+    "/auth/login",
     { email, password },
-    { withCredentials: true } // 쿠기 받기
+    { headers: { "x-refresh-strategy": strategy } }
   );
 
   return response.data;
@@ -13,9 +13,5 @@ export const login = async ({ email, password }) => {
 
 // 로그아웃 요청 함수
 export const logout = async () => {
-  await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
-    {},
-    { withCredentials: true }
-  );
+  await api.post("/auth/logout");
 };
