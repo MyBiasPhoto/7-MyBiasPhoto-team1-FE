@@ -14,10 +14,15 @@ import CloseIcon from "@/public/icons/ic_close.svg";
 import SearchIcon from "@/public/icons/ic_search.svg";
 import FilterIcon from "@/public/icons/ic_filter.svg";
 import { fetchMyGalleryData } from "@/utils/api/myGalleries";
+import { proposeExchange } from "@/utils/api/exchange";
 
 export default function ExchangePhotoModal({ onClose }) {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
+  const [resultPayload, setResultPayload] = useState({
+    isSuccess: false,
+    message: "",
+  });
   const [cards, setCards] = useState([]);
   const [search, setSearch] = useState("");
   const [listGrade, setListGrade] = useState("");
@@ -29,8 +34,9 @@ export default function ExchangePhotoModal({ onClose }) {
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const fetchCards = async () => {
+  async function fetchCards() {
     try {
       const res = await fetchMyGalleryData({
         page: 1,
@@ -54,7 +60,7 @@ export default function ExchangePhotoModal({ onClose }) {
     } catch (error) {
       console.error("마이갤러리 조회 실패:", error);
     }
-  };
+  }
 
   useEffect(() => {
     fetchCards();
@@ -102,24 +108,43 @@ export default function ExchangePhotoModal({ onClose }) {
         handleBack();
       }
     }
-
     window.addEventListener("keydown", handleKeyDown);
-
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [selectedCard]);
 
-  function handleConfirm() {
-    setShowResultModal({
-      show: true,
-      cardTitle: selectedCard?.title,
-      cardGrade: selectedCard?.grade,
-      userCardCount: 0,
-      currentCardTotal: 0,
-    });
-
-    setCardDrafts({});
+  async function handleConfirm() {
+    if (!saleId || !selectedCard) return;
+    if (!exchangeMemo.trim()) {
+      setResultPayload({
+        isSuccess: false,
+        message: "교환 제시 내용을 입력해 주세요.",
+      });
+      setShowResultModal(true);
+      return;
+    }
+    try {
+      setSubmitting(true);
+      const res = await proposeExchange({
+        saleId,
+        proposedCardId: selectedCard.userCardId,
+        message: exchangeMemo.trim(),
+      });
+      setResultPayload({
+        isSuccess: true,
+        message: res?.message || "포토카드 교환 제시에 성공했습니다!",
+      });
+      setCardDrafts({});
+    } catch (err) {
+      setResultPayload({
+        isSuccess: false,
+        message: err?.message || "교환 제시에 실패했습니다.",
+      });
+    } finally {
+      setSubmitting(false);
+      setShowResultModal(true);
+    }
   }
 
   function handleTouchStart(e) {
@@ -162,34 +187,6 @@ export default function ExchangePhotoModal({ onClose }) {
     }
   }
 
-  const gradeClassMap = {
-    COMMON: styles.common,
-    RARE: styles.rare,
-    "SUPER RARE": styles.super_rare,
-    LEGENDARY: styles.legendary,
-    ETC: styles.etc,
-  };
-
-  const gradeMap = {
-    common: "COMMON",
-    rare: "RARE",
-    super_rare: "SUPER_RARE",
-    legendary: "LEGENDARY",
-  };
-
-  const genreMap = {
-    album: "ALBUM",
-    special: "SPECIAL",
-    fan: "FANSIGN",
-    season: "SEASON_GREETING",
-    meet: "FANMEETING",
-    concert: "CONCERT",
-    md: "MD",
-    collab: "COLLAB",
-    club: "FANCLUB",
-    etc: "ETC",
-  };
-
   return (
     <>
       {!showResultModal ? (
@@ -221,7 +218,6 @@ export default function ExchangePhotoModal({ onClose }) {
               {!selectedCard ? (
                 <>
                   <div className={styles.searchArea}>
-                    {/* 모바일 필터 토글 버튼 (sellPhotoModal.js와 동일한 패턴) */}
                     <button
                       className={styles.filterToggleBtn}
                       onClick={() => setShowMobileFilter((prev) => !prev)}
@@ -308,14 +304,16 @@ export default function ExchangePhotoModal({ onClose }) {
                         <button
                           className={styles.cancelBtn}
                           onClick={handleBack}
+                          disabled={submitting}
                         >
                           취소하기
                         </button>
                         <button
                           className={styles.confirmBtn}
                           onClick={handleConfirm}
+                          disabled={submitting}
                         >
-                          교환하기
+                          {submitting ? "전송 중..." : "교환하기"}
                         </button>
                       </div>
                     </div>
@@ -327,7 +325,8 @@ export default function ExchangePhotoModal({ onClose }) {
         </div>
       ) : (
         <ExchangeResultModal
-          isSuccess={true}
+          isSuccess={resultPayload.isSuccess}
+          message={resultPayload.message}
           onClose={() => {
             setShowResultModal(false);
             onClose();
