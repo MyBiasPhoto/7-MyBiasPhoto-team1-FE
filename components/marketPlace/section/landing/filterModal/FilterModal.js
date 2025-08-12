@@ -3,7 +3,8 @@ import Image from "next/image";
 import recicle from "../../../../../public/icons/ic_exchange.svg";
 
 export default function FilterModal({
-  filterState,
+  temp,
+  selectedOptionType, 
   dispatch,
   optionTypes,
   optionMap,
@@ -29,7 +30,7 @@ export default function FilterModal({
                 dispatch({ type: "SET_OPTION_TYPE", payload: opt.value })
               }
               className={`${style.optionItem} ${
-                filterState.selectedOptionType === opt.value
+                selectedOptionType === opt.value
                   ? style.optionItemActive
                   : ""
               }`}
@@ -42,12 +43,12 @@ export default function FilterModal({
         <div className={style.modalOptionLine}></div>
 
         <div className={style.optionBlock}>
-          {optionMap[filterState.selectedOptionType]?.map((opt) => (
+          {optionMap[selectedOptionType]?.map((opt) => (
             <div
               key={opt.value}
               className={`${style.options} ${
-                filterState.temp[filterState.selectedOptionType] ===
-                (filterState.selectedOptionType === "grade"
+                temp[selectedOptionType] ===
+                (selectedOptionType === "grade"
                   ? opt.value.toUpperCase()
                   : opt.value)
                   ? style.optionsActive
@@ -57,8 +58,8 @@ export default function FilterModal({
                 dispatch({
                   type: "SET_TEMP",
                   payload: {
-                    [filterState.selectedOptionType]:
-                      filterState.selectedOptionType === "grade"
+                    [selectedOptionType]:
+                      selectedOptionType === "grade"
                         ? opt.value.toUpperCase()
                         : opt.value,
                   },

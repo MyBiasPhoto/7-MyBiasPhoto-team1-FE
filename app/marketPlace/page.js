@@ -8,7 +8,7 @@ import {
 } from "@/components/marketPlace/config/config";
 import fetchSales from "@/utils/api/marketPlace";
 import { useQuery } from "@tanstack/react-query";
-import { useReducer, useState, useMemo, useRef } from "react";
+import { useReducer, useState, useMemo, useRef, useCallback } from "react";
 import { useEffect } from "react";
 import CardList from "@/components/marketPlace/section/landing/cardList/CardList";
 import FilterBar from "@/components/marketPlace/section/landing/filterBar/FilterBar";
@@ -127,43 +127,58 @@ export default function MarketPlace() {
   }, [cards]);
 
   // 5. 이벤트 핸들러 함수 그룹
-  const handleOptionClick = (type) => {
-    dispatch({ type: "SET_OPTION_TYPE", payload: type });
-  };
+  const handleOptionClick = useCallback(
+    (type) => {
+      dispatch({ type: "SET_OPTION_TYPE", payload: type });
+    },
+    [dispatch]
+  );
 
-  const handleFilterChange = (filterKey, val) => {
-    dispatch({
-      type: "SET_SELECTED",
-      payload: {
-        [filterKey]:
-          filterKey === "grade" ? val.value.toUpperCase() : val.value,
-      },
-    });
-  };
+  const handleFilterChange = useCallback(
+    (filterKey, val) => {
+      dispatch({
+        type: "SET_SELECTED",
+        payload: {
+          [filterKey]:
+            filterKey === "grade" ? val.value.toUpperCase() : val.value,
+        },
+      });
+    },
+    [dispatch]
+  );
 
-  const toggleFilterModal = () => setIsFilterModalOpen((prev) => !prev);
+  const toggleFilterModal = useCallback(
+    () => setIsFilterModalOpen((prev) => !prev),
+    []
+  );
 
-  const handleLoginClick = (e) => {
+  const handleLoginClick = useCallback((e) => {
     e.stopPropagation();
     setLoginModalOpen((prev) => !prev);
-  };
+  }, []);
 
-  const handleSortChange = (value) => {
-    dispatch({
-      type: "SET_SELECTED",
-      payload: { orderBy: value },
-    });
-  };
+  const handleSortChange = useCallback(
+    (value) => {
+      dispatch({
+        type: "SET_SELECTED",
+        payload: { orderBy: value },
+      });
+    },
+    [dispatch]
+  );
 
-  const handleCardClick = (card) => {
-    console.log("현재 유저 닉네임:", currentUserNickname);
-    console.log("카드 제작자 닉네임:", card.sellerNickname);
-    if (card.sellerNickname === currentUserNickname) {
-      setMaster(true);
-    } else {
-      setMaster(false);
-    }
-  };
+  const handleCardClick = useCallback(
+    (card) => {
+      console.log("현재 유저 닉네임:", currentUserNickname);
+      console.log("카드 제작자 닉네임:", card.sellerNickname);
+      if (card.sellerNickname === currentUserNickname) {
+        setMaster(true);
+      } else {
+        setMaster(false);
+      }
+    },
+    [currentUserNickname]
+  );
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -180,8 +195,8 @@ export default function MarketPlace() {
       setIsLoggedIn(false);
       setCurrentUserNickname("");
     }
-  }, [filterState.allCards, currentUserNickname]);
-  //
+  }, []);
+  //filterState.allCards, currentUserNickname []<- 일단뺴놓아봄
 
   useEffect(() => {
     if (data?.sales) {
@@ -213,6 +228,8 @@ export default function MarketPlace() {
     };
   }, [isLoading, filterState.page, filterState.totalPages]);
 
+  //
+
   // 6. JSX (컴포넌트 분리)
   return (
     <div className={style.marketPlace}>
@@ -230,7 +247,6 @@ export default function MarketPlace() {
           dispatch={dispatch}
           searchValue={filterState.selected.search || ""}
         />
-        {console.log("여기엔 뭐가뜨나요?", filterState.allCards)}
         <CardList
           onCardClick={handleCardClick}
           currentUserNickname={currentUserNickname}
@@ -247,24 +263,26 @@ export default function MarketPlace() {
           <div className={style.Loading}>
             <div className={style.spinner}></div>
           </div>
-        )}{" "}
+        )}
       </div>
 
       {isFilterModalOpen && (
         <FilterModal
-          filterState={filterState}
+          // filterState 대신 필요한 값만 전달
+          temp={filterState.temp}
+          selectedOptionType={filterState.selectedOptionType}
           dispatch={dispatch}
           optionTypes={optionTypes}
           optionMap={optionMap}
           countMap={countMap}
-          onClose={() => setIsFilterModalOpen(false)}
+          onClose={toggleFilterModal}
         />
       )}
 
       <LoginModalWrapper
         isOpen={loginModalOpen}
         isLoggedIn={isLoggedIn}
-        onClose={() => setLoginModalOpen(false)}
+        onClose={handleLoginClick}
       />
     </div>
   );

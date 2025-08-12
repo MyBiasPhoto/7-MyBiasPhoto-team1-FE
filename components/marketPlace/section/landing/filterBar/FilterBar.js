@@ -10,8 +10,9 @@ import {
   amountOption,
   sortOption,
 } from "@/components/marketPlace/config/config";
+import React, { memo } from "react";
 
-export default function FilterBar({
+function FilterBar({
   onFilterChange,
   onToggleFilterModal,
   onSortChange,
@@ -69,3 +70,5 @@ export default function FilterBar({
     </div>
   );
 }
+
+export default memo(FilterBar);

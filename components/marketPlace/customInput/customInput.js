@@ -1,12 +1,12 @@
 "use client";
-import style from "./customInput.module.css";
-import Image from "next/image";
-import down from "@/public/icons/ic_-.svg";
 import up from "@/public/icons/ic_+.svg";
-import { useEffect, useState } from "react";
+import down from "@/public/icons/ic_-.svg";
+import Image from "next/image";
+import { useEffect } from "react";
+import style from "./customInput.module.css";
 export default function CustomInput({ sale, count, setCount }) {
   const handlePClick = () => {
-    if (count >= sale.quantity) return;
+    if (count >= sale.initialQuantity) return;
     setCount(count + 1);
   };
 

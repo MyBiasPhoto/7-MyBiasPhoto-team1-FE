@@ -18,7 +18,6 @@ export default function Buy({ sale }) {
   if (!total) return;
   return (
     <div>
-      {console.log(sale.photoCard.grade)}
       <div>
         {/* 타이틀 */}
         <p className={style.TitleFont}>마켓플레이스</p>
@@ -73,7 +72,6 @@ export default function Buy({ sale }) {
               <div className={style.infoPrice}>
                 <p>가격</p>
                 <div className={style.infoPriceDetail}>
-                  {console.log(sale)}
                   <p>{sale.price || "10"}</p>
                   <p>P</p>
                 </div>
@@ -82,7 +80,7 @@ export default function Buy({ sale }) {
                 <p>잔여</p>
                 <div className={style.infoAmountDetail}>
                   <p className={style.infoAmountDetailNumber}>
-                    {sale.quantity || "0"}
+                    {sale.initialQuantity || "0"}
                   </p>
                   <p>/{sale.photoCard.totalQuantity}</p>
                 </div>

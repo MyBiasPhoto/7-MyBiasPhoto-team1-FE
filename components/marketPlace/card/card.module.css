@@ -4,12 +4,13 @@
   background-color: #111;
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.1);
-
+  /* perspective: 1000px; */
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 20px;
+  position: relative;
 }
 
 .cardBox {
@@ -28,7 +29,6 @@
 .soldOutLayer {
   display: none;
   width: 100%;
-  border-radius: 8px;
   object-fit: cover;
   position: absolute;
   pointer-events: none;
@@ -45,8 +45,8 @@
 .responsiveImage {
   width: 100%;
   height: auto;
-  border-radius: 8px;
   object-fit: cover;
+  /* padding: 10px; */
 }
 
 .CardTextBox {
@@ -132,8 +132,7 @@
 
 @media (max-width: 1023px) {
   .cardContainer {
-    width: 409px;
-    height: auto;
+    max-width: 409px;
     padding: 16px;
   }
 
@@ -248,3 +247,51 @@
 .priceBox {
   display: flex;
 }
+
+/* .cardBack {
+  background: #222;
+  color: white;
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 440px;
+  height: 600px;
+  position: absolute;
+  top: 27%;
+}
+
+.cardBox,
+.cardBack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transition: transform 0.6s ease;
+}
+
+.cardBox {
+  background: inherit;
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.cardBack {
+  background: #222;
+  color: white;
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.cardContainer:hover .cardBox {
+  transform: rotateY(180deg);
+}
+
+.cardContainer:hover .cardBack {
+  transform: rotateY(360deg);
+} */

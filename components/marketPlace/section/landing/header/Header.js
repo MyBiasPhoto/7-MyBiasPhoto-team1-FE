@@ -1,7 +1,8 @@
 // components/marketPlace/section/landing/header/Header.js
 import style from "@/app/marketPlace/page.module.css";
+import React, { memo } from "react";
 
-export default function Header({ onLoginClick, onFilterChange, searchValue }) {
+function Header({ onLoginClick, onFilterChange, searchValue }) {
   return (
     <div className={style.title_Box}>
       <input
@@ -17,3 +18,5 @@ export default function Header({ onLoginClick, onFilterChange, searchValue }) {
     </div>
   );
 }
+
+export default memo(Header);

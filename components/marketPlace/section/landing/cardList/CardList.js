@@ -1,7 +1,8 @@
 import style from "@/app/marketPlace/page.module.css";
 import Card from "@/components/marketPlace/card/card";
+import React, { memo } from "react";
 
-export default function CardList({ cards, currentUserNickname, onCardClick }) {
+function CardList({ cards, currentUserNickname, onCardClick }) {
   return (
     <div className={style.cardList}>
       {cards.map((card) => (
@@ -19,3 +20,5 @@ export default function CardList({ cards, currentUserNickname, onCardClick }) {
     </div>
   );
 }
+
+export default memo(CardList);

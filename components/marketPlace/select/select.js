@@ -4,8 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import iconDown from "../../../public/icons/ic_down.svg";
 import Image from "next/image";
 import style from "./select.module.css";
+import React, { memo } from "react";
 
-export default function Select({ name, option, onChange }) {
+function Select({ name, option, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectName, setSelectName] = useState();
   const ref = useRef(null);
@@ -56,3 +57,5 @@ export default function Select({ name, option, onChange }) {
     </div>
   );
 }
+
+export default memo(Select);
