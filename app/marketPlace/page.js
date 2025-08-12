@@ -233,6 +233,7 @@ export default function MarketPlace() {
   // 6. JSX (컴포넌트 분리)
   return (
     <div className={style.marketPlace}>
+      {console.log(filterState)}
       <Header
         onLoginClick={handleLoginClick}
         onFilterChange={handleFilterChange}
