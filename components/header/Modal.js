@@ -1,9 +1,8 @@
 "use client";
 import { useEffect } from "react";
-import styles from "./RandomModal.module.css";
-import RandomBox from "./RandomBox";
+import styles from "./Modal.module.css";
 
-export default function RandomModal({ open, onClose, cooldown, setCooldown }) {
+export default function Modal({ open, onClose, children }) {
   useEffect(() => {
     if (!open) return;
     document.body.style.overflow = "hidden";
@@ -20,7 +19,7 @@ export default function RandomModal({ open, onClose, cooldown, setCooldown }) {
         <div className={styles.btnArea}>
           <button className={styles.btn} onClick={onClose} />
         </div>
-        <RandomBox cooldown={cooldown} setCooldown={setCooldown} />
+        {children}
       </div>
     </div>
   );

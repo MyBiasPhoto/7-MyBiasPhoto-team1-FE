@@ -4,7 +4,7 @@ import Link from "next/link";
 import styles from "./SideMenu.module.css";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import RandomModal from "./RandomModal";
+import RandomModal from "./Modal";
 import { useAuth } from "@/utils/auth/authContext";
 
 function formatTime(seconds) {
