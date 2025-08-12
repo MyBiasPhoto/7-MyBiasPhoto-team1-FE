@@ -2,8 +2,10 @@
 import Link from "next/link";
 import styles from "./UserMenu.module.css";
 import { useEffect, useRef, useState } from "react";
-import RandomModal from "./RandomModal";
+import Modal from "./Modal";
 import { useMeQuery } from "@/hooks/useMeQuery";
+import ChargePointModal from "./ChargePointModal";
+import RandomBox from "./RandomBox";
 
 function formatTime(seconds) {
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -14,7 +16,8 @@ function formatTime(seconds) {
 const COOLDOWN_SEC = 60;
 
 export default function UserMenu() {
-  const [showModal, setShowModal] = useState(false);
+  const [showRandomModal, setShowRandomModal] = useState(false);
+  const [showChargeModal, setShowChargeModal] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const intervalRef = useRef(null);
   const { data: me, isLoading: meLoading } = useMeQuery();
@@ -66,12 +69,17 @@ export default function UserMenu() {
             {meLoading ? "..." : `${points} P`}
           </span>
         </div>
-        <button className={styles.pointAdd}>포인트 충전</button>
+        <button
+          className={styles.pointAdd}
+          onClick={() => setShowChargeModal(true)}
+        >
+          포인트 충전
+        </button>
         <button
           className={`${styles.randomBtn} ${
             cooldown > 0 ? styles.cooldown : ""
           }`}
-          onClick={() => setShowModal(true)}
+          onClick={() => setShowRandomModal(true)}
         >
           <span className={styles.btnText}>랜덤 포인트</span>
           <span className={styles.timeText}>
@@ -90,12 +98,12 @@ export default function UserMenu() {
           판매 중인 포토카드
         </Link>
       </div>
-      <RandomModal
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        cooldown={cooldown}
-        setCooldown={setCooldown}
-      />
+      <Modal open={showRandomModal} onClose={() => setShowRandomModal(false)}>
+        <RandomBox cooldown={cooldown} setCooldown={setCooldown} />
+      </Modal>
+      <Modal open={showChargeModal} onClose={() => setShowChargeModal(false)}>
+        <ChargePointModal />
+      </Modal>
     </div>
   );
 }
