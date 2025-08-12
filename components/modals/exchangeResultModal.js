@@ -5,30 +5,13 @@ import Image from "next/image";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import Link from "next/link";
 
-// 교환 제시 성공 조건
-function checkExchangeConditions({
-  myCardGrade,
-  myCardGenre,
-  desiredGrade,
-  desiredGenre,
-}) {
-  return myCardGrade === desiredGrade && myCardGenre === desiredGenre;
-}
-
 export default function ExchangeResultModal({
-  myCardGrade,
-  myCardGenre,
-  desiredGrade,
-  desiredGenre,
+  isSuccess,
+  message,
   onClose,
+  successHref = "/mySalePage",
+  failHref = "/marketPlace",
 }) {
-  const isSuccess = checkExchangeConditions({
-    myCardGrade,
-    myCardGenre,
-    desiredGrade,
-    desiredGenre,
-  });
-
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -44,13 +27,14 @@ export default function ExchangeResultModal({
         </h2>
 
         <p className={styles.description}>
-          {isSuccess
-            ? "포토카드 교환 제시에 성공했습니다!"
-            : "포토카드 교환 제시에 실패했습니다."}
+          {message ||
+            (isSuccess
+              ? "포토카드 교환 제시에 성공했습니다!"
+              : "포토카드 교환 제시에 실패했습니다.")}
         </p>
 
         <Link
-          href={isSuccess ? "/mySalePage" : "/marketPlace"}
+          href={isSuccess ? successHref : failHref}
           className={styles.confirmButton}
         >
           {isSuccess
