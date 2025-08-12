@@ -26,8 +26,9 @@ export default function SideMenu({
   const [showModal, setShowModal] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const intervalRef = useRef(null);
-  const { user } = useAuth();
-
+  const { data: me, isLoading: meLoading } = useMeQuery();
+  const nickname = me?.nickname || "";
+  const points = me?.points ?? 0;
   useEffect(() => {
     const lastTry = localStorage.getItem("randomPoint:lastTry");
     if (lastTry) {
@@ -85,11 +86,13 @@ export default function SideMenu({
           <div className={styles.area}>
             <div className={styles.userBox}>
               <span className={styles.title}>
-                안녕하세요, {user?.nickname || "회원"}님!
+                안녕하세요, {nickname || "사용자 이름"}님!
               </span>
               <div className={styles.userPoint}>
                 <span className={styles.text}>보유 포인트</span>
-                <span className={styles.point}>{user.points}</span>
+                <span className={styles.point}>
+                  {meLoading ? "..." : `${points} P`}
+                </span>
               </div>
               <button className={styles.pointAdd}>포인트 충전</button>
               <button
@@ -136,9 +139,6 @@ export default function SideMenu({
               <Link href="/marketPlace" className={styles.link}>
                 마켓플레이스
               </Link>
-              <button className={styles.testLogin} onClick={onLogin}>
-                임시 로그인
-              </button>
             </div>
           </div>
         )}
