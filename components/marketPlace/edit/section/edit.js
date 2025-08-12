@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import cardImage from "../../../../public/assets/cardImage.png";
-import style from "./edit.module.css";
-import CustomInput from "../../customInput/customInput.js";
-import { useEffect, useState } from "react";
 import EditTrade from "@/components/marketPlace/edit/area/editTrade";
 import Modal from "@/components/modals/editPhotoModal";
 import SellCancelModal from "@/components/modals/sellCancelModal";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import cardImage from "../../../../public/assets/cardImage.png";
+import style from "./edit.module.css";
 export default function Edit({ sale }) {
   const [count, setCount] = useState(1);
   const [total, setTotal] = useState(sale?.photoCard?.initialPrice * count);
@@ -26,7 +25,6 @@ export default function Edit({ sale }) {
   if (!total) return;
   return (
     <div>
-      {console.log(sale.photoCard.grade)}
       <div>
         {/* 타이틀 */}
         <p className={style.TitleFont}>마켓플레이스</p>
@@ -89,7 +87,7 @@ export default function Edit({ sale }) {
                 <p>잔여</p>
                 <div className={style.infoAmountDetail}>
                   <p className={style.infoAmountDetailNumber}>
-                    {sale.quantity || "0"}
+                    {sale.initialQuantity || "0"}
                   </p>
                   <p>/{sale.photoCard.totalQuantity}</p>
                 </div>
@@ -116,7 +114,6 @@ export default function Edit({ sale }) {
             </div>
           </div>
         </div>
-        {console.log("sale값 id뭐로할까", sale)}
       </div>
       {isModal && <Modal sale={sale} onClose={handleCancel} />}
       {cancleModal && (

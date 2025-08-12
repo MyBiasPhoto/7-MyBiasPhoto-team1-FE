@@ -1,12 +1,12 @@
-import style from "./card.module.css";
-import cardImage from "../../../public/assets/cardImage.png";
 import Image from "next/image";
-import logo from "../../../public/assets/logo.svg";
-import { useEffect, useRef } from "react";
-import soldout from "../../../public/assets/soldout.svg";
 import Link from "next/link";
-
-export default function Card({
+import { useRef } from "react";
+import cardImage from "../../../public/assets/cardImage.png";
+import logo from "../../../public/assets/logo.svg";
+import soldout from "../../../public/assets/soldout.svg";
+import style from "./card.module.css";
+import React, { memo } from "react";
+function Card({
   saleId,
   name,
   grade,
@@ -17,6 +17,7 @@ export default function Card({
   imageUrl,
   initialQuantity,
   isMaster,
+  totalQuantity,
 }) {
   const cardRef = useRef(null);
 
@@ -75,11 +76,11 @@ export default function Card({
               alt={"임시"}
               fill
               className={style.responsiveImage} // 스타일에서 object-fit 등 설정
+              loading="lazy"
             />
           </div>
           <div className={`${style.CardTextBox} ${style.CardTextBoxUpgrade}`}>
             {/* 카드정보들 */}
-            {console.log("grade", grade)}
             <p className={style.CardTextBoxTitle}>{name || "임시 제목."}</p>
             <div className={style.CardSubTitle}>
               <div className={style.CardSubTitleBox}>
@@ -107,8 +108,11 @@ export default function Card({
             <div className={style.CardSubTitle2}>
               <p className={style.cardFontColor}>잔여</p>
               <div className={`${style.priceBox} ${style.cardFontColor}`}>
-                <p className={style.cardFontColorWhite}>{quantity || "0"}</p>
-                <p>/ {initialQuantity || "5"}</p>
+                <p className={style.cardFontColorWhite}>
+                  {initialQuantity || "0"}
+                </p>
+                <p>/ {totalQuantity || "5"}</p>
+                {/* 이거토탈퀀티티로바꿔야됨 */}
               </div>
             </div>
           </div>
@@ -116,7 +120,12 @@ export default function Card({
             <Image src={logo} hegiht={100} width={120} alt={"임시"} />
           </div>
         </div>
+        {/* <div className={style.cardBack}>
+          <p>여기에 카드 뒷면 내용</p>
+        </div> */}
       </div>
     </Link>
   );
 }
+
+export default memo(Card);

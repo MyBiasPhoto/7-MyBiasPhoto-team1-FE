@@ -46,7 +46,10 @@ export default function EditPhotoModal({ sale, onClose }) {
   const queryClient = useQueryClient();
 
   const increaseQuantity = () => {
-    dispatch({ type: "INCREASE_QUANTITY", max: selectedCard.quantity });
+    dispatch({
+      type: "INCREASE_QUANTITY",
+      max: selectedCard.photoCard.totalQuantity,
+    });
   };
 
   const decreaseQuantity = () => {
@@ -83,7 +86,6 @@ export default function EditPhotoModal({ sale, onClose }) {
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      {console.log("asdasd", selectedCard)}
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <h1 className={styles.header}>{selectedCard && "수정하기"}</h1>
         <button className={styles.closeButton} onClick={onClose}>

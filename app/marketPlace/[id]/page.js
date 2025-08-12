@@ -6,6 +6,8 @@ import TradeList from "@/components/marketPlace/section/tradeList/tradeList";
 import { fetchSaleById } from "@/utils/api/marketPlace";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import logo from "../../../public/assets/logo.svg";
+import Image from "next/image";
 
 export default function MarketPlaceById() {
   const { id } = useParams();
@@ -23,15 +25,15 @@ export default function MarketPlaceById() {
 
   if (isLoading)
     return (
-      <div
-        style={{
-          width: 150,
-          height: 150,
-          margin: "auto",
-          backgroundColor: "red",
-        }}
-      >
-        로딩 중...
+      <div className={style.isLoading}>
+        <Image
+          className={style.loadingLogo}
+          src={logo}
+          width={500}
+          height={500}
+          alt="로딩중..."
+          loading="lazy"
+        />
       </div>
     );
   if (isError) return <div>에러: {error.message}</div>;
