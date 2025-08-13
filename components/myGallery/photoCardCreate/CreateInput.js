@@ -15,12 +15,12 @@ export default function CreateInput({
   labelClass = "",
 }) {
   return (
-    <div>
+    <div className={styles.photoCardName}>
       <label
         htmlFor={id}
         className={`${styles.photoCardLabelText} ${labelClass}`}
       >
-        등급
+        {label}
       </label>
       <input
         id={id}

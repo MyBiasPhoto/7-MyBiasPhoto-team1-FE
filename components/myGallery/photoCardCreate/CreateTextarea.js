@@ -15,7 +15,7 @@ export default function CreateTextarea({
   ...props
 }) {
   return (
-    <div>
+    <div className={styles.photoCardDescription}>
       <label
         htmlFor={id}
         className={`${styles.photoCardDescriptionText} ${labelClass}`}

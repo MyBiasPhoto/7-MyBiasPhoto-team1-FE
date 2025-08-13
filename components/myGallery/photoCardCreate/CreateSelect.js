@@ -14,7 +14,7 @@ export default function CreateSelect({
   labelClass = "",
 }) {
   return (
-    <div>
+    <div className={styles.photoCardGrade}>
       <label
         htmlFor={id}
         className={`${styles.photoCardLabelText} ${labelClass}`}
