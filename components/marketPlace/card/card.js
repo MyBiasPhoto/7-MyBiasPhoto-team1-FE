@@ -108,10 +108,8 @@ function Card({
             <div className={style.CardSubTitle2}>
               <p className={style.cardFontColor}>잔여</p>
               <div className={`${style.priceBox} ${style.cardFontColor}`}>
-                <p className={style.cardFontColorWhite}>
-                  {initialQuantity || "0"}
-                </p>
-                <p>/ {totalQuantity || "5"}</p>
+                <p className={style.cardFontColorWhite}>{quantity || "0"}</p>
+                <p>/ {initialQuantity || "5"}</p>
                 {/* 이거토탈퀀티티로바꿔야됨 */}
               </div>
             </div>

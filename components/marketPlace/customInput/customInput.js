@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import style from "./customInput.module.css";
 export default function CustomInput({ sale, count, setCount }) {
   const handlePClick = () => {
-    if (count >= sale.initialQuantity) return;
+    if (count >= sale.quantity) return;
     setCount(count + 1);
   };
 

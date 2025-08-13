@@ -49,7 +49,7 @@ export async function updatedSale({ id, data }) {
 }
 
 export async function deletedAtSaleById({ id, data }) {
-  const res = await fetch(`${API_URL}/sales/${id}`, {
+  const res = await fetch(`${API_URL}/sales/${id}/delete`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

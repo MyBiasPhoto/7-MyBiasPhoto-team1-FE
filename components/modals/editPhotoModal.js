@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import styles from "./editPhotoModal.module.css";
 import Image from "next/image";
 import cardImage from "@/public/assets/cardImage.png";
@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatedSale } from "@/utils/api/marketPlace";
 
 const initialState = {
-  initialQuantity: 1,
+  editedQuantity: 1,
   price: "",
   desiredGrade: "",
   desiredGenre: "",
@@ -26,12 +26,12 @@ function reducer(state, action) {
     case "INCREASE_QUANTITY":
       return {
         ...state,
-        initialQuantity: Math.min(state.initialQuantity + 1, action.max),
+        editedQuantity: Math.min(state.editedQuantity + 1, action.maxQuantity),
       };
     case "DECREASE_QUANTITY":
       return {
         ...state,
-        initialQuantity: Math.max(1, state.initialQuantity - 1),
+        editedQuantity: Math.max(1, state.editedQuantity - 1),
       };
     case "RESET":
       return initialState;
@@ -41,14 +41,41 @@ function reducer(state, action) {
 }
 
 export default function EditPhotoModal({ sale, onClose }) {
-  const [selectedCard] = [sale]; // sale 그대로 사용
   const [state, dispatch] = useReducer(reducer, initialState);
   const queryClient = useQueryClient();
 
+  // Modal 열릴 때 sale 데이터로 초기값 세팅
+  useEffect(() => {
+    if (sale) {
+      dispatch({
+        type: "SET_FIELD",
+        field: "editedQuantity",
+        value: sale.quantity, // 서버에서 가져온 원래 수량
+      });
+      dispatch({ type: "SET_FIELD", field: "price", value: sale.price });
+      dispatch({
+        type: "SET_FIELD",
+        field: "desiredGrade",
+        value: sale.desiredGrade || "",
+      });
+      dispatch({
+        type: "SET_FIELD",
+        field: "desiredGenre",
+        value: sale.desiredGenre || "",
+      });
+      dispatch({
+        type: "SET_FIELD",
+        field: "desiredDesc",
+        value: sale.desiredDesc || "",
+      });
+    }
+  }, [sale]);
+
+  // 버튼 클릭 시 안전하게 수량 조정
   const increaseQuantity = () => {
     dispatch({
       type: "INCREASE_QUANTITY",
-      max: selectedCard.photoCard.totalQuantity,
+      maxQuantity: sale.initialQuantity, // 서버가 제공하는 최대 수량이 있으면 사용
     });
   };
 
@@ -56,7 +83,7 @@ export default function EditPhotoModal({ sale, onClose }) {
     dispatch({ type: "DECREASE_QUANTITY" });
   };
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: updatedSale,
     onSuccess: () => {
       queryClient.invalidateQueries(["sale", sale.id]);
@@ -71,57 +98,55 @@ export default function EditPhotoModal({ sale, onClose }) {
 
   const handleConfirm = () => {
     const saleData = {
-      id: selectedCard.id,
+      id: sale.id,
       data: {
-        initialQuantity: state.initialQuantity,
+        quantity: state.editedQuantity, // 수정 수량
         price: Number(state.price),
         desiredGrade: state.desiredGrade,
         desiredGenre: state.desiredGenre,
         desiredDesc: state.desiredDesc,
       },
     };
-
     mutate(saleData);
   };
 
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <h1 className={styles.header}>{selectedCard && "수정하기"}</h1>
+        <h1 className={styles.header}>수정하기</h1>
         <button className={styles.closeButton} onClick={onClose}>
           <Image src={CloseIcon} alt="Close" width={32} height={32} />
         </button>
+
         <div className={styles.titleArea}>
-          <h2 className={styles.titleTxt}>
-            {selectedCard && `${selectedCard.photoCard.name}`}
-          </h2>
+          <h2 className={styles.titleTxt}>{sale?.photoCard.name}</h2>
         </div>
+        {console.log(sale)}
+
         <div className={styles.contentArea}>
           <div className={styles.detailContainer}>
             <div className={styles.aboutPhoto}>
               <div className={styles.cardImage}>
                 <Image
-                  src={`${selectedCard.photoCard.imageUrl}` || cardImage}
-                  alt={"임시"}
+                  src={sale?.photoCard.imageUrl || cardImage}
+                  alt={"포카 이미지"}
                   width={50}
-                  quality={100}
                   height={50}
+                  quality={100}
                   className={styles.responsiveImage}
                 />
               </div>
               <div className={styles.cardInfo}>
                 <div className={styles.cardSubTitle}>
                   <div className={styles.cardSubTitleBox}>
-                    <p className={`${styles[selectedCard?.grade]}`}>
-                      {selectedCard.photoCard.grade || "임시등급"}
+                    <p className={`${styles[sale?.photoCard.grade]}`}>
+                      {sale?.photoCard.grade}
                     </p>
                     <span className={styles.divider}>|</span>
-                    <p className={styles.kind}>
-                      {selectedCard.photoCard.genre || "임시종류"}
-                    </p>
+                    <p className={styles.kind}>{sale?.photoCard.genre}</p>
                   </div>
                   <p className={styles.subTitleWriter}>
-                    {selectedCard.seller.nickname || "임시제작자"}
+                    {sale?.seller.nickname}
                   </p>
                 </div>
 
@@ -133,6 +158,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                         <button
                           onClick={decreaseQuantity}
                           className={styles.iconButton}
+                          disabled={state.editedQuantity <= 1}
                         >
                           <Image
                             src={MinusIcon}
@@ -141,10 +167,13 @@ export default function EditPhotoModal({ sale, onClose }) {
                             height={20}
                           />
                         </button>
-                        <span>{state.initialQuantity}</span>
+                        <span>{state.editedQuantity}</span>
                         <button
                           onClick={increaseQuantity}
                           className={styles.iconButton}
+                          disabled={
+                            state.editedQuantity >= sale.initialQuantity
+                          }
                         >
                           <Image
                             src={PlusIcon}
@@ -156,10 +185,11 @@ export default function EditPhotoModal({ sale, onClose }) {
                       </div>
                       <div className={styles.amountBox}>
                         <span className={styles.maxAmount}>
-                          / {selectedCard.photoCard.totalQuantity}
+                          / {sale.maxQuantity || sale.quantity}{" "}
+                          {/* 최대 허용 수량 */}
                         </span>
                         <span className={styles.maxHint}>
-                          최대 {selectedCard.photoCard.totalQuantity}장
+                          원래 {sale.initialQuantity}장
                         </span>
                       </div>
                     </div>
@@ -189,6 +219,7 @@ export default function EditPhotoModal({ sale, onClose }) {
               </div>
             </div>
 
+            {/* 교환 희망 정보 */}
             <div className={styles.exchangeInfo}>
               <h2 className={styles.exchangeTitle}>교환 희망 정보</h2>
               <div className={styles.exchangeDetail}>
@@ -286,6 +317,7 @@ export default function EditPhotoModal({ sale, onClose }) {
               </div>
             </div>
 
+            {/* 버튼 */}
             <div className={styles.btnArea}>
               <button className={styles.cancelBtn} onClick={onClose}>
                 취소하기

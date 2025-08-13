@@ -69,7 +69,6 @@ export default function FilterModal({
               >
                 {opt.label}
               </p>
-              <p>개</p>
               {/* 갯수 넘기는 백엔드만들고 넘겨주기 */}
             </div>
           ))}
