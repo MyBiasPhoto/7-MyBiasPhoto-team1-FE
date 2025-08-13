@@ -10,7 +10,7 @@ import soldout from "@/public/assets/soldout.svg";
 export default function MyGalleryCard({
   name,
   grade,
-  owner,
+  ownerNickName,
   genre,
   quantity,
   price,
@@ -50,7 +50,7 @@ export default function MyGalleryCard({
               <p>{genre || "장르"}</p>
             </div>
             <p className={style.subTitleWriter}>
-              {owner || "판매자 id"}
+              {ownerNickName || "판매자 id"}
               {/* @TODO 추후 id가 아닌 nickname 으로 변경 필요 */}
             </p>
           </div>

@@ -35,3 +35,31 @@
   font-weight: 300;
   line-height: normal;
 }
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  background-color: skyblue;
+}
+.title {
+  font-weight: 600;
+}
+.markAllBtn {
+  font-size: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.unread {
+  background: rgba(255, 77, 79, 0.08);
+}
+.sentinel {
+  height: 1px;
+}
+.empty {
+  padding: 16px;
+  color: #888;
+  text-align: center;
+}

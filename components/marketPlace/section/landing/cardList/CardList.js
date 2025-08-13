@@ -1,7 +1,7 @@
 import style from "@/app/marketPlace/page.module.css";
 import Card from "@/components/marketPlace/card/card";
 import React, { memo } from "react";
-import { FixedSizeList } from "react-window";
+// import { FixedSizeList } from "react-window";
 
 function CardList({ cards, currentUserNickname, onCardClick }) {
   return (

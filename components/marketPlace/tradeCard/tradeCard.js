@@ -22,13 +22,8 @@ export default function TradeCard({
         <p className={style.titleFont}>{title || "스페인 여행"}</p>
         <div className={style.subTitleRow}>
           <div className={style.subTitleTags}>
-            <p
-              className={`${style.grade} ${
-                style[grade.toLowerCase().replace(" ", "_")]
-              }`}
-            >
-              {grade || "COMMON"}
-            </p>
+            <p className={style.grade}>{grade || "COMMON"}</p>
+            {/* 우진 오류 수정 부분 */}
             <span className={style.divider}>|</span>
             <p className={style.category}>{category || "풍경"}</p>
             <span className={style.divider}>|</span>

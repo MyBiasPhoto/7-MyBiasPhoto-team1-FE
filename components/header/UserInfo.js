@@ -1,3 +1,4 @@
+// components/header/UserInfo.js
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -8,6 +9,7 @@ import SideMenu from "./SideMenu";
 import Link from "next/link";
 import SideAlarm from "./SideAlarm";
 import { useMeQuery } from "@/hooks/useMeQuery";
+import { useNotifications } from "@/utils/notifications/notificationsContext";
 
 export default function UserInfo({ isLogin, onLogout }) {
   const [showInfo, setShowInfo] = useState(false);
@@ -16,6 +18,8 @@ export default function UserInfo({ isLogin, onLogout }) {
   const { data: me, isLoading: meLoading } = useMeQuery();
   const nickname = me?.nickname || "";
   const points = me?.points ?? 0;
+
+  const { unreadCount, loadInitialList } = useNotifications();
 
   const handleAlarmClick = () =>
     setShowInfo(showInfo === "alarm" ? false : "alarm");
@@ -40,6 +44,13 @@ export default function UserInfo({ isLogin, onLogout }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showInfo]);
 
+  //드롭다운을 alarm 으로 열때 최초목록 로드
+  useEffect(() => {
+    if (showInfo === "alarm") {
+      loadInitialList();
+    }
+  }, [showInfo, loadInitialList]);
+
   if (isMobile === null) return null;
 
   if (isMobile) {
@@ -47,7 +58,10 @@ export default function UserInfo({ isLogin, onLogout }) {
       <div className={styles.mobileNav}>
         <div className={styles.mobileMenu} onClick={handleUserClick} />
         <Link href="/" className={styles.mobileLogo} />
-        <div className={styles.mobileAlarm} onClick={handleAlarmClick} />
+        {/* <div className={styles.mobileAlarm} onClick={handleAlarmClick} /> */}
+        <div className={styles.mobileAlarm} onClick={handleAlarmClick}>
+          {unreadCount > 0 && <span className={styles.badgeDot} />}
+        </div>
         {showInfo === "user" && (
           <SideMenu
             open={true}
@@ -69,7 +83,10 @@ export default function UserInfo({ isLogin, onLogout }) {
         <span className={styles.point}>
           {meLoading ? "..." : `${points} P`}
         </span>
-        <div className={styles.alarm} onClick={handleAlarmClick} />
+        {/* <div className={styles.alarm} onClick={handleAlarmClick} /> */}
+        <div className={styles.alarm} onClick={handleAlarmClick}>
+          {unreadCount > 0 && <span className={styles.badgeDot} />}
+        </div>
         <span className={styles.name} onClick={handleUserClick}>
           {nickname || "사용자 이름"}
         </span>
