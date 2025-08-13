@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import api from "@/lib/axiosAuth.js";
 import { login as loginAPI, logout as logoutAPI } from "./login";
 import { useQueryClient } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 
 const AuthContext = createContext();
 
@@ -11,24 +12,31 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [bootstrapped, setBootstrapped] = useState(false);
   const queryClient = useQueryClient();
+  const pathname = usePathname();
 
   useEffect(() => {
+    // 로그인/회원가입 등 공개 페이지에선 부팅 요청 생략 (무한 리다이렉트 방지)
+    const PUBLIC_PATHS = ["/login", "/signup"];
+    if (PUBLIC_PATHS.some(p => pathname?.startsWith(p))) {
+      setBootstrapped(true);
+      return;
+    }
     let mounted = true;
     api
       .get("/users/me")
       .then(res => {
-        if (!mounted) return;
-        setUser(res.data?.me ?? null);
+        if (mounted) setUser(res.data?.me ?? null);
       })
       .catch(() => {
-        if (!mounted) return;
-        setUser(null);
+        if (mounted) setUser(null);
       })
-      .finally(() => setBootstrapped(true));
+      .finally(() => {
+        if (mounted) setBootstrapped(true);
+      });
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [pathname]);
 
   const login = async ({ email, password, strategy = "sliding" }) => {
     const user = await loginAPI({ email, password, strategy });
