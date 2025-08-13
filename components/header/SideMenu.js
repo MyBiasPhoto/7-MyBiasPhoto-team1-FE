@@ -15,8 +15,6 @@ function formatTime(seconds) {
   return `${mm}:${ss}`;
 }
 
-const COOLDOWN_SEC = 60;
-
 export default function SideMenu({
   open,
   onLogin,
@@ -29,45 +27,38 @@ export default function SideMenu({
   const [showCharge, setShowCharge] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const intervalRef = useRef(null);
-  const { data: me, isLoading: meLoading } = useMeQuery();
+  const { data: me, isLoading: meLoading, refetch: refetchMe } = useMeQuery();
   const nickname = me?.nickname || "";
   const points = me?.points ?? 0;
+
   useEffect(() => {
-    const lastTry = localStorage.getItem("randomPoint:lastTry");
-    if (lastTry) {
-      const elapsed = Math.floor((Date.now() - Number(lastTry)) / 1000);
-      if (elapsed < COOLDOWN_SEC) setCooldown(COOLDOWN_SEC - elapsed);
-    }
+    setMounted(true);
+    let alive = true;
+    (async () => {
+      const r = await getRandomPointStatus();
+      if (alive && r.ok) {
+        const { remainingSeconds } = r.data;
+        if (remainingSeconds > 0) setCooldown(remainingSeconds);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
   }, []);
 
   useEffect(() => {
-    if (cooldown === 0 && intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
     if (cooldown > 0 && !intervalRef.current) {
       intervalRef.current = setInterval(() => {
-        setCooldown(prev => {
-          if (prev <= 1) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-            return 0;
-          }
-          return prev - 1;
-        });
+        setCooldown(s => Math.max(0, s - 1));
       }, 1000);
     }
     return () => {
-      if (intervalRef.current && cooldown === 0) {
+      if (intervalRef.current && cooldown <= 0) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
     };
   }, [cooldown]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (open) {
@@ -79,6 +70,7 @@ export default function SideMenu({
       document.body.style.overflow = "";
     };
   }, [open]);
+
   if (!open || !mounted) return null;
 
   return createPortal(
@@ -151,7 +143,13 @@ export default function SideMenu({
           </div>
         )}
         <Modal open={showRandom} onClose={() => setShowRandom(false)}>
-          <RandomBox cooldown={cooldown} setCooldown={setCooldown} />
+          <RandomBox
+            cooldown={cooldown}
+            setCooldown={setCooldown}
+            onSuccess={() => {
+              refetchMe?.();
+            }}
+          />
         </Modal>
         <Modal open={showCharge} onClose={() => setShowCharge(false)}>
           <ChargePoint />
