@@ -16,6 +16,7 @@ import FilterModal from "@/components/marketPlace/section/landing/filterModal/Fi
 import Header from "@/components/marketPlace/section/landing/header/Header";
 import LoginModalWrapper from "@/components/marketPlace/section/landing/loginModalWrapper/loginModalWrapper";
 import getCountByOption from "@/components/marketPlace/util/util";
+import { useAuth } from "@/utils/auth/authContext";
 
 export default function MarketPlace() {
   // 1. 상태 선언
@@ -25,6 +26,7 @@ export default function MarketPlace() {
   const [master, setMaster] = useState(false); //임시 판매자인상태
   const observerTarget = useRef(null);
   const [currentUserNickname, setCurrentUserNickname] = useState("");
+  const { user } = useAuth();
 
   const initialFilterState = {
     selected: {
@@ -181,9 +183,7 @@ export default function MarketPlace() {
   );
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
     try {
-      const user = JSON.parse(storedUser);
       if (user?.nickname) {
         setIsLoggedIn(true);
         setCurrentUserNickname(user.nickname);
@@ -195,7 +195,7 @@ export default function MarketPlace() {
       setIsLoggedIn(false);
       setCurrentUserNickname("");
     }
-  }, []);
+  }, [user]);
   //filterState.allCards, currentUserNickname []<- 일단뺴놓아봄
 
   useEffect(() => {
@@ -233,7 +233,6 @@ export default function MarketPlace() {
   // 6. JSX (컴포넌트 분리)
   return (
     <div className={style.marketPlace}>
-      {console.log(filterState)}
       <Header
         onLoginClick={handleLoginClick}
         onFilterChange={handleFilterChange}
