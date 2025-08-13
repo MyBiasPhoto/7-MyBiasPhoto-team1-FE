@@ -3,12 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./RandomBox.module.css";
-
-const POINTS = [
-  { value: 1, probability: 0.6 },
-  { value: 5, probability: 0.3 },
-  { value: 10, probability: 0.1 },
-];
+import { claimRandomPoint } from "@/utils/api/points";
 
 const BOX_IMAGES = [
   "/assets/box-left.svg",
@@ -16,44 +11,92 @@ const BOX_IMAGES = [
   "/assets/box-right.svg",
 ];
 
-function getRandomPoint() {
-  const rand = Math.random();
-  let acc = 0;
-  for (const { value, probability } of POINTS) {
-    acc += probability;
-    if (rand < acc) return value;
-  }
-  return POINTS[0].value;
-}
-
 function formatTime(seconds) {
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
   const ss = String(seconds % 60).padStart(2, "0");
   return `${mm}:${ss}`;
 }
 
-const COOLDOWN_SEC = 60;
-
-export default function RandomBox({ cooldown, setCooldown }) {
+export default function RandomBox({
+  cooldown,
+  setCooldown,
+  onNeedLogin,
+  onSuccess,
+}) {
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [completed, setCompleted] = useState(false);
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const isButtonDisabled = loading || cooldown > 0 || completed;
 
   const handleSelect = idx => {
-    if (completed || cooldown > 0) return;
+    if (isButtonDisabled) return;
     setSelectedIdx(idx);
   };
 
-  const handleComplete = () => {
-    if (selectedIdx === null || cooldown > 0) return;
-    const point = getRandomPoint();
-    setResult(point);
-    setCompleted(true);
-    setCooldown(COOLDOWN_SEC);
-    localStorage.setItem("randomPoint:lastTry", Date.now().toString());
+  const setCooldownFromDates = (nextAllowedAt, serverNow) => {
+    if (!nextAllowedAt) return;
+    const base = serverNow ? new Date(serverNow) : new Date();
+    const secs = Math.max(
+      0,
+      Math.ceil((new Date(nextAllowedAt).getTime() - base.getTime()) / 1000)
+    );
+    if (secs > 0) setCooldown(secs);
   };
 
-  const isButtonDisabled = cooldown > 0 || completed;
+  const handleComplete = async () => {
+    if (selectedIdx === null || cooldown > 0 || loading) return;
+
+    setLoading(true);
+    try {
+      const res = await claimRandomPoint();
+
+      if (res.ok) {
+        const { points, nextAllowedAt } = res.data;
+        setResult(points);
+        setCompleted(true);
+        setCooldownFromDates(nextAllowedAt, null);
+        onSuccess?.();
+        return;
+      }
+
+      const {
+        status,
+        code,
+        message,
+        retryAfterSeconds,
+        nextAllowedAt,
+        serverNow,
+      } = res;
+
+      if (status === 401) {
+        onNeedLogin?.();
+        alert("세션이 만료되었습니다. 다시 로그인해 주세요.");
+        return;
+      }
+
+      if (status === 429 && code === "EVENT_COOLDOWN_ACTIVE") {
+        if (retryAfterSeconds && retryAfterSeconds > 0) {
+          setCooldown(retryAfterSeconds);
+        } else {
+          setCooldownFromDates(nextAllowedAt, serverNow);
+        }
+        alert(message || "쿨다운이 진행 중입니다.");
+        return;
+      }
+
+      if (status === 409 && code === "EVENT_CONCURRENCY_CONFLICT") {
+        alert(message || "다른 요청이 먼저 처리되었습니다. 다시 시도하세요.");
+        if (nextAllowedAt) setCooldownFromDates(nextAllowedAt, serverNow);
+        return;
+      }
+
+      console.error({ status, code, message });
+      alert(message || "요청 처리 중 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -129,7 +172,7 @@ export default function RandomBox({ cooldown, setCooldown }) {
           <div>
             {selectedIdx !== null && !completed && cooldown === 0 && (
               <button className={styles.selectBtn} onClick={handleComplete}>
-                선택완료
+                {loading ? "처리 중..." : "선택완료"}
               </button>
             )}
           </div>
