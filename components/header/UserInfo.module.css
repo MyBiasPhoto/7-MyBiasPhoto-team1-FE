@@ -19,6 +19,7 @@
 }
 
 .alarm {
+  position: relative;
   width: 24px;
   height: 24px;
   background-image: url("/icons/ic_alarm_default.svg");
@@ -32,7 +33,7 @@
   font-family: "BR-B";
   font-size: 18px;
   font-style: normal;
-  font-weight: 400px;
+  font-weight: 400;
   line-height: normal;
   cursor: pointer;
 }
@@ -50,7 +51,7 @@
   color: var(--gray-400);
   font-size: 14px;
   font-style: normal;
-  font-weight: 400px;
+  font-weight: 400;
   line-height: normal;
   cursor: pointer;
 }
@@ -96,10 +97,24 @@
 }
 
 .mobileAlarm {
+  position: relative;
   width: 22px;
   height: 22px;
   background-image: url("/icons/ic_alarm_default.svg");
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
+}
+
+/* components/header/UserInfo.module.css */
+.badgeDot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: #ff4d4f;
+  border-radius: 9999px;
+
+  /* border: 2px solid white; 아이콘 배경색에 따라 조정 */
 }

@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import { AuthProvider } from "./auth/authContext";
+import { NotificationsProvider } from "./notifications/notificationsContext";
 
 export default function Providers({ children }) {
   const [queryClient] = useState(
@@ -31,7 +32,9 @@ export default function Providers({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
       {/* QueryClientProvider 로 감싼 모든 자식컴포넌트에서 useQuery, useMutation 사용 가능 */}
-      <AuthProvider>{children}</AuthProvider>
+      <AuthProvider>
+        <NotificationsProvider>{children}</NotificationsProvider>
+      </AuthProvider>
       {/* 우진수정 @TODO 나중에 환경변수 설정통해 개발모드에서만 보이게 */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
