@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MakePhotoModal from "@/components/modals/makePhotoModal";
 import styles from "./page.module.css";
 import { useAuth } from "@/utils/auth/authContext";
@@ -9,6 +9,61 @@ import CreateInput from "@/components/myGallery/photoCardCreate/CreateInput";
 import CreateSelect from "@/components/myGallery/photoCardCreate/CreateSelect";
 import CreateUpload from "@/components/myGallery/photoCardCreate/CreateUpload";
 import CreateTextarea from "@/components/myGallery/photoCardCreate/CreateTextarea";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+
+// 동일 이미지 재사용
+async function sha256Hex(file) {
+  const buf = await file.arrayBuffer();
+  const hash = await crypto.subtle.digest("SHA-256", buf);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function uploadToS3(file, userId) {
+  if (!file?.type?.startsWith("image/")) {
+    throw new Error("이미지 파일만 업로드 가능합니다.");
+  }
+
+  let hashHex;
+  try {
+    hashHex = await sha256Hex(file);
+  } catch {
+    hashHex = undefined;
+  }
+
+  const params = new URLSearchParams({
+    contentType: file.type,
+    size: String(file.size),
+    userId: String(userId),
+  });
+  if (hashHex) params.set("sha256", hashHex);
+
+  const presignRes = await fetch(
+    `${API_BASE}/api/photoCard/upload/s3-url?` + params
+  );
+  if (!presignRes.ok) {
+    const err = await presignRes.json().catch(() => ({}));
+    throw new Error(err.message || "presign 실패");
+  }
+  const data = await presignRes.json();
+
+  // 같은 파일이면 업로드 생략
+  if (data.alreadyExists) {
+    return { url: data.publicUrl, key: data.key, alreadyExists: true };
+  }
+
+  // S3에 직접 업로드
+  const put = await fetch(data.uploadUrl, {
+    method: "PUT",
+    headers: { "Content-Type": file.type },
+    body: file,
+  });
+  if (!put.ok) throw new Error("S3 업로드 실패");
+
+  return { url: data.publicUrl, key: data.key, alreadyExists: false };
+}
 
 export default function CreatePhotoCardPage() {
   const [name, setName] = useState("");
@@ -33,7 +88,28 @@ export default function CreatePhotoCardPage() {
   const [createdGrade, setCreatedGrade] = useState("");
   const [createdName, setCreatedName] = useState("");
 
-  // 이것도 임시
+  const [uploadedKey, setUploadedKey] = useState(null);
+  const [alreadyExists, setAlreadyExists] = useState(false);
+
+  const [monthly, setMonthly] = useState(null);
+  const canCreateThisMonth = (monthly?.remaining ?? 1) > 0;
+
+  useEffect(() => {
+    const fetchQuota = async () => {
+      if (!user?.id) return;
+      try {
+        const r = await fetch(
+          `${API_BASE}/api/photoCard/upload/quota?userId=${user.id}`
+        );
+        const j = await r.json();
+        setMonthly(j.monthly);
+      } catch (e) {
+        console.warn("quota 조회 실패:", e);
+      }
+    };
+    fetchQuota();
+  }, [user?.id]);
+
   const handleCreate = async (e) => {
     e.preventDefault();
     if (!isValid()) return;
@@ -52,17 +128,52 @@ export default function CreatePhotoCardPage() {
 
       console.log("payload", payload);
 
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/photoCard`,
-        payload
-      );
+      const res = await axios.post(`${API_BASE}/api/photoCard`, payload);
+
+      const m = res.data?.monthly;
+      if (m) {
+        setMonthly(m);
+        alert(
+          `이번 달 ${m.created}번째 생성 완료! (남은 ${m.remaining}/${m.limit})`
+        );
+      }
+
       setUserCardCount(res.data.userCardCount ?? 0);
       setCurrentCardTotal(res.data.currentCardTotal ?? 0);
       setCreatedGrade(grade);
       setCreatedName(name);
 
+      setUploadedKey(null);
+      setAlreadyExists(false);
+
       setShowModal(true);
     } catch (err) {
+      // 월 한도 초과(409)
+      if (axios.isAxiosError(err) && err.response?.status === 409) {
+        try {
+          if (uploadedKey && !alreadyExists) {
+            await fetch(
+              `${API_BASE}/api/photoCard/upload/object?key=${encodeURIComponent(
+                uploadedKey
+              )}`,
+              { method: "DELETE" }
+            );
+          }
+        } catch (e) {
+          console.warn("S3 정리 실패:", e);
+        }
+
+        const { message, monthly } = err.response.data || {};
+        if (monthly) setMonthly(monthly);
+
+        alert(
+          (message || "이번 달 생성 한도를 초과했습니다.") +
+            (monthly
+              ? `\n이번 달 ${monthly.created}/${monthly.limit} (남은 ${monthly.remaining})`
+              : "")
+        );
+        return;
+      }
       setUserCardCount(999);
       setCurrentCardTotal(999);
       setCreatedGrade(grade);
@@ -72,31 +183,33 @@ export default function CreatePhotoCardPage() {
   };
 
   const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    setImageFile(file);
+    if (!canCreateThisMonth) {
+      alert("이번 달 생성 한도를 초과했습니다.");
+      e.target.value = "";
+      return;
+    }
 
-    // 사진 업로드 테스트
-    if (file) {
-      const formData = new FormData();
-      formData.append("image", file);
+    const file = e.target.files?.[0];
+    setImageFile(file || null);
 
-      try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/upload`,
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
-        const baseUrl =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-        setImageUrl(`${baseUrl}${res.data.url}`);
-      } catch (err) {
-        alert("이미지 업로드 실패");
-        setImageUrl("");
-      }
-    } else {
+    if (!file) {
       setImageUrl("");
+      setUploadedKey(null);
+      setAlreadyExists(false);
+      return;
+    }
+
+    try {
+      const { url, key, alreadyExists } = await uploadToS3(file, user.id);
+      setImageUrl(url);
+      setUploadedKey(key);
+      setAlreadyExists(alreadyExists);
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "이미지 업로드 실패");
+      setImageUrl("");
+      setUploadedKey(null);
+      setAlreadyExists(false);
     }
   };
 
@@ -142,58 +255,62 @@ export default function CreatePhotoCardPage() {
     <div className={styles.container}>
       <div className={styles.title_Box}>
         <p className={styles.title_Text}>포토카드 생성</p>
+        {monthly && (
+          <div className={styles.monthlyBadge} role="status">
+            <strong>이번 달 생성</strong>: {monthly.created}/{monthly.limit}
+            {monthly.remaining > 0 ? (
+              <span> (남은 {monthly.remaining}장)</span>
+            ) : (
+              <span> (한도 도달)</span>
+            )}
+          </div>
+        )}
       </div>
 
-      <div className={styles.photoCardName}>
-        <CreateInput
-          id="photocardname"
-          label="포토카드 이름"
-          placeholder="포토카드 이름을 입력해 주세요"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
+      <CreateInput
+        id="photocardname"
+        label="포토카드 이름"
+        placeholder="포토카드 이름을 입력해 주세요"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+      />
 
-      <div className={styles.photoCardGrade}>
-        <CreateSelect
-          id="grade"
-          label="등급"
-          value={grade}
-          onChange={(e) => setGrade(e.target.value)}
-          required
-          options={[
-            { value: "COMMON", label: "흔한" },
-            { value: "RARE", label: "레어" },
-            { value: "SUPER_RARE", label: "슈퍼레어" },
-            { value: "LEGENDARY", label: "레전드리" },
-          ]}
-          placeholder="등급을 선택해 주세요"
-        />
-      </div>
+      <CreateSelect
+        id="grade"
+        label="등급"
+        value={grade}
+        onChange={(e) => setGrade(e.target.value)}
+        required
+        options={[
+          { value: "COMMON", label: "흔한" },
+          { value: "RARE", label: "레어" },
+          { value: "SUPER_RARE", label: "슈퍼레어" },
+          { value: "LEGENDARY", label: "레전드리" },
+        ]}
+        placeholder="등급을 선택해 주세요"
+      />
 
-      <div className={styles.photoCardGenre}>
-        <CreateSelect
-          id="genre"
-          label="장르"
-          value={genre}
-          onChange={(e) => setGenre(e.target.value)}
-          required
-          options={[
-            { value: "ALBUM", label: "앨범" },
-            { value: "SPECIAL", label: "특전" },
-            { value: "FANSIGN", label: "팬싸" },
-            { value: "SEASON_GREETING", label: "시즌그리팅" },
-            { value: "FANMEETING", label: "팬미팅" },
-            { value: "CONCERT", label: "콘서트" },
-            { value: "MD", label: "MD" },
-            { value: "COLLAB", label: "콜라보" },
-            { value: "FANCLUB", label: "팬클럽" },
-            { value: "ETC", label: "기타" },
-          ]}
-          placeholder="장르를 선택해 주세요"
-        />
-      </div>
+      <CreateSelect
+        id="genre"
+        label="장르"
+        value={genre}
+        onChange={(e) => setGenre(e.target.value)}
+        required
+        options={[
+          { value: "ALBUM", label: "앨범" },
+          { value: "SPECIAL", label: "특전" },
+          { value: "FANSIGN", label: "팬싸" },
+          { value: "SEASON_GREETING", label: "시즌그리팅" },
+          { value: "FANMEETING", label: "팬미팅" },
+          { value: "CONCERT", label: "콘서트" },
+          { value: "MD", label: "MD" },
+          { value: "COLLAB", label: "콜라보" },
+          { value: "FANCLUB", label: "팬클럽" },
+          { value: "ETC", label: "기타" },
+        ]}
+        placeholder="장르를 선택해 주세요"
+      />
 
       <div className={styles.photoCardPrice}>
         <label htmlFor="price" className={styles.photoCardPriceText}>
@@ -242,16 +359,15 @@ export default function CreatePhotoCardPage() {
         )}
       </div>
 
-      <div className={styles.photoCardUpload}>
-        <CreateUpload
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          imageFile={imageFile}
-          onFileChange={handleFileChange}
-        />
-      </div>
+      <CreateUpload
+        value={imageUrl}
+        onChange={(e) => setImageUrl(e.target.value)}
+        imageFile={imageFile}
+        onFileChange={handleFileChange}
+        disabled={!canCreateThisMonth}
+      />
 
-      <div className={styles.photoCardDescription}>
+      <div>
         <CreateTextarea
           id="description"
           label="포토카드 설명"

@@ -7,6 +7,7 @@ const nextConfig = {
       "cdn.example.com",
       "test.com",
       "localhost",
+      "mybiasphoto-upload.s3.ap-northeast-2.amazonaws.com",
     ],
   },
 };

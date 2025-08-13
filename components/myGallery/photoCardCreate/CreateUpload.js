@@ -11,9 +11,11 @@ export default function CreateUpload({
   inputId = "imageurl",
   fileInputId = "fileInput",
   required = false,
+  disabled = false,
+  disabledMsg = "이번 달 생성 한도를 초과했습니다.",
 }) {
   return (
-    <div>
+    <div className={styles.photoCardUpload} aria-disabled={disabled}>
       <label htmlFor={inputId} className={styles.photoCardUploadText}>
         {label}
       </label>
@@ -26,6 +28,7 @@ export default function CreateUpload({
           placeholder="사진 업로드"
           className={styles.photoCardUploadInput}
           required={required}
+          disabled={disabled}
         />
         <input
           type="file"
@@ -33,11 +36,26 @@ export default function CreateUpload({
           accept="image/*"
           style={{ display: "none" }}
           onChange={onFileChange}
+          disabled={disabled}
         />
-        <label htmlFor={fileInputId} className={styles.fileSelectBtn}>
+        <label
+          htmlFor={disabled ? undefined : fileInputId}
+          className={styles.fileSelectBtn}
+          onClick={(e) => {
+            if (disabled) {
+              e.preventDefault();
+              alert(disabledMsg);
+            }
+          }}
+        >
           파일 선택
         </label>
       </div>
+      {disabled && (
+        <p style={{ marginTop: 8, fontSize: 12, color: "#888" }}>
+          {disabledMsg}
+        </p>
+      )}
     </div>
   );
 }
