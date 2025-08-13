@@ -15,9 +15,8 @@ export function AuthProvider({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // 로그인/회원가입 등 공개 페이지에선 부팅 요청 생략 (무한 리다이렉트 방지)
-    const PUBLIC_PATHS = ["/login", "/signup"];
-    if (PUBLIC_PATHS.some(p => pathname?.startsWith(p))) {
+    const PUBLIC = ["/login", "/signup"];
+    if (PUBLIC.some(p => pathname?.startsWith(p))) {
       setBootstrapped(true);
       return;
     }
