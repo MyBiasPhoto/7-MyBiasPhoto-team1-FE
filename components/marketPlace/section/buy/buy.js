@@ -80,9 +80,9 @@ export default function Buy({ sale }) {
                 <p>잔여</p>
                 <div className={style.infoAmountDetail}>
                   <p className={style.infoAmountDetailNumber}>
-                    {sale.initialQuantity || "0"}
+                    {sale.quantity || "0"}
                   </p>
-                  <p>/{sale.photoCard.totalQuantity}</p>
+                  <p>/{sale.initialQuantity}</p>
                 </div>
               </div>
             </div>

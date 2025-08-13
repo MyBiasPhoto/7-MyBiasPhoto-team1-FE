@@ -247,6 +247,7 @@ export default function MarketPlace() {
           dispatch={dispatch}
           searchValue={filterState.selected.search || ""}
         />
+        {console.log(filterState.allCards)}
         <CardList
           onCardClick={handleCardClick}
           currentUserNickname={currentUserNickname}
