@@ -4,6 +4,7 @@ import "./globals.css";
 import "./reset.css";
 import Providers from "@/utils/Providers.js";
 import Header from "@/components/header/Header.js";
+import AppToaster from "@/components/common/AppToast/AppToast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <Header />
           {children}
+          <AppToaster />
         </Providers>
       </body>
     </html>

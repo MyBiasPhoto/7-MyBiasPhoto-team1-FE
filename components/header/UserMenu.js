@@ -4,7 +4,7 @@ import styles from "./UserMenu.module.css";
 import { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
 import { useMeQuery } from "@/hooks/useMeQuery";
-import ChargePointModal from "./ChargePointModal";
+import ChargePoint from "./ChargePoint";
 import RandomBox from "./RandomBox";
 
 function formatTime(seconds) {
@@ -16,8 +16,8 @@ function formatTime(seconds) {
 const COOLDOWN_SEC = 60;
 
 export default function UserMenu() {
-  const [showRandomModal, setShowRandomModal] = useState(false);
-  const [showChargeModal, setShowChargeModal] = useState(false);
+  const [showRandom, setShowRandom] = useState(false);
+  const [showCharge, setShowCharge] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const intervalRef = useRef(null);
   const { data: me, isLoading: meLoading } = useMeQuery();
@@ -69,17 +69,14 @@ export default function UserMenu() {
             {meLoading ? "..." : `${points} P`}
           </span>
         </div>
-        <button
-          className={styles.pointAdd}
-          onClick={() => setShowChargeModal(true)}
-        >
+        <button className={styles.pointAdd} onClick={() => setShowCharge(true)}>
           포인트 충전
         </button>
         <button
           className={`${styles.randomBtn} ${
             cooldown > 0 ? styles.cooldown : ""
           }`}
-          onClick={() => setShowRandomModal(true)}
+          onClick={() => setShowRandom(true)}
         >
           <span className={styles.btnText}>랜덤 포인트</span>
           <span className={styles.timeText}>
@@ -98,11 +95,11 @@ export default function UserMenu() {
           판매 중인 포토카드
         </Link>
       </div>
-      <Modal open={showRandomModal} onClose={() => setShowRandomModal(false)}>
+      <Modal open={showRandom} onClose={() => setShowRandom(false)}>
         <RandomBox cooldown={cooldown} setCooldown={setCooldown} />
       </Modal>
-      <Modal open={showChargeModal} onClose={() => setShowChargeModal(false)}>
-        <ChargePointModal />
+      <Modal open={showCharge} onClose={() => setShowCharge(false)}>
+        <ChargePoint onClose={() => setShowCharge(false)} />
       </Modal>
     </div>
   );
