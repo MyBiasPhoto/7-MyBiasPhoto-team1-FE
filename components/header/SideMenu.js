@@ -4,8 +4,10 @@ import Link from "next/link";
 import styles from "./SideMenu.module.css";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import RandomModal from "./Modal";
-import { useAuth } from "@/utils/auth/authContext";
+import { useMeQuery } from "@/hooks/useMeQuery";
+import Modal from "./Modal";
+import RandomBox from "./RandomBox";
+import ChargePoint from "./ChargePoint";
 
 function formatTime(seconds) {
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -23,7 +25,8 @@ export default function SideMenu({
   onLogout,
 }) {
   const [mounted, setMounted] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showRandom, setShowRandom] = useState(false);
+  const [showCharge, setShowCharge] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const intervalRef = useRef(null);
   const { data: me, isLoading: meLoading } = useMeQuery();
@@ -94,12 +97,17 @@ export default function SideMenu({
                   {meLoading ? "..." : `${points} P`}
                 </span>
               </div>
-              <button className={styles.pointAdd}>포인트 충전</button>
+              <button
+                className={styles.pointAdd}
+                onClick={() => setShowCharge(true)}
+              >
+                포인트 충전
+              </button>
               <button
                 className={`${styles.randomBtn} ${
                   cooldown > 0 ? styles.cooldown : ""
                 }`}
-                onClick={() => setShowModal(true)}
+                onClick={() => setShowRandom(true)}
               >
                 <span className={styles.btnText}>랜덤 포인트</span>
                 <span className={styles.timeText}>
@@ -142,12 +150,12 @@ export default function SideMenu({
             </div>
           </div>
         )}
-        <RandomModal
-          open={showModal}
-          onClose={() => setShowModal(false)}
-          cooldown={cooldown}
-          setCooldown={setCooldown}
-        />
+        <Modal open={showRandom} onClose={() => setShowRandom(false)}>
+          <RandomBox cooldown={cooldown} setCooldown={setCooldown} />
+        </Modal>
+        <Modal open={showCharge} onClose={() => setShowCharge(false)}>
+          <ChargePoint />
+        </Modal>
       </aside>
     </>,
     document.body

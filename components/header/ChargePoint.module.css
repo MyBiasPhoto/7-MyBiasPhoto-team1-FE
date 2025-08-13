@@ -1,18 +1,5 @@
-.layout {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.4);
-}
-
 .area {
-  width: 100%;
+  width: 350px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -28,6 +15,10 @@
   font-weight: 400;
   line-height: normal;
   margin: 10px 0 50px;
+}
+
+.span {
+  color: var(--white);
 }
 
 .form {
@@ -47,7 +38,7 @@
 .input {
   width: 100%;
   height: 60px;
-  margin: 10px 0 50px;
+  margin: 10px 0 0;
   padding: 18px 20px;
   border: 1px solid var(--white);
   border-radius: 2px;
@@ -62,6 +53,51 @@
 .btn {
   width: 100%;
   height: 55px;
+  margin-top: 50px;
+  border: none;
   background-color: var(--main);
   color: var(--black);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.error {
+  color: var(--red);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+@media (min-width: 743px) and (max-width: 1199px) {
+  .area {
+    width: 330px;
+  }
+  .title {
+    font-size: 36px;
+  }
+  .label {
+    font-size: 18px;
+  }
+}
+@media (max-width: 743px) {
+  .area {
+    width: 300px;
+  }
+  .title {
+    font-size: 30px;
+    margin-bottom: 30px;
+  }
+  .label {
+    font-size: 16px;
+  }
+  .input {
+    height: 40px;
+    font-size: 14px;
+  }
+  .btn {
+    margin-top: 30px;
+  }
 }

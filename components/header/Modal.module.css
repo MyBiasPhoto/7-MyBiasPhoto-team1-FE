@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,9 +12,9 @@
 }
 
 .area {
-  min-width: 345px;
+  min-width: 300px;
   max-width: 1034px;
-  min-height: 441px;
+  min-height: 300px;
   padding: 30px;
   background: var(--gray-500);
 }
