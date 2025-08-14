@@ -22,6 +22,7 @@
   justify-content: space-between;
   border-bottom: 1px solid #fff;
   width: 100%;
+  padding-bottom: 20px;
 }
 
 /* 태블릿: 768px ~ 1023px */
@@ -36,6 +37,7 @@
   }
   .titleBox {
     padding: 0;
+    padding-bottom: 15px;
   }
 }
 
