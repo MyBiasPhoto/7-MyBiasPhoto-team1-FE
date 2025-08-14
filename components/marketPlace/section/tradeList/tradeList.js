@@ -2,119 +2,85 @@
 
 import style from "./tradeList.module.css";
 import TradeCard from "../../tradeCard/tradeCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ExchangeCancelModal from "@/components/modals/exchangeCancelModal";
 import {
   getMyExchangeProposals,
   cancelExchangeProposal,
 } from "@/utils/api/exchange";
 
-export default function TradeList(props) {
-  const { sale } = props;
-
+export default function TradeList({ sale }) {
   const [proposals, setProposals] = useState([]);
   const [loadingId, setLoadingId] = useState(null);
 
-  // 취소 모달
   const [isCancelOpen, setIsCancelOpen] = useState(false);
-  const [cancelTargetId, setCancelTargetId] = useState(null);
+  const [cancelTarget, setCancelTarget] = useState(null);
 
-  // 1) 목록 로드 (내 제안들 → 현재 판매글 기준으로 필터)
-  useEffect(
-    function () {
-      var ignore = false;
+  const loadProposals = useCallback(async () => {
+    try {
+      const res = await getMyExchangeProposals({
+        page: 1,
+        pageSize: 50,
+        status: "PENDING",
+      });
+      const list = Array.isArray(res?.proposals) ? res.proposals : [];
 
-      async function loadMy() {
-        try {
-          var res = await getMyExchangeProposals({
-            page: 1,
-            pageSize: 50,
-            status: "PENDING",
-          });
-          var list = Array.isArray(res?.proposals) ? res.proposals : [];
-          var filtered = sale?.id
-            ? list.filter(function (p) {
-                return p.saleId === sale.id;
-              })
-            : list;
-          if (!ignore) setProposals(filtered);
-        } catch (_e) {
-          if (!ignore) setProposals([]);
-        }
-      }
+      // 백업 프론트 필터 및 sale 범위 한정
+      const filtered = list.filter((p) => p.status === "PENDING");
+      const scoped = sale?.id
+        ? filtered.filter((p) => p.saleId === sale.id)
+        : filtered;
 
-      if (sale?.id) loadMy();
-      return function () {
-        ignore = true;
-      };
-    },
-    [sale?.id]
-  );
+      setProposals(scoped);
+    } catch {
+      setProposals([]);
+    }
+  }, [sale?.id]);
 
-  // 2) 새 제안 즉시 반영 (ExchangePhotoModal → window.dispatchEvent('exchange:created', {detail: proposal}))
-  useEffect(
-    function () {
-      function onCreated(e) {
-        var p = e.detail;
-        if (!p || !p.saleId || !sale?.id || p.saleId !== sale.id) return;
-        setProposals(function (prev) {
-          var exists =
-            Array.isArray(prev) &&
-            prev.some(function (x) {
-              return x.id === p.id;
-            });
-          if (exists) return prev;
-          return [p].concat(prev);
-        });
-      }
-      window.addEventListener("exchange:created", onCreated);
-      return function () {
-        window.removeEventListener("exchange:created", onCreated);
-      };
-    },
-    [sale?.id]
-  );
+  // 초기 로드
+  useEffect(() => {
+    loadProposals();
+  }, [loadProposals]);
 
-  // 3) 취소 플로우 (모달 열기 → 확인에서 실제 취소)
-  function openCancelModal(proposalId) {
-    setCancelTargetId(proposalId);
+  // 실시간 반영
+  useEffect(() => {
+    function onCreated() {
+      loadProposals();
+    }
+    window.addEventListener("exchange:created", onCreated);
+    return () => {
+      window.removeEventListener("exchange:created", onCreated);
+    };
+  }, [loadProposals]);
+
+  function openCancelModal(p) {
+    setCancelTarget(p);
     setIsCancelOpen(true);
   }
   function closeCancelModal() {
     setIsCancelOpen(false);
-    setCancelTargetId(null);
+    setCancelTarget(null);
   }
+
+  // 취소
   async function confirmCancel() {
+    if (!cancelTarget?.id) return;
     try {
-      if (!cancelTargetId) return;
-      setLoadingId(cancelTargetId);
-      await cancelExchangeProposal(cancelTargetId);
-      setProposals(function (prev) {
-        return prev.filter(function (p) {
-          return p.id !== cancelTargetId;
-        });
-      });
+      setLoadingId(cancelTarget.id);
+      await cancelExchangeProposal(cancelTarget.id);
+
+      // 즉시 목록에서 제거
+      setProposals((prev) => prev.filter((p) => p.id !== cancelTarget.id));
+
+      // 교환 취소 alert
+      window.alert("교환이 취소되었습니다.");
     } catch (e) {
       console.error(e);
+      window.alert("취소 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
     } finally {
       setLoadingId(null);
       closeCancelModal();
     }
-  }
-
-  // 렌더 아이템 (구매자 전용 → 버튼은 ‘취소하기’만 노출)
-  function renderItem(p) {
-    return (
-      <TradeCard
-        key={p.id}
-        proposal={p}
-        mode="buyer"
-        loading={loadingId === p.id}
-        onCancel={function () {
-          openCancelModal(p.id);
-        }}
-      />
-    );
   }
 
   return (
@@ -123,12 +89,23 @@ export default function TradeList(props) {
         <p>내가 제시한 교환 목록</p>
       </div>
 
-      <div className={style.list}>{proposals.map(renderItem)}</div>
+      <div className={style.list}>
+        {proposals.map((p) => (
+          <TradeCard
+            key={p.id}
+            proposal={p}
+            loading={loadingId === p.id}
+            onCancel={() => openCancelModal(p)}
+          />
+        ))}
+      </div>
 
       {isCancelOpen && (
         <ExchangeCancelModal
           onClose={closeCancelModal}
           onConfirm={confirmCancel}
+          cardTitle={cancelTarget?.sale?.photoCard?.title || ""}
+          cardGrade={cancelTarget?.sale?.photoCard?.grade || ""}
         />
       )}
     </div>

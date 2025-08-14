@@ -4,25 +4,55 @@ import styles from "./exchangeRefuseModal.module.css";
 import Image from "next/image";
 import CloseIcon from "@/public/icons/ic_close.svg";
 
-const ExchangeRefuseModal = ({ cardGrade, cardTitle, onClose }) => {
-  const cardInfoText = `[${cardGrade} | ${cardTitle}]`;
+export default function ExchangeRefuseModal(props) {
+  const { onClose, onConfirm, loading = false, cardTitle, cardGrade } = props;
+
+  function handleOverlayClick(e) {
+    if (e.currentTarget === e.target && typeof onClose === "function")
+      onClose();
+  }
+  function handleClose() {
+    if (typeof onClose === "function") onClose();
+  }
+  function handleConfirm() {
+    if (typeof onConfirm === "function") onConfirm();
+  }
+  function stop(e) {
+    e.stopPropagation();
+  }
+
+  const info =
+    cardGrade && cardTitle ? "[" + cardGrade + " | " + cardTitle + "] " : "";
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
-        <button className={styles.closeButton} onClick={onClose}>
-          <Image src={CloseIcon} alt="Close" width={32} height={32} />
+    <div
+      className={styles.overlay}
+      onClick={handleOverlayClick}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className={styles.modal} onClick={stop}>
+        <button
+          type="button"
+          className={styles.closeButton}
+          onClick={handleClose}
+          aria-label="닫기"
+        >
+          <Image src={CloseIcon} alt="close" width={32} height={32} />
         </button>
         <h2 className={styles.title}>교환 제시 거절</h2>
         <p className={styles.description}>
-          {cardInfoText} 카드와의 교환을 거절하시겠습니까?
+          {info}교환 제시를 거절하시겠습니까?
         </p>
-        <button className={styles.confirmButton} onClick={onClose}>
-          거절하기
+        <button
+          type="button"
+          className={styles.confirmButton}
+          onClick={handleConfirm}
+          disabled={loading}
+        >
+          {loading ? "처리 중..." : "거절하기"}
         </button>
       </div>
     </div>
   );
-};
-
-export default ExchangeRefuseModal;
+}
