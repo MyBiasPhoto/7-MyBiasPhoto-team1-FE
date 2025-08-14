@@ -53,8 +53,13 @@ export default function TradeList({ sale }) {
     };
   }, [loadProposals]);
 
-  function openCancelModal(p) {
-    setCancelTarget(p);
+  function openCancelModal(proposal) {
+    const card = proposal.proposedCard?.photoCard || {};
+    setCancelTarget({
+      id: proposal.id,
+      grade: card.grade || "",
+      title: card.title || card.name || "",
+    });
     setIsCancelOpen(true);
   }
   function closeCancelModal() {
@@ -104,8 +109,8 @@ export default function TradeList({ sale }) {
         <ExchangeCancelModal
           onClose={closeCancelModal}
           onConfirm={confirmCancel}
-          cardTitle={cancelTarget?.sale?.photoCard?.title || ""}
-          cardGrade={cancelTarget?.sale?.photoCard?.grade || ""}
+          cardTitle={cancelTarget?.title}
+          cardGrade={cancelTarget?.grade}
         />
       )}
     </div>
