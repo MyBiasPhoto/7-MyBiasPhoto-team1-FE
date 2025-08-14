@@ -52,7 +52,7 @@ export default function MyGalleryClient({ initialFilters }) {
   const currentPage = data?.page ?? filters.page;
   const pageSize = data?.pageSize ?? 5;
 
-  const { userNickname, page = 1, gradeCounts } = data ?? {};
+  const { userNickname, myMarketList = [], page = 1, gradeCounts } = data ?? {};
 
   const toggleFilterModal = useCallback(
     () => setIsFilterModalOpen((prev) => !prev),
@@ -73,6 +73,7 @@ export default function MyGalleryClient({ initialFilters }) {
 
   return (
     <div className={style.myGallery}>
+      {console.log(initialFilters)}
       <PageHeader
         title={"마이갤러리"}
         buttonLabel={"포토카드 생성하기"}
@@ -108,6 +109,26 @@ export default function MyGalleryClient({ initialFilters }) {
             dispatch({ type: "SET_PAGE", payload: page });
           }}
         />
+
+        {isFilterModalOpen && (
+          <div className={style.MobileModal}>
+            <div className={style.MobileModalTitle}>
+              <p>필터</p>
+              <p
+                className={style.close}
+                onClick={() => setIsFilterModalOpen(false)}
+              >
+                x
+              </p>
+            </div>
+            <FilterBartwo
+              filters={filters}
+              dispatch={dispatch}
+              onClose={() => setIsFilterModalOpen(false)}
+            />
+          </div>
+        )}
+        {console.log("필터값:", filters)}
 
         {isFilterModalOpen && (
           <div className={style.MobileModal}>
