@@ -39,12 +39,14 @@ export default function PurchasePhotoModal({
     }
 
     try {
+      setSubmitting(true);
       await buySale(saleId, purchaseCount);
       setResultSuccess(true);
       await queryClient.invalidateQueries({ queryKey: ["me"] });
     } catch (err) {
       setResultSuccess(false);
     } finally {
+      setSubmitting(false);
       setResultOpen(true);
     }
   }
@@ -77,8 +79,12 @@ export default function PurchasePhotoModal({
             <p className={styles.description}>
               {cardInfoText} {purchaseCount}장을 구매하시겠습니까?
             </p>
-            <button className={styles.confirmButton} onClick={handlePurchase}>
-              구매하기
+            <button
+              className={styles.confirmButton}
+              onClick={handlePurchase}
+              disabled={submitting}
+            >
+              {submitting ? "처리 중..." : "구매하기"}
             </button>
           </div>
         </div>
