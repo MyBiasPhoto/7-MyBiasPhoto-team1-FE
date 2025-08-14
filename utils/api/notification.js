@@ -1,4 +1,6 @@
 // utils/api/notifications.js
+//https://www.youtube.com/watch?v=i4-MNzNML_c
+//https://developer.mozilla.org/ko/docs/Web/API/Server-sent_events/Using_server-sent_events
 import api from "@/lib/axiosAuth";
 import { notificationType } from "../constants/enums";
 
