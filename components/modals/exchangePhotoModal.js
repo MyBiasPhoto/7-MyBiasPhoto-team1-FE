@@ -52,18 +52,17 @@ export default function ExchangePhotoModal(props) {
       const list = Array.isArray(res?.MyGalleryList) ? res.MyGalleryList : [];
 
       // 필요 필드 표준화
-      const formattedCards = list.map(function (card) {
-        return {
-          userCardId: card.userCardId,
-          name: card.name,
-          imageUrl: card.imageUrl,
-          grade: card.grade,
-          genre: card.genre,
-          count: card.count || 1,
-          writer: card.writer || "나",
-        };
-      });
-
+      const formattedCards = res.MyGalleryList.map((card) => ({
+        userCardId: card.userCardId,
+        name: card.name,
+        imageUrl: card.imageUrl,
+        grade: card.grade,
+        genre: card.genre,
+        price: card.price ?? 0, // API 값 사용
+        quantity: card.count ?? 1, // 현재 수량
+        initialQuantity: card.initialQuantity ?? card.count ?? 1, // 초기 수량
+        sellerNickname: card.ownerNickName || "나", // 제작자
+      }));
       setCards(formattedCards);
     } catch (e) {
       console.error("마이갤러리 조회 실패:", e);
@@ -89,6 +88,8 @@ export default function ExchangePhotoModal(props) {
       writer: card.sellerNickname,
       kind: card.genre,
       amount: card.quantity,
+      price: card.price,
+      initialQuantity: card.initialQuantity,
     };
     setSelectedCard(formattedCard);
 
@@ -220,8 +221,10 @@ export default function ExchangePhotoModal(props) {
           imageUrl={card.imageUrl}
           grade={card.grade}
           genre={card.genre}
-          quantity={card.count}
-          sellerNickname={card.writer}
+          quantity={card.quantity}
+          initialQuantity={card.initialQuantity}
+          price={card.price}
+          sellerNickname={card.sellerNickname}
         />
       </div>
     );

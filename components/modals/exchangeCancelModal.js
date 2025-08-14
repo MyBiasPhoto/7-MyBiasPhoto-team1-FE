@@ -9,9 +9,8 @@ export default function ExchangeCancelModal(props) {
 
   const hasInfo =
     typeof cardGrade === "string" && typeof cardTitle === "string";
-  const cardInfoText = hasInfo
-    ? "[" + cardGrade + " | " + cardTitle + "] "
-    : "";
+
+  const cardInfoText = hasInfo ? `[${cardGrade} | ${cardTitle}] ` : "";
 
   function handleOverlayClick(e) {
     if (e.currentTarget === e.target && typeof onClose === "function") {

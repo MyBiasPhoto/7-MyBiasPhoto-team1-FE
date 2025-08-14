@@ -10,15 +10,26 @@ function normalizeBuyerProposal(proposal) {
 
   const sale = proposal.sale || {};
   const saleCard = sale.photoCard || {};
-  const seller = sale.seller || {};
+  const proposer = proposal.proposer || {};
 
-  const imageUrl = saleCard.imageUrl || saleCard.image || defaultImg;
+  const proposedPhotoCard = proposal.proposedCard?.photoCard || {};
 
-  const title = saleCard.name || saleCard.title || "";
-  const grade = saleCard.grade || "";
-  const category = saleCard.genre || saleCard.category || "";
-  const price = saleCard.price || saleCard.point || null;
-  const writer = seller.nickname || seller.name || "";
+  const hasProposedData = !!(
+    proposedPhotoCard.imageUrl ||
+    proposedPhotoCard.image ||
+    proposedPhotoCard.name ||
+    proposedPhotoCard.title
+  );
+
+  const baseCard = hasProposedData ? proposedPhotoCard : saleCard;
+
+  const imageUrl = baseCard.imageUrl || baseCard.image || defaultImg;
+
+  const title = baseCard.name || baseCard.title || "";
+  const grade = baseCard.grade || "";
+  const category = baseCard.genre || baseCard.category || "";
+  const price = baseCard.price || baseCard.point || null;
+  const writer = proposer.nickname || proposer.name || "";
   const message = proposal.message || "";
 
   return {
