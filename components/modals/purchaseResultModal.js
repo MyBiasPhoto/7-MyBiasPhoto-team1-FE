@@ -3,7 +3,9 @@
 import styles from "./purchaseResultModal.module.css";
 import Image from "next/image";
 import CloseIcon from "@/public/icons/ic_close.svg";
-import Link from "next/link";
+//import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 // 구매 성공 조건
 function checkPurchaseConditions({ userPoint, cardPrice, purchaseCount }) {
@@ -32,10 +34,18 @@ export default function PurchaseResultModal({
     ? `${cardInfoText} ${purchaseCount}장 구매에 성공했습니다!`
     : `${cardInfoText} ${purchaseCount}장 구매에 실패했습니다.`;
 
-  const linkHref = computedSuccess ? "/myGallery" : "/marketPlace";
-  const linkLabel = computedSuccess
-    ? "마이갤러리에서 확인하기"
-    : "마켓플레이스로 돌아가기";
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  async function handleConfirmClick() {
+    if (computedSuccess) {
+      // 마이갤러리 쿼리 무효화 → 재 fetch
+      await queryClient.invalidateQueries({ queryKey: ["myGallery"] });
+      router.push("/myGallery");
+    } else {
+      router.push("/marketPlace");
+    }
+  }
 
   return (
     <div className={styles.overlay}>
@@ -52,9 +62,11 @@ export default function PurchaseResultModal({
           </span>
         </h2>
         <p className={styles.description}>{bodyText}</p>
-        <Link href={linkHref} className={styles.confirmButton}>
-          {linkLabel}
-        </Link>
+        <button onClick={handleConfirmClick} className={styles.confirmButton}>
+          {computedSuccess
+            ? "마이갤러리에서 확인하기"
+            : "마켓플레이스로 돌아가기"}
+        </button>
       </div>
     </div>
   );
