@@ -20,9 +20,10 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+  background-color: rgba(255, 77, 79, 0.08);
 }
 .text {
-  color: var(--white);
+  color: var(--purple);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -53,8 +54,9 @@
   cursor: pointer;
 }
 .unread {
-  background: rgba(255, 77, 79, 0.08);
+  background: aquamarine;
 }
+
 .sentinel {
   height: 1px;
 }
