@@ -13,6 +13,34 @@
 }
 
 .section {
-  width: 100%;
+  width: 95%;
   margin-inline: auto;
+}
+
+.headerSection {
+  margin-top: 60px;
+}
+
+/* 태블릿: 768px ~ 1023px */
+@media (min-width: 746px) and (max-width: 1695px) {
+  .headerSection {
+    width: 95%;
+  }
+
+  /* .section {
+    width: 80%;
+    margin-inline: auto;
+  } */
+}
+
+/* 모바일: 0px ~ 767px */
+@media (max-width: 746px) {
+  .headerSection {
+    display: none;
+  }
+  .section {
+    width: 95%;
+    margin-inline: auto;
+    overflow: hidden;
+  }
 }

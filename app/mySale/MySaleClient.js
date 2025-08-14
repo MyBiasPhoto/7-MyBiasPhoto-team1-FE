@@ -85,7 +85,7 @@ export default function MySaleClient({ initialFilters }) {
 
   return (
     <div className={style.pageContainer}>
-      <div className={style.section}>
+      <div className={`${style.section} ${style.headerSection}`}>
         <ContentHeader pageTitle="나의 판매 포토카드" />
       </div>
 

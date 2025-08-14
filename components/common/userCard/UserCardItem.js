@@ -2,6 +2,7 @@ import placeholderImage from "@/public/assets/cardImage.png";
 import logo from "@/public/assets/logo.svg";
 import Image from "next/image";
 import { useRef } from "react";
+import Card from "@/components/marketPlace/card/card";
 import style from "./UserCardItem.module.css";
 /**
  * @typedef {Object} Card
@@ -68,5 +69,20 @@ export default function UserCardItem({ card, mode }) {
         </div>
       </div>
     </div>
+
+    // maketpalce꺼 연결하는 코드
+    // <Card
+    //   saleId={card.userCardId}
+    //   name={card.name}
+    //   grade={card.grade}
+    //  card.owner={card.owner}
+    //   genre={card.genre}
+    //   quantity={card.quantity ?? 1}
+    //   price={card.price ?? 0}
+    //   imageUrl={card.imageUrl}
+    //   initialQuantity={card.initialQuantity ?? 1}
+    //   totalQuantity={card.totalQuantity}
+    //   isMaster={true}
+    // />
   );
 }
