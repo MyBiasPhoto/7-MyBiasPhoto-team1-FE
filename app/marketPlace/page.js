@@ -170,6 +170,9 @@ export default function MarketPlace() {
   );
 
   const handleCardClick = useCallback(
+    //@TODO 버그리포트 setMaster
+    // 한 컴퓨터에서 여러 브라우저로 테스트하다보면 같은 아이디여서 edit페이지로 가야함에도
+    // 다른 아이디로 인식하는 문제 - 아마 캐시 문제인듯?
     (card) => {
       console.log("현재 유저 닉네임:", currentUserNickname);
       console.log("카드 제작자 닉네임:", card.sellerNickname);

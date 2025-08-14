@@ -9,7 +9,7 @@ export default function ExchangeResultModal({
   isSuccess,
   message,
   onClose,
-  successHref = "/mySalePage",
+  successHref = "/mySale",
   failHref = "/marketPlace",
 }) {
   return (
