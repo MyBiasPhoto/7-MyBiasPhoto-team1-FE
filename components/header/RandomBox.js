@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import styles from "./RandomBox.module.css";
 import { claimRandomPoint } from "@/utils/api/points";
+import { useCooldown } from "@/utils/cooldown/cooldownContext";
 
 const BOX_IMAGES = [
   "/assets/box-left.svg",
@@ -17,12 +18,8 @@ function formatTime(seconds) {
   return `${mm}:${ss}`;
 }
 
-export default function RandomBox({
-  cooldown,
-  setCooldown,
-  onNeedLogin,
-  onSuccess,
-}) {
+export default function RandomBox({ onNeedLogin, onSuccess }) {
+  const { remaining: cooldown, start, startAfter } = useCooldown();
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [completed, setCompleted] = useState(false);
   const [result, setResult] = useState(null);
@@ -32,16 +29,6 @@ export default function RandomBox({
   const handleSelect = idx => {
     if (isButtonDisabled) return;
     setSelectedIdx(idx);
-  };
-
-  const setCooldownFromDates = (nextAllowedAt, serverNow) => {
-    if (!nextAllowedAt) return;
-    const base = serverNow ? new Date(serverNow) : new Date();
-    const secs = Math.max(
-      0,
-      Math.ceil((new Date(nextAllowedAt).getTime() - base.getTime()) / 1000)
-    );
-    if (secs > 0) setCooldown(secs);
   };
 
   const handleComplete = async () => {
@@ -55,7 +42,7 @@ export default function RandomBox({
         const { points, nextAllowedAt } = res.data;
         setResult(points);
         setCompleted(true);
-        setCooldownFromDates(nextAllowedAt, null);
+        start(nextAllowedAt);
         onSuccess?.();
         return;
       }
@@ -77,9 +64,9 @@ export default function RandomBox({
 
       if (status === 429 && code === "EVENT_COOLDOWN_ACTIVE") {
         if (retryAfterSeconds && retryAfterSeconds > 0) {
-          setCooldown(retryAfterSeconds);
-        } else {
-          setCooldownFromDates(nextAllowedAt, serverNow);
+          startAfter(retryAfterSeconds, serverNow);
+        } else if (nextAllowedAt) {
+          start(nextAllowedAt, serverNow);
         }
         alert(message || "쿨다운이 진행 중입니다.");
         return;
@@ -87,7 +74,7 @@ export default function RandomBox({
 
       if (status === 409 && code === "EVENT_CONCURRENCY_CONFLICT") {
         alert(message || "다른 요청이 먼저 처리되었습니다. 다시 시도하세요.");
-        if (nextAllowedAt) setCooldownFromDates(nextAllowedAt, serverNow);
+        if (nextAllowedAt) start(nextAllowedAt, serverNow);
         return;
       }
 

@@ -1,13 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import styles from "./SideMenu.module.css";
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { useMeQuery } from "@/hooks/useMeQuery";
+import { useCooldown } from "@/utils/cooldown/cooldownContext";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import ChargePoint from "./ChargePoint";
 import Modal from "./Modal";
 import RandomBox from "./RandomBox";
-import ChargePoint from "./ChargePoint";
+import styles from "./SideMenu.module.css";
 
 function formatTime(seconds) {
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -25,40 +26,18 @@ export default function SideMenu({
   const [mounted, setMounted] = useState(false);
   const [showRandom, setShowRandom] = useState(false);
   const [showCharge, setShowCharge] = useState(false);
-  const [cooldown, setCooldown] = useState(0);
-  const intervalRef = useRef(null);
+  const { remaining: cooldown, sync } = useCooldown();
   const { data: me, isLoading: meLoading, refetch: refetchMe } = useMeQuery();
   const nickname = me?.nickname || "";
   const points = me?.points ?? 0;
 
   useEffect(() => {
     setMounted(true);
-    let alive = true;
-    (async () => {
-      const r = await getRandomPointStatus();
-      if (alive && r.ok) {
-        const { remainingSeconds } = r.data;
-        if (remainingSeconds > 0) setCooldown(remainingSeconds);
-      }
-    })();
-    return () => {
-      alive = false;
-    };
   }, []);
 
   useEffect(() => {
-    if (cooldown > 0 && !intervalRef.current) {
-      intervalRef.current = setInterval(() => {
-        setCooldown(s => Math.max(0, s - 1));
-      }, 1000);
-    }
-    return () => {
-      if (intervalRef.current && cooldown <= 0) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-  }, [cooldown]);
+    if (showRandom) sync();
+  }, [showRandom, sync]);
 
   useEffect(() => {
     if (open) {
@@ -144,8 +123,6 @@ export default function SideMenu({
         )}
         <Modal open={showRandom} onClose={() => setShowRandom(false)}>
           <RandomBox
-            cooldown={cooldown}
-            setCooldown={setCooldown}
             onSuccess={() => {
               refetchMe?.();
             }}

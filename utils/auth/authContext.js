@@ -6,6 +6,7 @@ import api from "@/lib/axiosAuth.js";
 import { login as loginAPI, logout as logoutAPI } from "./login";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
+import { requestCooldownSync } from "../cooldown/cooldownContext";
 
 const AuthContext = createContext();
 
@@ -25,7 +26,10 @@ export function AuthProvider({ children }) {
     api
       .get("/users/me")
       .then(res => {
-        if (mounted) setUser(res.data?.me ?? null);
+        if (!mounted) return;
+        const me = res.data?.me ?? null;
+        setUser(me);
+        if (me) requestCooldownSync();
       })
       .catch(() => {
         if (mounted) setUser(null);
@@ -41,6 +45,7 @@ export function AuthProvider({ children }) {
   const login = async ({ email, password, strategy = "sliding" }) => {
     const user = await loginAPI({ email, password, strategy });
     setUser(user);
+    requestCooldownSync();
     queryClient.invalidateQueries({ queryKey: ["me"] });
     return user;
   };
@@ -53,6 +58,7 @@ export function AuthProvider({ children }) {
     }
     setUser(null);
     queryClient.removeQueries({ queryKey: ["me"] });
+    requestCooldownSync();
   };
 
   return (
