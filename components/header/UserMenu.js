@@ -1,12 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import styles from "./UserMenu.module.css";
-import { useEffect, useRef, useState } from "react";
-import Modal from "./Modal";
 import { useMeQuery } from "@/hooks/useMeQuery";
+import { useCooldown } from "@/utils/cooldown/cooldownContext";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import ChargePoint from "./ChargePoint";
+import Modal from "./Modal";
 import RandomBox from "./RandomBox";
+import styles from "./UserMenu.module.css";
+import { useAuth } from "@/utils/auth/authContext";
 
 function formatTime(seconds) {
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -18,42 +20,20 @@ export default function UserMenu() {
   const [mounted, setMounted] = useState(false);
   const [showRandom, setShowRandom] = useState(false);
   const [showCharge, setShowCharge] = useState(false);
-  const [cooldown, setCooldown] = useState(0);
-  const intervalRef = useRef(null);
+  const { bootstrapped, isLogin } = useAuth();
+  const { remaining: cooldown, ready } = useCooldown();
   const { data: me, isLoading: meLoading, refetch: refetchMe } = useMeQuery();
   const nickname = me?.nickname || "";
   const points = me?.points ?? 0;
 
   useEffect(() => {
     setMounted(true);
-    let alive = true;
-    (async () => {
-      const r = await getRandomPointStatus();
-      if (alive && r.ok) {
-        const { remainingSeconds } = r.data;
-        if (remainingSeconds > 0) setCooldown(remainingSeconds);
-      }
-    })();
-    return () => {
-      alive = false;
-    };
   }, []);
 
-  useEffect(() => {
-    if (cooldown > 0 && !intervalRef.current) {
-      intervalRef.current = setInterval(() => {
-        setCooldown(s => Math.max(0, s - 1));
-      }, 1000);
-    }
-    return () => {
-      if (intervalRef.current && cooldown <= 0) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-  }, [cooldown]);
-
   if (!mounted) return null;
+
+  const syncing = isLogin && bootstrapped && !ready;
+  const isRandomUnavailable = syncing || cooldown > 0;
 
   return (
     <div className={styles.info}>
@@ -72,13 +52,15 @@ export default function UserMenu() {
         </button>
         <button
           className={`${styles.randomBtn} ${
-            cooldown > 0 ? styles.cooldown : ""
+            isRandomUnavailable ? styles.cooldown : ""
           }`}
           onClick={() => setShowRandom(true)}
         >
-          <span className={styles.btnText}>랜덤 포인트</span>
+          <span className={styles.btnText}>
+            {syncing ? "동기화 중..." : "랜덤 포인트"}
+          </span>
           <span className={styles.timeText}>
-            {cooldown > 0 ? `${formatTime(cooldown)}` : ""}
+            {cooldown > 0 ? formatTime(cooldown) : ""}
           </span>
         </button>
       </div>
@@ -95,8 +77,6 @@ export default function UserMenu() {
       </div>
       <Modal open={showRandom} onClose={() => setShowRandom(false)}>
         <RandomBox
-          cooldown={cooldown}
-          setCooldown={setCooldown}
           onSuccess={() => {
             refetchMe?.();
           }}

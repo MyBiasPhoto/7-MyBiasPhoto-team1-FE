@@ -11,6 +11,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import { AuthProvider } from "./auth/authContext";
 import { NotificationsProvider } from "./notifications/notificationsContext";
+import { CooldownProvider } from "./cooldown/cooldownContext";
 
 export default function Providers({ children }) {
   const [queryClient] = useState(
@@ -33,7 +34,10 @@ export default function Providers({ children }) {
     <QueryClientProvider client={queryClient}>
       {/* QueryClientProvider 로 감싼 모든 자식컴포넌트에서 useQuery, useMutation 사용 가능 */}
       <AuthProvider>
-        <NotificationsProvider>{children}</NotificationsProvider>
+        {/* 로그인 컨텍스트 하위에서 쿨다운 컨텍스트 구동 */}
+        <CooldownProvider>
+          <NotificationsProvider>{children}</NotificationsProvider>
+        </CooldownProvider>
       </AuthProvider>
       {/* 우진수정 @TODO 나중에 환경변수 설정통해 개발모드에서만 보이게 */}
       <ReactQueryDevtools initialIsOpen={false} />
