@@ -16,6 +16,7 @@
 
   border-radius: 2px;
   background: var(--main);
+  cursor: pointer;
 }
 
 .title_Box {
@@ -42,6 +43,9 @@
   border: 1px solid var(--gray-gray200, #ddd);
   background: var(--black-black, #0f0f0f);
   color: #fff;
+}
+.filterBoxTable {
+  display: none;
 }
 
 @media screen and (max-width: 1513px) {
@@ -82,14 +86,26 @@
   }
   .title_Button {
     position: fixed;
-    bottom: 10px;
+    bottom: 90px;
     z-index: 15;
-    left: 10%;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .title_Box {
     padding: 0;
+    gap: 10px;
+    border: 0px;
   }
   .filterInputMobile {
     display: flex;
+    width: 80%;
+  }
+  .filterBoxTable {
+    display: flex;
+    background-color: #0f0f0f;
+    border: 1px solid #fff;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 4px;
   }
 }
