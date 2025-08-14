@@ -1,4 +1,5 @@
 "use client";
+
 import style from "./card.module.css";
 import Image from "next/image";
 import defaultImg from "@/public/assets/cardImage.png";
@@ -11,47 +12,77 @@ export default function EditTradeCard({
   point,
   writer,
   content,
+  proposerName,
   onCancel,
   onAccept,
+  loading = false,
 }) {
   return (
     <div className={style.Container}>
+      {/* 카드 이미지 */}
       <div className={style.ImageBox}>
-        <Image src={defaultImg} width={440} height={240} alt="스페인 여행" />
+        <Image
+          src={image || defaultImg}
+          width={440}
+          height={240}
+          alt={title || "제안 카드"}
+        />
       </div>
+
+      {/* 카드 정보 */}
       <div className={style.Title}>
-        <p className={style.titleFont}>{title || "스페인 여행"}</p>
+        <p className={style.titleFont}>{title || "제안 카드"}</p>
         <div className={style.subTitleRow}>
           <div className={style.subTitleTags}>
-            <p
-              className={`${style.grade} ${
-                style[grade.toLowerCase().replace(" ", "_")]
-              }`}
-            >
-              {grade || "COMMON"}
-            </p>
-            <span className={style.divider}>|</span>
-            <p className={style.category}>{category || "풍경"}</p>
-            <span className={style.divider}>|</span>
-            <p className={style.point}>
-              <span className={style.bold}>{point || "4"}P</span> 에 구매
-            </p>
+            {grade && (
+              <p
+                className={`${style.grade} ${
+                  style[grade.toLowerCase().replace(/\s+/g, "_")]
+                }`}
+              >
+                {grade}
+              </p>
+            )}
+            {(grade || category) && <span className={style.divider}>|</span>}
+            {category && <p className={style.category}>{category}</p>}
+            {point && (
+              <>
+                <span className={style.divider}>|</span>
+                <p className={style.point}>
+                  <span className={style.bold}>{point}P</span> 에 구매
+                </p>
+              </>
+            )}
           </div>
-          <p className={style.writer}>{writer || "유디"}</p>
+          {/* 제안자 표시 */}
+          {proposerName && (
+            <p className={style.writer}>제안자: {proposerName}</p>
+          )}
         </div>
       </div>
-      <div>
-        <p className={style.content}>
-          {content ||
-            "스페인 여행 사진도 좋은데.. 우리집 앞마당 포토카드와 교환하고싶습니다!"}
-        </p>
-      </div>
+
+      {/* 교환 제시 멘트 */}
+      {content && (
+        <div>
+          <p className={style.content}>{content}</p>
+        </div>
+      )}
+
+      {/* 버튼 */}
       <div className={style.buttonArea}>
-        <button onClick={onCancel} className={style.closeButton}>
-          거절하기
+        <button
+          onClick={onCancel}
+          className={style.closeButton}
+          disabled={loading}
+        >
+          {loading ? "처리 중..." : "거절하기"}
         </button>
-        <button onClick={onAccept} className={style.acceptButton}>
-          승인하기
+        <button
+          onClick={onAccept}
+          className={style.acceptButton}
+          disabled={loading}
+        >
+          {loading ? "처리 중..." : "승인하기"}
         </button>
       </div>
     </div>

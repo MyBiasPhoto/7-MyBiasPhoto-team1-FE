@@ -19,14 +19,32 @@ export default function MarketPlaceEdit() {
   // 현재 로그인 유저 정보 가져오기
   useEffect(() => {
     async function fetchCurrentUser() {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      const url = `${baseUrl}/users/me`;
+
       try {
-        const res = await fetch("/api/auth/session");
-        const data = await res.json();
-        if (data?.user) {
-          setCurrentUser(data.user);
+        const res = await fetch(url, {
+          credentials: "include",
+        });
+
+        const text = await res.text();
+
+        // JSON 파싱 시도
+        try {
+          const data = JSON.parse(text);
+          if (data?.me) {
+            setCurrentUser(data.me);
+          } else {
+            console.warn("서버에서 me 정보가 없습니다:", data);
+          }
+        } catch {
+          console.error(
+            "현재 유저 정보 불러오기 실패: JSON 아님, 원본 응답:",
+            text
+          );
         }
       } catch (e) {
-        console.error("현재 유저 정보 불러오기 실패:", e);
+        console.error("현재 유저 정보 요청 중 에러:", e);
       }
     }
     fetchCurrentUser();
@@ -49,7 +67,7 @@ export default function MarketPlaceEdit() {
     );
   }, [currentUser?.id, sale?.sellerId]);
 
-  // 판매자가 아니면 구매 페이지로 이동
+  // 판매자 아닐 시 구매 페이지로 이동
   useEffect(() => {
     if (!isLoading && sale?.id && !isSeller) {
       router.replace(`/marketPlace/${sale.id}`);
@@ -76,7 +94,6 @@ export default function MarketPlaceEdit() {
   if (!sale?.id) return <div>해당 판매글을 찾을 수 없습니다.</div>;
 
   if (!isSeller) {
-    // 잠시 로딩/리다이렉트 상태
     return (
       <div className={style.isLoading}>
         <Image
@@ -90,8 +107,6 @@ export default function MarketPlaceEdit() {
       </div>
     );
   }
-
-  // 판매자 뷰
   return (
     <div className={style.Container}>
       <div className={style.Wrapper}>

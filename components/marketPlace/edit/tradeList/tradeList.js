@@ -11,183 +11,149 @@ import {
   rejectExchangeProposal,
 } from "@/utils/api/exchange";
 
-// proposal → EditTradeCard props 정규화
-function normalizeProposalForEditCard(proposal) {
-  if (!proposal) return {};
-
-  const sale = proposal.sale || {};
-  const saleCard = sale.photoCard || {};
-  const seller = sale.seller || {};
-
-  const proposedCard = proposal.proposedCard || {};
-  const proposedPhotoCard = proposedCard.photoCard || {};
-  const proposer = proposal.proposer || proposal.buyer || {};
-
-  const hasProposed = !!(
-    proposedPhotoCard &&
-    (proposedPhotoCard.imageUrl ||
-      proposedPhotoCard.name ||
-      proposedPhotoCard.title)
-  );
-  const baseCard = hasProposed ? proposedPhotoCard : saleCard;
-
-  const image = baseCard.imageUrl || baseCard.image || null;
-  const title = baseCard.name || baseCard.title || "";
-  const grade = baseCard.grade || "COMMON";
-  const category = baseCard.genre || baseCard.category || "";
-  const point = baseCard.price || baseCard.point || null; // 가격/포인트가 있으면 표시
-  const writer =
-    baseCard.writer ||
-    baseCard.author ||
-    baseCard.artist ||
-    proposer.nickname ||
-    proposer.name ||
-    (hasProposed ? "" : seller.nickname) ||
-    "";
-  const content = proposal.message || ""; // 교환 제시 멘트
-
-  return {
-    id: proposal.id,
-    image,
-    title,
-    grade,
-    category,
-    point,
-    writer,
-    content,
-    saleId: proposal.saleId || sale.id,
-  };
-}
-
 export default function EditTradeList({ sale }) {
   const [trade, setTrade] = useState([]);
   const [loadingId, setLoadingId] = useState(null);
-  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
-  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
-  const [targetProposalId, setTargetProposalId] = useState(null);
 
-  useEffect(
-    function () {
-      var ignore = false;
+  const [isRejectOpen, setIsRejectOpen] = useState(false);
+  const [isApproveOpen, setIsApproveOpen] = useState(false);
+  const [target, setTarget] = useState(null);
 
-      async function loadReceived() {
-        try {
-          const res = await getReceivedExchangeProposals(sale?.id);
-          const list = Array.isArray(res?.proposals) ? res.proposals : [];
-          if (!ignore) setTrade(list);
-        } catch (e) {
-          if (!ignore) setTrade([]);
+  // 목록 불러오기
+  useEffect(() => {
+    let ignore = false;
+    async function load() {
+      try {
+        const res = await getReceivedExchangeProposals(sale?.id);
+        const list = Array.isArray(res?.proposals) ? res.proposals : [];
+
+        // status 필터 적용 (PENDING만)
+        const filtered = list.filter((p) => p.status === "PENDING");
+
+        if (!ignore) {
+          const mapped = filtered.map((p) => ({
+            id: p.id,
+            image:
+              p.proposedCard?.photoCard?.imageUrl ||
+              p.proposedCard?.photoCard?.image ||
+              null,
+            title:
+              p.proposedCard?.photoCard?.name ||
+              p.proposedCard?.photoCard?.title ||
+              "",
+            grade: p.proposedCard?.photoCard?.grade || "COMMON",
+            category: p.proposedCard?.photoCard?.genre || "",
+            point: p.proposedCard?.photoCard?.price || null,
+            writer: p.proposer?.nickname || p.proposer?.name || "",
+            proposerName: p.proposer?.nickname || p.proposer?.name || "",
+            content: p.message || "",
+          }));
+          setTrade(mapped);
         }
+      } catch {
+        if (!ignore) setTrade([]);
       }
+    }
+    if (sale?.id) load();
+    return () => {
+      ignore = true;
+    };
+  }, [sale?.id]);
 
-      if (sale?.id) loadReceived();
-      return function () {
-        ignore = true;
-      };
-    },
-    [sale?.id]
-  );
-
-  function openRejectModal(proposalId) {
-    setTargetProposalId(proposalId);
-    setIsRejectModalOpen(true);
+  function openRejectModal(p) {
+    setTarget(p);
+    setIsRejectOpen(true);
   }
-  function openApproveModal(proposalId) {
-    setTargetProposalId(proposalId);
-    setIsApproveModalOpen(true);
+  function openApproveModal(p) {
+    setTarget(p);
+    setIsApproveOpen(true);
   }
   function closeModals() {
-    setTargetProposalId(null);
-    setIsRejectModalOpen(false);
-    setIsApproveModalOpen(false);
+    setIsRejectOpen(false);
+    setIsApproveOpen(false);
+    setTarget(null);
   }
 
-  async function confirmReject() {
-    if (!targetProposalId) return;
+  // 거절
+  async function handleConfirmReject() {
+    if (!target?.id) return;
     try {
-      setLoadingId(targetProposalId);
-      await rejectExchangeProposal(targetProposalId);
-      setTrade(function (prev) {
-        return prev.filter(function (p) {
-          return p.id !== targetProposalId;
-        });
-      });
+      setLoadingId(target.id);
+      await rejectExchangeProposal(target.id);
+
+      // 즉시 목록에서 제거
+      setTrade((prev) => prev.filter((p) => p.id !== target.id));
+      // 교환 거절 alert
+      window.alert("교환이 거절되었습니다.");
     } catch (e) {
-      // eslint-disable-next-line no-console
       console.error(e);
+      window.alert("거절 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
     } finally {
       setLoadingId(null);
       closeModals();
     }
   }
 
-  async function confirmApprove() {
-    if (!targetProposalId) return;
+  // 승인
+  async function handleConfirmApprove() {
+    if (!target?.id) return;
     try {
-      setLoadingId(targetProposalId);
-      const res = await acceptExchangeProposal(targetProposalId);
+      setLoadingId(target.id);
+      const res = await acceptExchangeProposal(target.id);
       const remaining = res?.data?.remainingQuantity;
 
+      // 즉시 목록에서 제거
       if (remaining === 0) {
-        // 남은 수량 0 → 이 판매글의 나머지 제안도 더 이상 유효하지 않음 → 전부 제거
-        setTrade(function (prev) {
-          return prev.filter(function (p) {
-            return p.saleId !== sale?.id;
-          });
-        });
+        setTrade((prev) => prev.filter((p) => p.saleId !== sale?.id));
       } else {
-        // 남은 수량 존재 → 방금 승인한 제안만 제거
-        setTrade(function (prev) {
-          return prev.filter(function (p) {
-            return p.id !== targetProposalId;
-          });
-        });
+        setTrade((prev) => prev.filter((p) => p.id !== target.id));
       }
+      // 교환 승인 alert
+      window.alert("교환이 승인되었습니다.");
     } catch (e) {
-      // eslint-disable-next-line no-console
       console.error(e);
+      window.alert("승인 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
     } finally {
       setLoadingId(null);
       closeModals();
     }
-  }
-
-  function renderItem(p) {
-    const card = normalizeProposalForEditCard(p);
-    return (
-      <EditTradeCard
-        key={card.id}
-        {...card}
-        onCancel={function () {
-          openRejectModal(card.id);
-        }} // 판매자: "거절" 버튼
-        onAccept={function () {
-          openApproveModal(card.id);
-        }} // 판매자: "승인" 버튼
-        loading={loadingId === card.id}
-      />
-    );
   }
 
   return (
     <div>
       <div className={style.title}>
-        <p>교환 제시 목록</p>
+        <p>받은 교환 제시 목록</p>
       </div>
 
-      <div className={style.list}>{trade.map(renderItem)}</div>
-      {isRejectModalOpen && (
+      <div className={style.list}>
+        {trade.map((p) => (
+          <EditTradeCard
+            key={p.id}
+            {...p}
+            loading={loadingId === p.id}
+            onCancel={() => openRejectModal(p)}
+            onAccept={() => openApproveModal(p)}
+          />
+        ))}
+      </div>
+
+      {isRejectOpen && (
         <ExchangeRefuseModal
           onClose={closeModals}
-          onConfirm={confirmReject}
+          onConfirm={handleConfirmReject}
           loading={loadingId !== null}
+          cardTitle={target?.title}
+          cardGrade={target?.grade}
         />
       )}
-      {isApproveModalOpen && (
+
+      {isApproveOpen && (
         <ExchangeApproveModal
           onClose={closeModals}
-          onConfirm={confirmApprove}
+          onConfirm={handleConfirmApprove}
           loading={loadingId !== null}
+          cardTitle={target?.title}
+          cardGrade={target?.grade}
         />
       )}
     </div>

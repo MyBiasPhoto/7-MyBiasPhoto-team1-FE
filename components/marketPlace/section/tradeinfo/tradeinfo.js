@@ -20,12 +20,11 @@ export default function TradeInfo({ sale }) {
       if (typeof window !== "undefined") {
         window.dispatchEvent(
           new CustomEvent("exchange:created", {
-            detail: newProposal, // { id, saleId, message, ... }
+            detail: newProposal,
           })
         );
       }
     } catch (e) {
-      // eslint-disable-next-line no-console
       console.warn("exchange:created 이벤트 발행 실패:", e);
     }
   }
