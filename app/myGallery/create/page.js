@@ -246,7 +246,7 @@ export default function CreatePhotoCardPage() {
     )
       return false;
 
-    if (!/\.(jpg|jpeg|png|gif)$/i.test(imageUrl.trim())) return false;
+    if (!/\.(jpg|jpeg|png|gif|webp)$/i.test(imageUrl.trim())) return false;
 
     return true;
   }

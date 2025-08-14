@@ -31,8 +31,10 @@ export function NotificationsProvider({ children }) {
   const [isStreamConnected, setIsStreamConnected] = useState(false);
   const [lastDeliveredEventId, setLastDeliveredEventId] = useState(null);
 
-  // 중복 방지용: 이미 가진 알림 id 집합
+  // 중복 방지용: 이미 가진 알림 id집합 저장
   const knownIdsRef = useRef(new Set());
+
+  //현재 sse연결 해제 함수 저장
   const disconnectRef = useRef(null);
 
   // ---- 초기화 (로그인 시) ----
@@ -46,6 +48,8 @@ export function NotificationsProvider({ children }) {
       setIsStreamConnected(false);
       setLastDeliveredEventId(null);
       knownIdsRef.current.clear();
+
+      //기존 sse연결 해제
       if (disconnectRef.current) {
         disconnectRef.current();
         disconnectRef.current = null;
@@ -53,15 +57,17 @@ export function NotificationsProvider({ children }) {
       return;
     }
 
+    //로그인 상태면 알림 초기 데이터 + sse연결
     let isActive = true;
 
+    //앱을 초기상태로 세팅하는 함수
     const bootstrap = async () => {
       try {
         const initialUnread = await getUnreadCount();
         if (!isActive) return;
         setUnreadCount(initialUnread);
       } catch (e) {
-        // 무시하고 다음 단계 진행
+        // 실패해도 sse연결 은 계속 시도
       }
 
       // SSE 연결
@@ -70,30 +76,35 @@ export function NotificationsProvider({ children }) {
         disconnectRef.current = null;
       }
       disconnectRef.current = openNotificationStream({
-        lastEventId: lastDeliveredEventId ?? undefined,
-        backfillLimit: 10,
+        lastEventId: lastDeliveredEventId ?? undefined, //마지막으로 받은 이벤트 id (backfill용)
+        backfillLimit: 10, // 재전송 받을 최대 알림 개수
         onMessage: (payload, { event: serverEventType, id: serverEventId }) => {
-          // payload: { id, type, content, read, createdAt }
+          // 서버에서 내려준 알림 데이터 payload: { id, type, content, read, createdAt }
           const numericId = Number(payload?.id);
+          // 이미 받은 알림이면 무시
           if (!numericId || knownIdsRef.current.has(numericId)) return;
 
+          //새 알림 id 저장
           knownIdsRef.current.add(numericId);
+          //마지막으로 받은 이벤트 id 업데이트
           setLastDeliveredEventId(Number(serverEventId) || numericId);
 
           // 새 알림을 목록 맨 앞에 추가
           setNotificationItems((prev) => [payload, ...prev]);
-          // 읽지 않음 수 증분 (서버가 이미 read=false로 내려줌)
+          // 읽지 않은 알림이면 카운트 +1 (서버가 이미 read=false로 내려줌)
           if (!payload.read) {
             setUnreadCount((prev) => prev + 1);
           }
         },
         onError: () => {
+          //sse 연결 끊김 -> setIsStreamConnected 상태 변경
           setIsStreamConnected(false);
           // 브라우저가 자동 재연결 시도
         },
       });
       setIsStreamConnected(true);
 
+      //컴포넌트 언마운트 시 sse연결 해제
       return () => {
         if (disconnectRef.current) {
           disconnectRef.current();
@@ -102,7 +113,10 @@ export function NotificationsProvider({ children }) {
       };
     };
 
+    //초기 세팅
     bootstrap();
+
+
     return () => {
       isActive = false;
     };
@@ -124,6 +138,7 @@ export function NotificationsProvider({ children }) {
     setHasMoreItems(hasMore);
   };
 
+  // 추가로딩 페이지네이션
   const loadMoreList = async () => {
     if (!hasMoreItems || !nextCursorId) return;
     const { items, nextCursor, hasMore } = await getNotifications({
@@ -131,6 +146,7 @@ export function NotificationsProvider({ children }) {
       cursor: nextCursorId,
     });
 
+    // 중복 제거 후 기존 목록 뒤에 붙이기
     const deduped = items.filter((n) => !knownIdsRef.current.has(n.id));
     deduped.forEach((n) => knownIdsRef.current.add(n.id));
 
@@ -139,31 +155,35 @@ export function NotificationsProvider({ children }) {
     setHasMoreItems(hasMore);
   };
 
-  // ---- 읽음 처리 ----
+  // ---- 특정 알림 읽음 처리 ----
   const markOneAsRead = async (notificationId) => {
     const { updated } = await markRead(notificationId);
     if (!updated) return;
 
+    //해당 알림의 read상태 true로 변경
     setNotificationItems((prev) =>
       prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
     );
     setUnreadCount((prev) => Math.max(0, prev - 1));
   };
 
+  // 전체읽음 처리
   const markAllAsRead = async () => {
     const { updated } = await markAllRead({ unreadOnly: true });
     if (updated > 0) {
+      //모든 알림 read = true 로 변경
       setNotificationItems((prev) => prev.map((n) => ({ ...n, read: true })));
       setUnreadCount(0);
     }
   };
 
-  // ---- 배지 동기화 (원할 때 강제 새로고침) ----
+  // ---- 배지 동기화 - 읽지 않은 개수 강제 새로고침 ----
   const refreshUnreadCount = async () => {
     const fresh = await getUnreadCount();
     setUnreadCount(fresh);
   };
 
+  // Context로 전달할 값 메모이제이션
   const contextValue = useMemo(
     () => ({
       // state
@@ -190,6 +210,7 @@ export function NotificationsProvider({ children }) {
     ]
   );
 
+  // Provider로 감싸서 하위 컴포넌트에서 useNotifications로 접근 가능하게
   return (
     <NotificationsContext.Provider value={contextValue}>
       {children}
@@ -197,6 +218,7 @@ export function NotificationsProvider({ children }) {
   );
 }
 
+// Hook : NotificationContext를 안전하게 사용하기 위한 헬퍼
 export function useNotifications() {
   const ctx = useContext(NotificationsContext);
   if (!ctx)
