@@ -6,7 +6,7 @@ import Image from "next/image";
 import style from "./select.module.css";
 import React, { memo } from "react";
 
-function Select({ name, option, onChange }) {
+function Select({ name, option, onChange, defaultOption }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectName, setSelectName] = useState();
   const ref = useRef(null);
@@ -29,6 +29,9 @@ function Select({ name, option, onChange }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const finalOptions = defaultOption ? [defaultOption, ...option] : option;
+
   return (
     <div className={style.selectContainer} ref={ref}>
       <div className={style.selectBox} onClick={toggleOpen}>
@@ -42,7 +45,7 @@ function Select({ name, option, onChange }) {
         />
         {isOpen && (
           <div className={style.modal}>
-            {option.map((opt) => (
+            {finalOptions.map((opt) => (
               <div
                 className={style.modalEvent}
                 key={opt.value}

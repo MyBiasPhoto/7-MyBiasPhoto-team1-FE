@@ -30,7 +30,7 @@
 .myGallery {
   /* background-color: var(--black); 
   */
-  background-color: rgb(196, 230, 244);
+  background-color: var(--black-black, #0f0f0f);
   min-height: 100vh;
   display: flex;
   padding-top: 20px;
@@ -80,6 +80,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+  width: 100%;
+  margin: 0 auto;
 }
 .cardItem {
   position: static;
@@ -158,39 +160,6 @@
   color: gold;
 }
 
-/* === genreOption === */
-.character {
-  color: #ff7f50; /* coral */
-}
-.landscape {
-  color: #20b2aa; /* lightseagreen */
-}
-.realistic {
-  color: #778899; /* lightslategray */
-}
-.etc {
-  color: #a9a9a9; /* darkgray */
-}
-
-/* === amountOption === */
-.sales {
-  color: #2e8b57; /* seagreen */
-}
-.soldout {
-  color: #b22222; /* firebrick */
-}
-
-/* === sortOption === */
-.price_asc {
-  color: #4682b4; /* steelblue */
-}
-.price_desc {
-  color: #8a2be2; /* blueviolet */
-}
-.newest {
-  color: #ff69b4; /* hotpink */
-}
-
 .options:hover {
   background-color: #3b3b3b;
 }
@@ -239,50 +208,14 @@
   color: #fff;
 }
 
-@media screen and (max-width: 1513px) {
-  /* 여기에 1513px 이하일 때 적용할 스타일 작성 */
-  .cardList {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-}
-
-/* PC (데스크탑): 1024px 이상 */
-@media (min-width: 1024px) {
-  /* 데스크탑 스타일 */
-}
-
-/* 태블릿: 768px ~ 1023px */
-@media (min-width: 746px) and (max-width: 1199px) {
-  /* 태블릿 스타일 */
-  .cardList {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-  .title_Button {
-    width: 240px;
-  }
-  .title_Text {
-    font-size: 42px;
-  }
-  .marketPlaceContainer {
-    padding: 0;
-  }
-  .filterInput {
-    width: 190px;
-  }
-  .title_Box {
-    padding: 0;
-  }
-}
-
-/* 모바일: 0px ~ 767px */
+/* 모바일: 0px ~ 746px */
 @media (max-width: 746px) {
-  /* 모바일 스타일 */
   .cardList {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    width: max-content;
+    margin: 0 auto;
+    gap: 16px;
   }
   .filterBox {
     display: none;
@@ -301,7 +234,7 @@
   }
   .title_Button {
     position: fixed;
-    bottom: 10px;
+    bottom: 80px;
     z-index: 15;
     left: 10%;
   }
@@ -320,4 +253,116 @@
   .title_Box {
     padding: 0;
   }
+  .myGalleryContainer {
+    padding: 0;
+  }
+}
+
+/* 태블릿: 747px ~ 1513px */
+@media (min-width: 747px) and (max-width: 1513px) {
+  .cardList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: max-content;
+  }
+  .title_Button {
+    width: 240px;
+  }
+  .title_Text {
+    font-size: 42px;
+  }
+  .marketPlaceContainer {
+    padding: 0;
+  }
+  .filterInput {
+    width: 190px;
+  }
+  .title_Box {
+    padding: 0;
+  }
+  .myGalleryContainer {
+    padding: 0;
+  }
+}
+
+/* 데스크탑: 1514px ~ 1999px */
+@media (min-width: 1514px) and (max-width: 1999px) {
+  .cardList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .myGalleryContainer {
+    padding: 0 150px;
+  }
+}
+
+/* 큰 화면: 2000px 이상 */
+@media (min-width: 2000px) {
+  .cardList {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .myGalleryContainer {
+    padding: 0 150px;
+  }
+}
+
+.topTitle {
+  margin-top: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--gray-gray400, #5a5a5a);
+}
+
+.filterInput {
+  display: flex;
+  width: 320px;
+  height: 50px;
+  padding: 13px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  border: 1px solid var(--gray-gray200, #ddd);
+  background: var(--black-black, #0f0f0f);
+}
+
+.filterSelect {
+  color: #fff;
+  background-color: var(--black-black);
+  border: 0;
+}
+.filterOption {
+  color: #fff;
+  background-color: var(--black-black);
+}
+
+.MobileModal {
+  position: fixed; /* 화면에 고정 */
+  bottom: 0; /* 화면 맨 아래에 붙임 */
+  left: 0;
+  width: 100%; /* 가로 전체 */
+  height: 60%; /* 화면 높이의 60% 차지 */
+  background-color: #1b1b1b;
+  border-top-left-radius: 12px; /* 위 모서리 둥글게 */
+  border-top-right-radius: 12px;
+  z-index: 9999; /* 다른 요소 위에 표시 */
+}
+
+.MobileModalTitle {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  color: var(--gray-gray400, #5a5a5a);
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.close {
+  position: absolute;
+  right: 5%;
+  cursor: pointer;
 }

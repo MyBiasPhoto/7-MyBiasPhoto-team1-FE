@@ -1,0 +1,57 @@
+.box {
+  display: flex;
+  gap: 40px;
+  padding-bottom: 0px;
+  border-bottom: 2px solid var(--gray-gray500, #161616);
+  padding-left: 12px;
+}
+
+.Container {
+  color: var(--gray-gray300, #a4a4a4);
+  margin-top: 50px;
+  padding: 10px;
+}
+
+.font {
+  font-size: 24px;
+  padding-bottom: 6px;
+  position: relative;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.optionFont {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.option {
+  padding: 10px;
+}
+
+.option:hover {
+  background-color: var(--gray-gray500, #161616);
+  color: #fff;
+}
+
+.optionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.active {
+  color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background-color: #fff;
+}

@@ -6,27 +6,28 @@
 }
 
 .pageButton {
-  border: 1px solid #ccc;
+  border: 0;
   padding: 8px 12px;
   border-radius: 4px;
   background: white;
   cursor: pointer;
+  background-color: var(--black-black);
+  color: #fff;
 }
 
 .pageButton:hover:not(:disabled):not(.active) {
-  background: #f0f0f0;
+  background: #aaa;
 }
 .pageButton:disabled {
-  background: #f8f8f8;
+  background: var(--gray-400);
   color: #aaa;
   border-color: #eee;
   cursor: not-allowed;
 }
 
 .active {
-  background-color: #3692ff;
+  border: 1px solid #fff;
   color: white;
-  border-color: #147eff;
 }
 
 .ellipsis {
