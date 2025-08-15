@@ -11,6 +11,8 @@ import LoginInput from "./LoginInput";
 import LoginButton from "./LoginButton";
 import LoginFooter from "./LoginFooter";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+
 export default function LoginForm() {
   const { login } = useAuth();
   const router = useRouter();
@@ -112,7 +114,12 @@ export default function LoginForm() {
           <span className={styles.loginbtnText}>로그인</span>
         </LoginButton>
 
-        <LoginButton className={`${styles.button} ${styles.googlebtn}`}>
+        <LoginButton
+          className={`${styles.button} ${styles.googlebtn}`}
+          onClick={() => {
+            window.location.href = `${API_URL}/auth/google?strategy=${strategy}`;
+          }}
+        >
           <Image
             src="/icons/google.svg"
             alt="Google 아이콘"
@@ -120,6 +127,22 @@ export default function LoginForm() {
             height={22}
           />
           <span className={styles.googlebtnText}>Google로 시작하기</span>
+        </LoginButton>
+        <LoginButton
+          className={`${styles.button} ${styles.kakaobtn}`}
+          onClick={() => {
+            window.location.href = `${API_URL}/auth/kakao?strategy=${strategy}`;
+          }}
+        >
+          <div className={styles.kakaoColor}>
+            <Image
+              src="/icons/kakao.svg"
+              alt="Google 아이콘"
+              width={18}
+              height={18}
+            />
+          </div>
+          <span className={styles.googlebtnText}>Kakao로 시작하기</span>
         </LoginButton>
       </div>
 

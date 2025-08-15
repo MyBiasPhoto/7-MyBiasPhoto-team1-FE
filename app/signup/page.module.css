@@ -102,15 +102,24 @@
   border-radius: 2px;
   gap: 10px;
   cursor: pointer;
+  border: none;
 }
 .signupbtn {
   background: var(--main);
 }
 .googlebtn {
   background: var(--white);
-  border: 1px solid var(--gray-300);
 }
-
+.kakaoColor {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: #f5e14b;
+  border-radius: 50px;
+}
 .googlebtnText {
   color: var(--black);
   font-family: "Noto Sans KR";
