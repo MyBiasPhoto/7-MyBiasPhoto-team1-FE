@@ -9,6 +9,8 @@ import SignupInput from "./SignupInput";
 import SignupButton from "./SignupButton";
 import SignupFooter from "./SignupFooter";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+
 export default function SignupForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,17 +23,18 @@ export default function SignupForm() {
   const [passwordError, setPasswordError] = useState("");
   const [passwordCheckError, setPasswordCheckError] = useState("");
   const [nicknameError, setNicknameError] = useState("");
+  const [strategy, setStrategy] = useState("sliding");
   const router = useRouter();
 
   // 검증 함수
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePassword = (password) => password.length >= 8;
-  const validateNickname = (nickname) => nickname.trim() !== "";
+  const validateEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePassword = password => password.length >= 8;
+  const validateNickname = nickname => nickname.trim() !== "";
 
   // 비번 보기 토글
-  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
   const togglePasswordCheckVisibility = () =>
-    setShowPasswordCheck((prev) => !prev);
+    setShowPasswordCheck(prev => !prev);
 
   // 회원가입 핸들러
   const handleSignup = async () => {
@@ -80,7 +83,7 @@ export default function SignupForm() {
         label="이메일"
         type="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
         error={emailError}
         placeholder="이메일을 입력해 주세요"
         className={styles.email}
@@ -93,7 +96,7 @@ export default function SignupForm() {
         label="닉네임"
         type="text"
         value={nickname}
-        onChange={(e) => setNickname(e.target.value)}
+        onChange={e => setNickname(e.target.value)}
         error={nicknameError}
         placeholder="닉네임을 입력해 주세요"
         className={styles.nickname}
@@ -106,7 +109,7 @@ export default function SignupForm() {
         label="비밀번호"
         type={showPassword ? "text" : "password"}
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
         error={passwordError}
         placeholder="비밀번호를 입력해 주세요"
         className={styles.password}
@@ -134,7 +137,7 @@ export default function SignupForm() {
         label="비밀번호 확인"
         type={showPasswordCheck ? "text" : "password"}
         value={passwordCheck}
-        onChange={(e) => setPasswordCheck(e.target.value)}
+        onChange={e => setPasswordCheck(e.target.value)}
         error={passwordCheckError}
         placeholder="비밀번호를 한번 더 입력해 주세요"
         className={styles.passwordCheck}
@@ -157,7 +160,7 @@ export default function SignupForm() {
             style={{ cursor: "pointer" }}
           />
         }
-        onKeyDown={(e) => {
+        onKeyDown={e => {
           if (e.key === "Enter") handleSignup();
         }}
       />
@@ -170,7 +173,12 @@ export default function SignupForm() {
           <span className={styles.signupbtnText}>가입하기</span>
         </SignupButton>
 
-        <SignupButton className={`${styles.button} ${styles.googlebtn}`}>
+        <SignupButton
+          className={`${styles.button} ${styles.googlebtn}`}
+          onClick={() => {
+            window.location.href = `${API_URL}/auth/google?strategy=${strategy}`;
+          }}
+        >
           <Image
             src="/icons/google.svg"
             alt="Google 아이콘"
@@ -178,6 +186,22 @@ export default function SignupForm() {
             height={22}
           />
           <span className={styles.googlebtnText}>Google로 시작하기</span>
+        </SignupButton>
+        <SignupButton
+          className={`${styles.button} ${styles.googlebtn}`}
+          onClick={() => {
+            window.location.href = `${API_URL}/auth/kakao?strategy=${strategy}`;
+          }}
+        >
+          <div className={styles.kakaoColor}>
+            <Image
+              src="/icons/kakao.svg"
+              alt="Google 아이콘"
+              width={18}
+              height={18}
+            />
+          </div>
+          <span className={styles.googlebtnText}>Kakao로 시작하기</span>
         </SignupButton>
       </div>
 
