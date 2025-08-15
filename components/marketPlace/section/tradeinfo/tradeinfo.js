@@ -3,9 +3,11 @@
 import { useState } from "react";
 import style from "./tradeinfo.module.css";
 import ExchangePhotoModal from "@/components/modals/exchangePhotoModal.js";
+import LoginModal from "@/components/modals/loginModal.js";
 
 export default function TradeInfo({ sale }) {
   const [isModal, setIsModal] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   function openModal() {
     setIsModal(true);
@@ -36,11 +38,39 @@ export default function TradeInfo({ sale }) {
     return "";
   }
 
+  function fetchMe() {
+    return (async function () {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+        const res = await fetch(`${baseUrl}/users/me`, {
+          credentials: "include",
+        });
+        const data = await res.json().catch(function () {
+          return null;
+        });
+        return !!(data && data.me && data.me.id);
+      } catch (e) {
+        return false;
+      }
+    })();
+  }
+
+  function handleTradeClick() {
+    (async function () {
+      const isLoggedIn = await fetchMe();
+      if (isLoggedIn) {
+        setIsModal(true);
+      } else {
+        setIsLoginOpen(true);
+      }
+    })();
+  }
+
   return (
     <div className={style.Container}>
       <div className={style.title}>
         <p className={style.titleFont}>교환 희망 정보</p>
-        <button onClick={openModal} className={style.titleButton}>
+        <button onClick={handleTradeClick} className={style.titleButton}>
           포토카드 교환하기
         </button>
       </div>
@@ -55,7 +85,7 @@ export default function TradeInfo({ sale }) {
           <p className={style.Type}>{sale?.desiredGenre}</p>
         </div>
       </div>
-      <button onClick={openModal} className={style.MobileButton}>
+      <button onClick={handleTradeClick} className={style.MobileButton}>
         포토카드 교환하기
       </button>
       {isModal && (
@@ -63,6 +93,13 @@ export default function TradeInfo({ sale }) {
           saleId={sale?.id}
           onClose={closeModal}
           onSuccess={handleProposalCreated}
+        />
+      )}
+      {isLoginOpen && (
+        <LoginModal
+          onClose={function () {
+            setIsLoginOpen(false);
+          }}
         />
       )}
     </div>
