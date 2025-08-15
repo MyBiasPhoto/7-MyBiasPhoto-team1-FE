@@ -6,10 +6,35 @@ import style from "./buy.module.css";
 import CustomInput from "../../customInput/customInput.js";
 import { useEffect, useState } from "react";
 import PurchasePhotoModal from "@/components/modals/purchasePhotoModal.js";
+import LoginModal from "@/components/modals/loginModal.js";
+
 export default function Buy({ sale }) {
   const [count, setCount] = useState(1);
   const [total, setTotal] = useState(sale?.price * count);
   const [isModal, setIsModal] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  async function fetchMe() {
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      const res = await fetch(`${baseUrl}/users/me`, {
+        credentials: "include",
+      });
+      const data = await res.json().catch(() => null);
+      return !!data?.me?.id;
+    } catch {
+      return false;
+    }
+  }
+
+  async function handleBuyClick() {
+    const isLoggedIn = await fetchMe();
+    if (isLoggedIn) {
+      setIsModal(true); // 기존 구매 모달 열기
+    } else {
+      setIsLoginOpen(true); // 로그인 모달 열기
+    }
+  }
 
   useEffect(() => {
     setTotal(sale?.price * count);
@@ -110,12 +135,7 @@ export default function Buy({ sale }) {
               </div>
             </div>
             <div className={style.buyButtonBox}>
-              <button
-                onClick={() => {
-                  setIsModal(true);
-                }}
-                className={style.buyButton}
-              >
+              <button onClick={handleBuyClick} className={style.buyButton}>
                 포토카드 구매하기
               </button>
             </div>
@@ -133,6 +153,7 @@ export default function Buy({ sale }) {
             onClose={() => setIsModal(false)}
           />
         )}
+        {isLoginOpen && <LoginModal onClose={() => setIsLoginOpen(false)} />}
       </div>
     </div>
   );
