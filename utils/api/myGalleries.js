@@ -9,12 +9,12 @@ export const fetchMyGalleryData = async (filters = {}, extra = {}) => {
   if (filters.page) params.append("page", filters.page);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const myGalleryPath = "/users/me/userCard/gallery";
+  const myGalleryPath = "/users/me/userCard/grouped";
   // const myGalleryPath = "/users/me/userCard/market";
 
   const queryString = params.toString();
 
-  // GET http://localhost:4000/users/me/userCard/gallery
+  // GET http://localhost:4000/users/me/userCard/grouped
   const url = `${baseUrl}${myGalleryPath}${
     queryString ? `?${queryString}` : ""
   }`;
