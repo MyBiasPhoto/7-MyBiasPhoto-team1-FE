@@ -102,6 +102,12 @@ export default function MyGalleryCardGrid({ items, isLoading, isPending }) {
             widgetId={3456789} // 쿠팡 위젯 ID
             trackingCode="AF1234567"
           />
+          {/* export default function MyGalleryCardGrid({ items }) {
+  return (
+    <div className={style.cardList}>
+      {items.map((item) => (
+        <div className={style.cardItem} key={item.photoCardId}>
+          <MyGalleryCard {...item} /> */}
         </div>
       );
     }
