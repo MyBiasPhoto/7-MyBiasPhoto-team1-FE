@@ -19,10 +19,15 @@ import {
 } from "@/components/marketPlace/config/config";
 
 import style from "./page.module.css";
+import { useAuth } from "@/utils/auth/authContext";
+import LoginModal from "@/components/modals/loginModal";
 
 export default function MyGalleryClient({ initialFilters }) {
   const router = useRouter();
   const pathname = usePathname();
+
+  const { isLogin, bootstrapped } = useAuth();
+
   const { state: filters, dispatch } = useGalleryFilters({
     ...initialFilters,
     selectedOptionType: "grade",
@@ -39,21 +44,32 @@ export default function MyGalleryClient({ initialFilters }) {
     queryKey: ["gallery", queryFilters],
     queryFn: () => fetchMyGalleryData(queryFilters),
     // keepPreviousData: true,
+    enabled: bootstrapped && isLogin, //부트스트랩 끝나고 + 로그인 일때만 쿼리수행
   });
 
   const myGalleryList = data?.MyGalleryList ?? [];
-  // const myGalleryList = data?.myMarketList ?? [];
-
   const totalCount = data?.totalCount ?? 0;
   const currentPage = data?.page ?? filters.page;
   const pageSize = data?.pageSize ?? 5;
 
-  const { userNickname, myMarketList = [], page = 1, gradeCounts } = data ?? {};
+  const { userNickname, page = 1, gradeCounts } = data ?? {};
 
   const toggleFilterModal = useCallback(
     () => setIsFilterModalOpen((prev) => !prev),
     []
   );
+
+  // ✅ 부트스트랩 전에는 스켈레톤/스피너만
+  if (!bootstrapped) {
+    return (
+      <div className={style.myGallery}>
+        <PageHeader title="마이갤러리" />
+        <div className={style.myGalleryContainer}>
+          <LoadingSpinner />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={style.myGallery}>
@@ -68,57 +84,74 @@ export default function MyGalleryClient({ initialFilters }) {
         }}
         onToggleFilterModal={toggleFilterModal}
       />
+
       <div className={style.myGalleryContainer}>
-        <div className={style.topTitle}>
-          <CardRaritySummary
-            gradeCounts={gradeCounts ?? []}
-            nickname={userNickname ?? ""}
-          />
-        </div>
-        <FilterBar filters={filters} dispatch={dispatch} />
-
-        {error && <div>에러발생 : {error.message}</div>}
-
-        {isPending ? (
-          <div>
-            <LoadingSpinner />
-          </div>
-        ) : myGalleryList?.length === 0 ? (
-          <div>검색결과 없음</div>
-        ) : (
+        {isLogin && (
           <>
-            <MyGalleryCardGrid items={myGalleryList} />
-            <Pagination
-              page={currentPage}
-              pageSize={pageSize}
-              totalCount={totalCount}
-              onPageChange={(page) => {
-                dispatch({ type: "SET_PAGE", payload: page });
-              }}
-            />
+            <div className={style.topTitle}>
+              <CardRaritySummary
+                gradeCounts={gradeCounts ?? []}
+                nickname={userNickname ?? ""}
+              />
+            </div>
+            <FilterBar filters={filters} dispatch={dispatch} />
+
+            {error && <div>에러발생 : {error.message}</div>}
+
+            {isPending ? (
+              <div>
+                <LoadingSpinner />
+              </div>
+            ) : myGalleryList?.length === 0 ? (
+              <div>검색결과 없음</div>
+            ) : (
+              <>
+                <MyGalleryCardGrid items={myGalleryList} />
+                <Pagination
+                  page={currentPage}
+                  pageSize={pageSize}
+                  totalCount={totalCount}
+                  onPageChange={(page) => {
+                    dispatch({ type: "SET_PAGE", payload: page });
+                  }}
+                />
+              </>
+            )}
+            {console.log("필터값:", filters)}
+
+            {isFilterModalOpen && (
+              <div className={style.MobileModal}>
+                <div className={style.MobileModalTitle}>
+                  <p>필터</p>
+                  <p
+                    className={style.close}
+                    onClick={() => setIsFilterModalOpen(false)}
+                  >
+                    x
+                  </p>
+                </div>
+                <FilterBartwo
+                  filters={filters}
+                  dispatch={dispatch}
+                  onClose={() => setIsFilterModalOpen(false)}
+                />
+              </div>
+            )}
           </>
         )}
-        {console.log("필터값:", filters)}
-
-        {isFilterModalOpen && (
-          <div className={style.MobileModal}>
-            <div className={style.MobileModalTitle}>
-              <p>필터</p>
-              <p
-                className={style.close}
-                onClick={() => setIsFilterModalOpen(false)}
-              >
-                x
-              </p>
-            </div>
-            <FilterBartwo
-              filters={filters}
-              dispatch={dispatch}
-              onClose={() => setIsFilterModalOpen(false)}
-            />
-          </div>
-        )}
       </div>
+
+      {/* ✅ 로그인 안 되어 있으면 모달 표시 (닫아도 페이지는 머무름) */}
+      {!isLogin && (
+        <LoginModal
+          // 모달 닫기 동작을 막고 싶으면 onClose 제거하거나 noClose props 만들어 처리
+          onClose={() => {
+            // 사용자가 모달을 닫으면 홈 등으로 보낼지, 그냥 닫을지 팀 정책에 맞게
+            // router.push("/login?returnTo=" + encodeURIComponent(pathname));
+          }}
+          returnTo={pathname} // 선택: 로그인 페이지에서 완료 후 돌아올 경로
+        />
+      )}
     </div>
   );
 }

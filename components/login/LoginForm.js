@@ -45,6 +45,7 @@ export default function LoginForm() {
       await login({ email, password, strategy });
       alert("로그인 성공!");
       router.push("/");
+      //@TODO useSearchParams써서 returnTo 적용시키기 - 현재는 로그인하면 무조건 랜딩페이지임
     } catch (error) {
       const msg =
         error?.response?.data?.message || "로그인 중 오류가 발생했습니다.";
