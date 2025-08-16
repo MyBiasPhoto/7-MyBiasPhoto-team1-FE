@@ -48,7 +48,9 @@ export default function UserCardItem({ card, mode }) {
               <span className={style.divider}>|</span>
               <p className={style.genre}>{card.genre || "장르"}</p>
             </div>
-            <p className={style.cardOwner}>{card.owner || "판매자 id"}</p>
+            <p className={style.cardOwner}>
+              {card.ownerNickName || "판매자 닉네임"}
+            </p>
           </div>
         </div>
         {/* 가격및 수량 */}
