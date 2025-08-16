@@ -1,5 +1,5 @@
 // utils/api/myGalleries.js
-export const fetchMyGalleryData = async (filters = {}) => {
+export const fetchMyGalleryData = async (filters = {}, extra = {}) => {
   const params = new URLSearchParams();
 
   if (filters.search) params.append("search", filters.search);
@@ -20,6 +20,11 @@ export const fetchMyGalleryData = async (filters = {}) => {
   }`;
   const res = await fetch(url, {
     credentials: "include",
+    headers: {
+      ...(extra.cookie ? { Cookie: extra.cookie } : {}),
+      ...(extra.headers || {}),
+    },
+    cache: "no-store",
   });
 
   if (!res.ok) {
