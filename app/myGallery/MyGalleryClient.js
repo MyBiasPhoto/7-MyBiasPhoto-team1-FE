@@ -128,7 +128,7 @@ export default function MyGalleryClient({ initialFilters }) {
             />
           </div>
         )}
-        {console.log("필터값:", filters)}
+        {/* {console.log("필터값:", filters)} */}
 
         {isFilterModalOpen && (
           <div className={style.MobileModal}>

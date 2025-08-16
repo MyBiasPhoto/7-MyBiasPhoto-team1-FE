@@ -30,6 +30,6 @@ export const fetchMySaleData = async (filters = {}, extra = {}) => {
     throw new Error("판매 목록을 불러오지 못했습니다.");
   }
 
-  console.log("[fetchMySaleData] URL =", url);
+  // console.log("[fetchMySaleData] URL =", url);
   return res.json();
 };
