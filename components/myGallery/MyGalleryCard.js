@@ -8,11 +8,12 @@ import { useEffect, useRef } from "react";
 import soldout from "@/public/assets/soldout.svg";
 
 export default function MyGalleryCard({
+  photoCardId,
   name,
   grade,
   ownerNickName,
   genre,
-  quantity,
+  count,
   price,
   imageUrl,
 }) {
@@ -23,12 +24,12 @@ export default function MyGalleryCard({
       <div className={style.cardBox}>
         <div className={style.cardImageBox}>
           {/* 이미지 */}
-          {quantity == 0 && (
+          {count == 0 && (
             <Image
               src={soldout}
               alt={"매진"}
               className={`${style.soldOutLayer} ${
-                quantity === 0 ? style.show : style.hide
+                count === 0 ? style.show : style.hide
               }`}
             />
           )}
@@ -64,8 +65,7 @@ export default function MyGalleryCard({
           </div>
           <div className={style.CardSubTitle2}>
             <p>수량</p>
-            <p>1</p>
-            {/* <p>{quantity || "1"}</p> */}
+            <p>{count || 1}</p>
           </div>
         </div>
         <div className={style.cardLogo}>

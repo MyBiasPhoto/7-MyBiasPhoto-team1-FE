@@ -47,7 +47,9 @@ export default function MyGalleryClient({ initialFilters }) {
     enabled: bootstrapped && isLogin, //부트스트랩 끝나고 + 로그인 일때만 쿼리수행
   });
 
-  const myGalleryList = data?.MyGalleryList ?? [];
+  const myGalleryList = data?.myGroupedCards ?? [];
+  // const myGalleryList = data?.myMarketList ?? [];
+
   const totalCount = data?.totalCount ?? 0;
   const currentPage = data?.page ?? filters.page;
   const pageSize = data?.pageSize ?? 5;
@@ -73,7 +75,7 @@ export default function MyGalleryClient({ initialFilters }) {
 
   return (
     <div className={style.myGallery}>
-      {console.log(initialFilters)}
+      {/* {console.log(initialFilters)} */}
       <PageHeader
         title={"마이갤러리"}
         buttonLabel={"포토카드 생성하기"}
