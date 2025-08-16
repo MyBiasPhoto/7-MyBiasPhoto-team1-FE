@@ -257,13 +257,8 @@ export default function CreatePhotoCardPage() {
         <p className={styles.title_Text}>포토카드 생성</p>
         {monthly && (
           <div className={styles.monthlyBadge} role="status">
-            <strong>이번 달 남은 장</strong>: {Math.max(0, monthly.remaining)}/
-            {monthly.limit}
-            {monthly.remaining > 0 ? (
-              <span> (생성 {monthly.created}장)</span>
-            ) : (
-              <span> (한도 도달)</span>
-            )}
+            <strong>이번 달 남은 생성 수</strong>:{" "}
+            {Math.max(0, monthly.remaining)}/{monthly.limit}
           </div>
         )}
       </div>
