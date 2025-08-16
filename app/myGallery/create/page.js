@@ -257,9 +257,10 @@ export default function CreatePhotoCardPage() {
         <p className={styles.title_Text}>포토카드 생성</p>
         {monthly && (
           <div className={styles.monthlyBadge} role="status">
-            <strong>이번 달 생성</strong>: {monthly.created}/{monthly.limit}
+            <strong>이번 달 남은 장</strong>: {Math.max(0, monthly.remaining)}/
+            {monthly.limit}
             {monthly.remaining > 0 ? (
-              <span> (남은 {monthly.remaining}장)</span>
+              <span> (생성 {monthly.created}장)</span>
             ) : (
               <span> (한도 도달)</span>
             )}
@@ -367,42 +368,38 @@ export default function CreatePhotoCardPage() {
         disabled={!canCreateThisMonth}
       />
 
-      <div>
-        <CreateTextarea
-          id="description"
-          label="포토카드 설명"
-          placeholder="카드 설명을 입력해 주세요"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-      </div>
+      <CreateTextarea
+        id="description"
+        label="포토카드 설명"
+        placeholder="카드 설명을 입력해 주세요"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        required
+      />
 
-      <div>
-        <button
-          className={styles.create}
-          style={{
-            background: isValid() ? "var(--main)" : "var(--gray-400)",
-          }}
-          disabled={!isValid()}
-          onClick={handleCreate}
+      <button
+        className={styles.create}
+        style={{
+          background: isValid() ? "var(--main)" : "var(--gray-400)",
+        }}
+        disabled={!isValid()}
+        onClick={handleCreate}
+      >
+        <div
+          className={`${styles.createText} ${isValid() ? styles.active : ""}`}
         >
-          <div
-            className={`${styles.createText} ${isValid() ? styles.active : ""}`}
-          >
-            생성하기
-          </div>
-        </button>
-        {showModal && (
-          <MakePhotoModal
-            userCardCount={userCardCount}
-            currentCardTotal={currentCardTotal}
-            cardGrade={createdGrade}
-            cardTitle={createdName}
-            onClose={() => setShowModal(false)}
-          />
-        )}
-      </div>
+          생성하기
+        </div>
+      </button>
+      {showModal && (
+        <MakePhotoModal
+          userCardCount={userCardCount}
+          currentCardTotal={currentCardTotal}
+          cardGrade={createdGrade}
+          cardTitle={createdName}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 }

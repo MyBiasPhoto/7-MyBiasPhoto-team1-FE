@@ -27,6 +27,8 @@
   color: var(--white);
   font-weight: 400;
   font-family: "BR-B", sans-serif;
+  word-break: keep-all;
+  white-space: normal;
 }
 
 .photoCardName,
@@ -96,8 +98,7 @@
 
 .photoCardNameInput,
 .photoCardPriceInput,
-.photoCardQuantityInput,
-.photoCardDescriptionInput {
+.photoCardQuantityInput {
   display: flex;
   width: 520px;
   height: 60px;
@@ -111,8 +112,17 @@
 }
 
 .photoCardDescriptionInput {
+  display: block;
+  width: 520px;
+  max-width: 100%;
   height: 180px;
-  align-items: flex-start;
+  padding: 18px 20px;
+  box-sizing: border-box;
+  border-radius: 2px;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  color: var(--white);
+  resize: vertical;
 }
 
 .photoCardSelect {
@@ -184,8 +194,10 @@
   background: var(--black);
   color: var(--white);
 }
-.monthlyBadge strong {
+.monthlyBadge strong,
+.monthlyBadge span {
   margin-right: 6px;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
@@ -194,12 +206,14 @@
     padding: 0 10px;
   }
   .title_Box {
+    display: flex;
+    flex-direction: column;
     width: 90%;
     margin-top: 32px;
     padding-bottom: 12px;
   }
   .title_Text {
-    font-size: 32px;
+    font-size: 24px;
   }
   .photoCardName,
   .photoCardGrade,
@@ -215,11 +229,9 @@
   .photoCardName {
     margin-top: 40px;
   }
-
   .photoCardNameInput,
   .photoCardPriceInput,
   .photoCardQuantityInput,
-  .photoCardDescriptionInput,
   .photoCardSelect,
   .photoCardUploadInput {
     width: 100%;
@@ -230,8 +242,11 @@
     height: 55px;
   }
   .photoCardDescriptionInput {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px 12px;
+    box-sizing: border-box;
     height: 120px;
-    min-height: 80px;
   }
   .fileSelectBtn {
     width: 100px;
@@ -243,7 +258,7 @@
   }
 
   .create {
-    width: 100%;
+    width: 80%;
     height: 55px;
     padding: 10px 12px;
     margin-top: 32px;
