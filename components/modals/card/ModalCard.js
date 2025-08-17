@@ -63,7 +63,11 @@ export default function ModalCard({
           <div className={styles.CardSubTitle2}>
             <p>잔여</p>
             <p>
-              {quantity || "0"} / {initialQuantity || "5"}
+              {/*판매하기 모달 페이지에서 잔여 수량이 잘 못 나와서 일단 주석처리후 수정 */}
+              {/* 만약 다른페이지에서 이 컴포넌트 사용시 수정 필요 */}
+              {`${quantity ?? 0}${
+                initialQuantity != null ? ` / ${initialQuantity}` : ""
+              }`}
             </p>
           </div>
         </div>

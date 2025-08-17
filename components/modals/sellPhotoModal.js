@@ -18,7 +18,7 @@ import PlusIcon from "@/public/icons/ic_+.svg";
 import DownIcon from "@/public/icons/ic_down.svg";
 import FilterIcon from "@/public/icons/ic_filter.svg";
 import { fetchMyGalleryData } from "@/utils/api/myGalleries";
-
+import { postSalePhotoCard } from "@/utils/api/postSalePhotoCard.js";
 export default function SellPhotoModal({ onClose }) {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
@@ -37,7 +37,7 @@ export default function SellPhotoModal({ onClose }) {
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
-
+  const [submitting, setSubmitting] = useState(false);
   const fetchCards = async () => {
     try {
       const res = await fetchMyGalleryData({
@@ -47,15 +47,18 @@ export default function SellPhotoModal({ onClose }) {
         genre: listKind?.value,
       });
 
-      const formattedCards = res.MyGalleryList.map((card) => ({
-        userCardId: card.userCardId,
+      {
+        /*변경된 api에 맞춰 매핑 수정완료 */
+      }
+      const formattedCards = res.myGroupedCards.map((card) => ({
+        photoCardId: card.photoCardId,
         name: card.name,
         imageUrl: card.imageUrl,
         grade: card.grade,
         genre: card.genre,
         price: 0,
         quantity: card.count || 1,
-        sellerNickname: card.writer || "나",
+        sellerNickname: card.ownerNickName || "나",
       }));
 
       setCards(formattedCards);
@@ -83,7 +86,7 @@ export default function SellPhotoModal({ onClose }) {
 
     setSelectedCard(formattedCard);
 
-    const draft = cardDrafts[card.userCardId] || {};
+    const draft = cardDrafts[card.photoCardId] || {};
     setAmount(draft.amount || 1);
     setPrice(draft.price || "");
     setGrade(draft.grade || "");
@@ -96,7 +99,7 @@ export default function SellPhotoModal({ onClose }) {
 
     setCardDrafts((prev) => ({
       ...prev,
-      [selectedCard.userCardId]: {
+      [selectedCard.photoCardId]: {
         amount,
         price,
         grade,
@@ -127,16 +130,59 @@ export default function SellPhotoModal({ onClose }) {
     };
   }, [selectedCard]);
 
-  function handleConfirm() {
-    setShowResultModal({
-      show: true,
-      cardTitle: selectedCard?.title,
-      cardGrade: selectedCard?.grade,
-      userCardCount: 0,
-      currentCardTotal: 0,
-    });
+  async function handleConfirm() {
+    if (!selectedCard?.photoCardId) {
+      alert("카드를 먼저 선택해 주세요.");
+      return;
+    }
 
-    setCardDrafts({});
+    const priceNum = Number(price);
+    if (!price || Number.isNaN(priceNum) || priceNum <= 0) {
+      alert("장당 가격을 올바르게 입력해 주세요.");
+      return;
+    }
+
+    const max = Number(selectedCard?.amount ?? 1);
+    if (amount < 1 || amount > max) {
+      alert("판매 수량이 유효하지 않습니다.");
+      return;
+    }
+    // 2) payload
+    const payload = {
+      initialQuantity: amount,
+      price,
+      ...(grade && { desiredGrade: grade }),
+      ...(kind && { desiredGenre: kind }),
+      ...(exchangeMemo?.trim() && { desiredDesc: exchangeMemo }),
+    };
+
+    try {
+      setSubmitting(true);
+      const data = await postSalePhotoCard(selectedCard.photoCardId, payload);
+      setShowResultModal({
+        show: true,
+        ok: true,
+        cardTitle: selectedCard.title ?? "",
+        cardGrade: selectedCard.grade ?? "",
+        userCardCount: max,
+        currentCardTotal: amount,
+        message: data?.message ?? "",
+      });
+
+      setCardDrafts({});
+    } catch (err) {
+      setShowResultModal({
+        show: true,
+        ok: false,
+        cardTitle: selectedCard?.title ?? "",
+        cardGrade: selectedCard?.grade ?? "",
+        userCardCount: selectedCard?.amount ?? 0,
+        currentCardTotal: 0,
+        message: err?.message ?? "알 수 없는 오류",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   const increaseAmount = () => {
@@ -203,6 +249,8 @@ export default function SellPhotoModal({ onClose }) {
           cardGrade={showResultModal.cardGrade}
           userCardCount={showResultModal.userCardCount}
           currentCardTotal={showResultModal.currentCardTotal}
+          ok={showResultModal.ok}
+          isSuccess={showResultModal.isSuccess}
           onClose={() => {
             setShowResultModal({ show: false });
             onClose();
@@ -297,7 +345,7 @@ export default function SellPhotoModal({ onClose }) {
                     {cards.map((card) => (
                       <div
                         className={styles.cardItem}
-                        key={card.userCardId}
+                        key={card.photoCardId}
                         onClick={() => handleCardClick(card)}
                       >
                         <ModalCard {...card} />
@@ -405,10 +453,10 @@ export default function SellPhotoModal({ onClose }) {
                               <option disabled value="">
                                 등급을 선택해 주세요
                               </option>
-                              <option value="legendary">Legendary</option>
-                              <option value="super_rare">Super Rare</option>
-                              <option value="rare">Rare</option>
-                              <option value="common">Common</option>
+                              <option value="Legendary">Legendary</option>
+                              <option value="SUPER RARE">Super Rare</option>
+                              <option value="RARE">Rare</option>
+                              <option value="COMMON">Common</option>
                             </select>
                             <Image
                               src={DownIcon}
@@ -432,16 +480,16 @@ export default function SellPhotoModal({ onClose }) {
                               <option disabled value="">
                                 장르를 선택해 주세요
                               </option>
-                              <option value="album">앨범</option>
-                              <option value="special">특전</option>
-                              <option value="fan">팬싸</option>
-                              <option value="season">시즌그리팅</option>
-                              <option value="meet">팬미팅</option>
-                              <option value="concert">콘서트</option>
-                              <option value="md">MD</option>
-                              <option value="collab">콜라보</option>
-                              <option value="club">팬클럽</option>
-                              <option value="etc">기타</option>
+                              <option value="앨범">앨범</option>
+                              <option value="특전">특전</option>
+                              <option value="팬싸">팬싸</option>
+                              <option value="시즌그리팅">시즌그리팅</option>
+                              <option value="팬미팅">팬미팅</option>
+                              <option value="콘서트">콘서트</option>
+                              <option value="MD">MD</option>
+                              <option value="콜라보">콜라보</option>
+                              <option value="팬클럽">팬클럽</option>
+                              <option value="기타">기타</option>
                             </select>
                             <Image
                               src={DownIcon}
@@ -469,10 +517,12 @@ export default function SellPhotoModal({ onClose }) {
                       취소하기
                     </button>
                     <button
+                      type="button"
                       className={styles.confirmBtn}
                       onClick={handleConfirm}
+                      disabled={submitting}
                     >
-                      판매하기
+                      {submitting ? "등록 중…" : "판매하기"}
                     </button>
                   </div>
                 </div>
