@@ -9,6 +9,7 @@ import Modal from "./Modal";
 import RandomBox from "./RandomBox";
 import styles from "./UserMenu.module.css";
 import { useAuth } from "@/utils/auth/authContext";
+import { PulseLoader } from "react-spinners";
 
 function formatTime(seconds) {
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -39,12 +40,22 @@ export default function UserMenu() {
     <div className={styles.info}>
       <div className={styles.userBox}>
         <span className={styles.title}>
-          안녕하세요, {nickname || "사용자 이름"}님!
+          안녕하세요,{" "}
+          {nickname ? (
+            nickname
+          ) : (
+            <PulseLoader color="#efff04" margin={2} size={10} />
+          )}
+          님!
         </span>
         <div className={styles.userPoint}>
           <span className={styles.text}>보유 포인트</span>
           <span className={styles.point}>
-            {meLoading ? "..." : `${points} P`}
+            {meLoading ? (
+              <PulseLoader color="#efff04" margin={2} size={10} />
+            ) : (
+              `${points} P`
+            )}
           </span>
         </div>
         <button className={styles.pointAdd} onClick={() => setShowCharge(true)}>
@@ -57,7 +68,11 @@ export default function UserMenu() {
           onClick={() => setShowRandom(true)}
         >
           <span className={styles.btnText}>
-            {syncing ? "동기화 중..." : "랜덤 포인트"}
+            {syncing ? (
+              <PulseLoader color="#efff04" margin={2} size={8} />
+            ) : (
+              "랜덤 포인트"
+            )}
           </span>
           <span className={styles.timeText}>
             {cooldown > 0 ? formatTime(cooldown) : ""}
