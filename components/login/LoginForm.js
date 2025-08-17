@@ -6,7 +6,7 @@ import styles from "@/app/login/page.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/utils/auth/authContext";
-
+import toast from "react-hot-toast";
 import LoginInput from "./LoginInput";
 import LoginButton from "./LoginButton";
 import LoginFooter from "./LoginFooter";
@@ -22,11 +22,13 @@ export default function LoginForm() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const validateEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validatePassword = password => password.length >= 8;
 
   const handleLogin = async () => {
+    if (submitting) return;
     let valid = true;
 
     if (!validateEmail(email)) {
@@ -44,13 +46,37 @@ export default function LoginForm() {
     if (!valid) return;
 
     try {
+      setSubmitting(true);
       await login({ email, password, strategy });
-      alert("로그인 성공!");
+      toast.success("로그인 성공!", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        iconTheme: { primary: "var(--main)", secondary: "var(--black)" },
+        duration: 1000,
+      });
       router.push("/marketPlace");
     } catch (error) {
       const msg =
         error?.response?.data?.message || "로그인 중 오류가 발생했습니다.";
-      alert(`로그인 실패! ${msg}`);
+      toast.error(`${msg}`, {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--red)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 1000,
+      });
+    } finally {
+      setSubmitting(false);
     }
   };
 

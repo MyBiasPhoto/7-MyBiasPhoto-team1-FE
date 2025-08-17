@@ -5,6 +5,7 @@ import Image from "next/image";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import { useCancelSale } from "../marketPlace/hook/useCancleSale/useCancleSale";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const SellCancelModal = ({ onClose, saleId }) => {
   const router = useRouter();
@@ -15,12 +16,34 @@ const SellCancelModal = ({ onClose, saleId }) => {
       { id: saleId },
       {
         onSuccess: () => {
+          toast.success("판매가 성공적으로 중단되었습니다!", {
+            style: {
+              fontFamily: "BR-B",
+              background: "var(--black)",
+              border: "1px solid var(--main)",
+              padding: "16px 20px",
+              color: "var(--white)",
+              fontSize: "20px",
+            },
+            iconTheme: { primary: "var(--main)", secondary: "var(--black)" },
+            duration: 1000,
+          });
           onClose();
           router.push("/marketPlace");
         },
-        onError: (error) => {
+        onError: error => {
           console.error("판매 중단 실패:", error);
-          alert("판매 중단에 실패했습니다.");
+          toast.error("판매 중단에 실패했습니다.", {
+            style: {
+              fontFamily: "BR-B",
+              background: "var(--black)",
+              border: "1px solid var(--red)",
+              padding: "16px 20px",
+              color: "var(--white)",
+              fontSize: "20px",
+            },
+            duration: 1000,
+          });
         },
       }
     );

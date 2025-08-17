@@ -8,6 +8,7 @@ import Link from "next/link";
 import SignupInput from "./SignupInput";
 import SignupButton from "./SignupButton";
 import SignupFooter from "./SignupFooter";
+import toast from "react-hot-toast";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
@@ -64,10 +65,31 @@ export default function SignupForm() {
           confirmPassword: passwordCheck,
           nickname,
         });
-        alert("회원가입 성공!");
+        toast.success("회원가입 성공!", {
+          style: {
+            fontFamily: "BR-B",
+            background: "var(--black)",
+            border: "1px solid var(--main)",
+            padding: "16px 20px",
+            color: "var(--white)",
+            fontSize: "20px",
+          },
+          iconTheme: { primary: "var(--main)", secondary: "var(--black)" },
+          duration: 1000,
+        });
         router.push("/login");
       } catch (error) {
-        alert(error.response?.data?.message || "회원가입 실패");
+        toast.error(error.response?.data?.message || "회원가입 실패", {
+          style: {
+            fontFamily: "BR-B",
+            background: "var(--black)",
+            border: "1px solid var(--red)",
+            padding: "16px 20px",
+            color: "var(--white)",
+            fontSize: "20px",
+          },
+          duration: 1000,
+        });
       }
     }
   };
