@@ -34,7 +34,7 @@ export default function NotLogin({ onLogin }) {
     return (
       <div className={styles.mobileNav}>
         <div className={styles.mobileMenu} onClick={() => setShowInfo(true)} />
-        <div className={styles.mobileLogo} />
+        <Link className={styles.mobileLogo} href="/" />
         <Link className={styles.link} href="/login">
           로그인
         </Link>
@@ -54,9 +54,6 @@ export default function NotLogin({ onLogin }) {
 
   return (
     <div className={styles.area}>
-      <button className={styles.btn} type="button" onClick={onLogin}>
-        　
-      </button>
       <Link className={styles.link} href="/login">
         로그인
       </Link>

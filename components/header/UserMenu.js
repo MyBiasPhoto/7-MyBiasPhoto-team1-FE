@@ -9,7 +9,6 @@ import Modal from "./Modal";
 import RandomBox from "./RandomBox";
 import styles from "./UserMenu.module.css";
 import { useAuth } from "@/utils/auth/authContext";
-import { getRandomPointStatus } from "@/utils/api/points";
 
 function formatTime(seconds) {
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");

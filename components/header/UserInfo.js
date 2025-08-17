@@ -10,28 +10,28 @@ import Link from "next/link";
 import SideAlarm from "./SideAlarm";
 import { useMeQuery } from "@/hooks/useMeQuery";
 import { useNotifications } from "@/utils/notifications/notificationsContext";
+import { useRouter } from "next/navigation";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
-export default function UserInfo({ isLogin, onLogout }) {
+export default function UserInfo({ onLogout }) {
   const [showInfo, setShowInfo] = useState(false);
-  const [isMobile, setIsMobile] = useState(null);
+  const isMobile = useIsMobile();
   const infoBoxRef = useRef();
   const { data: me, isLoading: meLoading } = useMeQuery();
   const nickname = me?.nickname || "";
   const points = me?.points ?? 0;
-
   const { unreadCount, loadInitialList } = useNotifications();
+  const router = useRouter();
 
   const handleAlarmClick = () =>
     setShowInfo(showInfo === "alarm" ? false : "alarm");
   const handleUserClick = () =>
     setShowInfo(showInfo === "user" ? false : "user");
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 743);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const handleLogout = async () => {
+    await onLogout();
+    router.push("/");
+  };
 
   useEffect(() => {
     if (!showInfo) return;
@@ -57,7 +57,7 @@ export default function UserInfo({ isLogin, onLogout }) {
     return (
       <div className={styles.mobileNav}>
         <div className={styles.mobileMenu} onClick={handleUserClick} />
-        <Link href="/" className={styles.mobileLogo} />
+        <Link href="/marketPlace" className={styles.mobileLogo} />
         {/* <div className={styles.mobileAlarm} onClick={handleAlarmClick} /> */}
         <div className={styles.mobileAlarm} onClick={handleAlarmClick}>
           {unreadCount > 0 && <span className={styles.badgeDot} />}
@@ -65,9 +65,8 @@ export default function UserInfo({ isLogin, onLogout }) {
         {showInfo === "user" && (
           <SideMenu
             open={true}
-            isLogin={isLogin}
             onClose={() => setShowInfo(false)}
-            onLogout={onLogout}
+            onLogout={handleLogout}
           />
         )}
         {showInfo === "alarm" && (
@@ -91,7 +90,7 @@ export default function UserInfo({ isLogin, onLogout }) {
           {nickname || "사용자 이름"}
         </span>
         <div className={styles.bar} />
-        <button type="button" onClick={onLogout} className={styles.logout}>
+        <button type="button" onClick={handleLogout} className={styles.logout}>
           로그아웃
         </button>
       </div>

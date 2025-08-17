@@ -1,45 +1,34 @@
 // components/header/Header.js
 "use client";
 
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useAuth } from "@/utils/auth/authContext";
 import Link from "next/link";
 import styles from "./Header.module.css";
-import UserInfo from "./UserInfo";
 import NotLogin from "./NotLogin";
-import { useEffect, useState } from "react";
-import { useAuth } from "@/utils/auth/authContext";
-//zustand 쓸지말지
+import UserInfo from "./UserInfo";
+
 export default function Header() {
   const { user, logout } = useAuth();
-  const [isLogin, setIsLogin] = useState(!!user);
-  const [isMobile, setIsMobile] = useState(null);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 743);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const isMobile = useIsMobile();
 
   if (isMobile === null) return null;
 
-  const handleLogin = () => {
-    setIsLogin(true);
-  };
+  const logoHref = user ? "/marketPlace" : "/";
 
   return (
     <nav className={styles.area}>
       {isMobile ? (
         <>
           {!user && <NotLogin />}
-          {user && <UserInfo isLogin={!!user} onLogout={logout} />}
+          {user && <UserInfo onLogout={logout} />}
         </>
       ) : (
         <>
           <div className={styles.area}>
             <div className={styles.navbar}>
-              <Link href="/" className={styles.logo} />
-              {!user && <NotLogin />}
-              {user && <UserInfo isLogin={!!user} onLogout={logout} />}
+              <Link href={logoHref} className={styles.logo} />
+              {!user ? <NotLogin /> : <UserInfo onLogout={logout} />}
             </div>
           </div>
         </>

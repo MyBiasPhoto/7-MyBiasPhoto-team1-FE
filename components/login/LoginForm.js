@@ -46,7 +46,7 @@ export default function LoginForm() {
     try {
       await login({ email, password, strategy });
       alert("로그인 성공!");
-      router.push("/");
+      router.push("/marketPlace");
     } catch (error) {
       const msg =
         error?.response?.data?.message || "로그인 중 오류가 발생했습니다.";
