@@ -1,21 +1,8 @@
 .area {
-  width: 200px;
+  width: 121px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.btn {
-  background-color: var(--black);
-  border: none;
-  padding: 0;
-  color: var(--gray-200);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  cursor: pointer;
-  text-decoration: none;
 }
 
 .link {

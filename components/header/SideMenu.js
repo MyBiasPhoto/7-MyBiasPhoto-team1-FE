@@ -9,6 +9,7 @@ import ChargePoint from "./ChargePoint";
 import Modal from "./Modal";
 import RandomBox from "./RandomBox";
 import styles from "./SideMenu.module.css";
+import { useAuth } from "@/utils/auth/authContext";
 
 function formatTime(seconds) {
   const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -16,17 +17,12 @@ function formatTime(seconds) {
   return `${mm}:${ss}`;
 }
 
-export default function SideMenu({
-  open,
-  onLogin,
-  isLogin,
-  onClose,
-  onLogout,
-}) {
+export default function SideMenu({ open, onClose, onLogout }) {
   const [mounted, setMounted] = useState(false);
   const [showRandom, setShowRandom] = useState(false);
   const [showCharge, setShowCharge] = useState(false);
-  const { remaining: cooldown, sync } = useCooldown();
+  const { bootstrapped, isLogin } = useAuth();
+  const { remaining: cooldown, ready } = useCooldown();
   const { data: me, isLoading: meLoading, refetch: refetchMe } = useMeQuery();
   const nickname = me?.nickname || "";
   const points = me?.points ?? 0;
@@ -34,10 +30,6 @@ export default function SideMenu({
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (showRandom) sync();
-  }, [showRandom, sync]);
 
   useEffect(() => {
     if (open) {
@@ -49,6 +41,9 @@ export default function SideMenu({
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  const syncing = isLogin && bootstrapped && !ready;
+  const isRandomUnavailable = syncing || cooldown > 0;
 
   if (!open || !mounted) return null;
 
@@ -76,11 +71,13 @@ export default function SideMenu({
               </button>
               <button
                 className={`${styles.randomBtn} ${
-                  cooldown > 0 ? styles.cooldown : ""
+                  isRandomUnavailable ? styles.cooldown : ""
                 }`}
                 onClick={() => setShowRandom(true)}
               >
-                <span className={styles.btnText}>랜덤 포인트</span>
+                <span className={styles.btnText}>
+                  {syncing ? "동기화 중..." : "랜덤 포인트"}
+                </span>
                 <span className={styles.timeText}>
                   {cooldown > 0 ? `${formatTime(cooldown)}` : ""}
                 </span>
@@ -94,7 +91,7 @@ export default function SideMenu({
                 <Link href="/myGallery" className={styles.link}>
                   마이갤러리
                 </Link>
-                <Link href="/mySalePage" className={styles.link}>
+                <Link href="/mySale" className={styles.link}>
                   판매 중인 포토카드
                 </Link>
               </div>
