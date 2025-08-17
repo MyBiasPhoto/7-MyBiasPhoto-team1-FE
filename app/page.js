@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <main className={styles.main} onWheel={handleWheel}>
       <motion.section
-        ref={(el) => (sectionRefs.current[0] = el)}
+        ref={el => (sectionRefs.current[0] = el)}
         className={styles.section}
         tabIndex={-1}
         initial="hidden"
@@ -83,7 +83,7 @@ export default function Home() {
       </motion.section>
 
       <motion.section
-        ref={(el) => (sectionRefs.current[1] = el)}
+        ref={el => (sectionRefs.current[1] = el)}
         className={`${styles.section} ${styles.viewSection1}`}
         tabIndex={-1}
         initial="hidden"
@@ -118,7 +118,7 @@ export default function Home() {
       </motion.section>
 
       <motion.section
-        ref={(el) => (sectionRefs.current[2] = el)}
+        ref={el => (sectionRefs.current[2] = el)}
         className={`${styles.section} ${styles.viewSection2}`}
         tabIndex={-1}
         initial="hidden"
@@ -167,7 +167,7 @@ export default function Home() {
       </motion.section>
 
       <motion.section
-        ref={(el) => (sectionRefs.current[3] = el)}
+        ref={el => (sectionRefs.current[3] = el)}
         className={`${styles.section} ${styles.viewSection}`}
         tabIndex={-1}
         initial="hidden"
@@ -202,7 +202,7 @@ export default function Home() {
       </motion.section>
 
       <motion.section
-        ref={(el) => (sectionRefs.current[4] = el)}
+        ref={el => (sectionRefs.current[4] = el)}
         className={styles.section}
         tabIndex={-1}
         initial="hidden"
@@ -230,35 +230,6 @@ export default function Home() {
             <span className={styles.footerText}>
               나의 최애를 지금 찾아보세요
             </span>
-            <div className={styles.btnArea}>
-              <button
-                className={styles.btn}
-                onClick={() => setOpenModal("edit")}
-              >
-                수정 버튼
-              </button>
-              <button
-                className={styles.btn}
-                onClick={() => setOpenModal("sell")}
-              >
-                판매 버튼
-              </button>
-              <button
-                className={styles.btn}
-                onClick={() => setOpenModal("exchange")}
-              >
-                교환 버튼
-              </button>
-              {openModal === "edit" && (
-                <EditPhotoModal onClose={() => setOpenModal(null)} />
-              )}
-              {openModal === "sell" && (
-                <SellPhotoModal onClose={() => setOpenModal(null)} />
-              )}
-              {openModal === "exchange" && (
-                <ExchangePhotoModal onClose={() => setOpenModal(null)} />
-              )}
-            </div>
             <Link href="/marketPlace" className={styles.linkBtn}>
               최애 찾으러 가기
             </Link>
