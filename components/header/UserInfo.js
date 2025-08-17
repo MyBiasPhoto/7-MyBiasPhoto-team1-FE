@@ -12,6 +12,7 @@ import { useMeQuery } from "@/hooks/useMeQuery";
 import { useNotifications } from "@/utils/notifications/notificationsContext";
 import { useRouter } from "next/navigation";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { PulseLoader } from "react-spinners";
 
 export default function UserInfo({ onLogout }) {
   const [showInfo, setShowInfo] = useState(false);
@@ -80,14 +81,22 @@ export default function UserInfo({ onLogout }) {
     <div className={styles.position}>
       <div className={styles.area}>
         <span className={styles.point}>
-          {meLoading ? "..." : `${points} P`}
+          {meLoading ? (
+            <PulseLoader color="#efff04" margin={3} size={8} />
+          ) : (
+            `${points} P`
+          )}
         </span>
         {/* <div className={styles.alarm} onClick={handleAlarmClick} /> */}
         <div className={styles.alarm} onClick={handleAlarmClick}>
           {unreadCount > 0 && <span className={styles.badgeDot} />}
         </div>
         <span className={styles.name} onClick={handleUserClick}>
-          {nickname || "사용자 이름"}
+          {nickname ? (
+            nickname
+          ) : (
+            <PulseLoader color="#efff04" margin={3} size={8} />
+          )}
         </span>
         <div className={styles.bar} />
         <button type="button" onClick={handleLogout} className={styles.logout}>
