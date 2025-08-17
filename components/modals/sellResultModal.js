@@ -22,8 +22,15 @@ export default function SellResultModal({
   cardGrade,
   cardTitle,
   onClose,
+  ok,
+  isSuccess,
 }) {
-  const isSuccess = checkSellConditions({ userCardCount, currentCardTotal });
+  const success =
+    typeof isSuccess === "boolean"
+      ? isSuccess
+      : typeof ok === "boolean"
+      ? ok
+      : checkSellConditions({ userCardCount, currentCardTotal });
 
   const cardInfoText = `[${cardGrade} | ${cardTitle}]`;
 
@@ -35,20 +42,20 @@ export default function SellResultModal({
         </button>
         <h2 className={styles.title}>
           판매 등록{" "}
-          <span className={isSuccess ? styles.successTxt : styles.failTxt}>
-            {isSuccess ? "성공" : "실패"}
+          <span className={success ? styles.successTxt : styles.failTxt}>
+            {success ? "성공" : "실패"}
           </span>
         </h2>
         <p className={styles.description}>
-          {isSuccess
+          {success
             ? `${cardInfoText} 판매 등록에 성공했습니다!`
             : `${cardInfoText} 판매 등록에 실패했습니다.`}
         </p>
         <Link
-          href={isSuccess ? "/mySalePage" : "/marketPlace"}
+          href={success ? "/mySale" : "/marketPlace"}
           className={styles.confirmButton}
         >
-          {isSuccess
+          {success
             ? "나의 판매 포토카드에서 확인하기"
             : "마켓플레이스로 돌아가기"}
         </Link>
