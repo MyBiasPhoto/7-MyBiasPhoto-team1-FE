@@ -5,6 +5,7 @@ import { useState } from "react";
 import styles from "./RandomBox.module.css";
 import { claimRandomPoint } from "@/utils/api/points";
 import { useCooldown } from "@/utils/cooldown/cooldownContext";
+import toast from "react-hot-toast";
 
 const BOX_IMAGES = [
   "/assets/box-left.svg",
@@ -58,7 +59,17 @@ export default function RandomBox({ onNeedLogin, onSuccess }) {
 
       if (status === 401) {
         onNeedLogin?.();
-        alert("세션이 만료되었습니다. 다시 로그인해 주세요.");
+        toast.error("세션이 만료되었습니다. 다시 로그인해 주세요.", {
+          style: {
+            fontFamily: "BR-B",
+            background: "var(--black)",
+            border: "1px solid var(--red)",
+            padding: "16px 20px",
+            color: "var(--white)",
+            fontSize: "20px",
+          },
+          duration: 1000,
+        });
         return;
       }
 
@@ -68,18 +79,51 @@ export default function RandomBox({ onNeedLogin, onSuccess }) {
         } else if (nextAllowedAt) {
           start(nextAllowedAt, serverNow);
         }
-        alert(message || "쿨다운이 진행 중입니다.");
+        toast.error(message || "쿨다운이 진행 중입니다.", {
+          style: {
+            fontFamily: "BR-B",
+            background: "var(--black)",
+            border: "1px solid var(--red)",
+            padding: "16px 20px",
+            color: "var(--white)",
+            fontSize: "20px",
+          },
+          duration: 1000,
+        });
         return;
       }
 
       if (status === 409 && code === "EVENT_CONCURRENCY_CONFLICT") {
-        alert(message || "다른 요청이 먼저 처리되었습니다. 다시 시도하세요.");
+        toast.error(
+          message || "다른 요청이 먼저 처리되었습니다. 다시 시도하세요.",
+          {
+            style: {
+              fontFamily: "BR-B",
+              background: "var(--black)",
+              border: "1px solid var(--red)",
+              padding: "16px 20px",
+              color: "var(--white)",
+              fontSize: "20px",
+            },
+            duration: 1000,
+          }
+        );
         if (nextAllowedAt) start(nextAllowedAt, serverNow);
         return;
       }
 
       console.error({ status, code, message });
-      alert(message || "요청 처리 중 오류가 발생했습니다.");
+      toast.error(message || "요청 처리 중 오류가 발생했습니다.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--red)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 1000,
+      });
     } finally {
       setLoading(false);
     }

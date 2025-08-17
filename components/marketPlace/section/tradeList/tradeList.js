@@ -8,6 +8,7 @@ import {
   getMyExchangeProposals,
   cancelExchangeProposal,
 } from "@/utils/api/exchange";
+import toast from "react-hot-toast";
 
 export default function TradeList({ sale }) {
   const [proposals, setProposals] = useState([]);
@@ -26,9 +27,9 @@ export default function TradeList({ sale }) {
       const list = Array.isArray(res?.proposals) ? res.proposals : [];
 
       // 백업 프론트 필터 및 sale 범위 한정
-      const filtered = list.filter((p) => p.status === "PENDING");
+      const filtered = list.filter(p => p.status === "PENDING");
       const scoped = sale?.id
-        ? filtered.filter((p) => p.saleId === sale.id)
+        ? filtered.filter(p => p.saleId === sale.id)
         : filtered;
 
       setProposals(scoped);
@@ -75,13 +76,34 @@ export default function TradeList({ sale }) {
       await cancelExchangeProposal(cancelTarget.id);
 
       // 즉시 목록에서 제거
-      setProposals((prev) => prev.filter((p) => p.id !== cancelTarget.id));
+      setProposals(prev => prev.filter(p => p.id !== cancelTarget.id));
 
-      // 교환 취소 alert
-      window.alert("교환이 취소되었습니다.");
+      // 교환 취소 toast
+      toast.success("교환이 취소되었습니다.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        iconTheme: { primary: "var(--main)", secondary: "var(--black)" },
+        duration: 1000,
+      });
     } catch (e) {
       console.error(e);
-      window.alert("취소 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      toast.error("취소 처리 중 오류가 발생했습니다. 다시 시도해 주세요.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--red)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 1000,
+      });
     } finally {
       setLoadingId(null);
       closeCancelModal();
@@ -95,7 +117,7 @@ export default function TradeList({ sale }) {
       </div>
 
       <div className={style.list}>
-        {proposals.map((p) => (
+        {proposals.map(p => (
           <TradeCard
             key={p.id}
             proposal={p}

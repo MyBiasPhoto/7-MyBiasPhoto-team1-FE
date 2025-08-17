@@ -10,6 +10,7 @@ import {
   acceptExchangeProposal,
   rejectExchangeProposal,
 } from "@/utils/api/exchange";
+import toast from "react-hot-toast";
 
 export default function EditTradeList({ sale }) {
   const [trade, setTrade] = useState([]);
@@ -25,8 +26,8 @@ export default function EditTradeList({ sale }) {
       const res = await getReceivedExchangeProposals(sale?.id);
       const list = Array.isArray(res?.proposals) ? res.proposals : [];
       // PENDING 상태만 유지
-      const filtered = list.filter((p) => p.status === "PENDING");
-      const mapped = filtered.map((p) => ({
+      const filtered = list.filter(p => p.status === "PENDING");
+      const mapped = filtered.map(p => ({
         id: p.id,
         saleId: p.saleId,
         image:
@@ -78,10 +79,31 @@ export default function EditTradeList({ sale }) {
       setLoadingId(target.id);
       await rejectExchangeProposal(target.id);
       await loadProposals(); // 거절 후 최신 목록 재로딩
-      window.alert("교환이 거절되었습니다.");
+      toast.success("교환이 거절되었습니다.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        iconTheme: { primary: "var(--main)", secondary: "var(--black)" },
+        duration: 1000,
+      });
     } catch (e) {
       console.error(e);
-      window.alert("거절 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      toast.error("거절 처리 중 오류가 발생했습니다. 다시 시도해 주세요.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--red)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 1000,
+      });
     } finally {
       setLoadingId(null);
       closeModals();
@@ -95,10 +117,31 @@ export default function EditTradeList({ sale }) {
       setLoadingId(target.id);
       await acceptExchangeProposal(target.id);
       await loadProposals(); // 승인 후 최신 목록 재로딩
-      window.alert("교환이 승인되었습니다.");
+      toast.success("교환이 승인되었습니다.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        iconTheme: { primary: "var(--main)", secondary: "var(--black)" },
+        duration: 1000,
+      });
     } catch (e) {
       console.error(e);
-      window.alert("승인 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
+      toast.error("승인 처리 중 오류가 발생했습니다. 다시 시도해 주세요.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--red)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 1000,
+      });
     } finally {
       setLoadingId(null);
       closeModals();
@@ -112,7 +155,7 @@ export default function EditTradeList({ sale }) {
       </div>
 
       <div className={style.list}>
-        {trade.map((p) => (
+        {trade.map(p => (
           <EditTradeCard
             key={p.id}
             {...p}

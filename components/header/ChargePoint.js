@@ -15,7 +15,18 @@ export default function ChargePoint({ onClose }) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
 
-      toast.success("포인트 충전 완료!");
+      toast.success("포인트 충전 완료!", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        iconTheme: { primary: "var(--main)", secondary: "var(--black)" },
+        duration: 800,
+      });
       setTimeout(() => {
         onClose?.();
         setAmount("");
@@ -26,7 +37,17 @@ export default function ChargePoint({ onClose }) {
   const handleSubmit = e => {
     e.preventDefault();
     if (!amount || Number(amount) <= 0) {
-      toast.error("충전 금액을 입력해주세요.");
+      toast.error("충전 금액을 입력해주세요.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 800,
+      });
       return;
     }
     mutate(Number(amount));

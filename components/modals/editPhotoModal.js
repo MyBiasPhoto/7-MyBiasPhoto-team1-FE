@@ -10,6 +10,7 @@ import PlusIcon from "@/public/icons/ic_+.svg";
 import DownIcon from "@/public/icons/ic_down.svg";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatedSale } from "@/utils/api/marketPlace";
+import toast from "react-hot-toast";
 
 const initialState = {
   editedQuantity: 1,
@@ -87,12 +88,33 @@ export default function EditPhotoModal({ sale, onClose }) {
     mutationFn: updatedSale,
     onSuccess: () => {
       queryClient.invalidateQueries(["sale", sale.id]);
-      alert("수정 완료");
+      toast.success("수정 완료", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        iconTheme: { primary: "var(--main)", secondary: "var(--black)" },
+        duration: 1000,
+      });
       onClose();
     },
-    onError: (error) => {
+    onError: error => {
       console.error("수정 실패", error);
-      alert("수정 중 오류가 발생했습니다.");
+      toast.error("수정 중 오류가 발생했습니다.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--red)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 1000,
+      });
     },
   });
 
@@ -112,7 +134,7 @@ export default function EditPhotoModal({ sale, onClose }) {
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.modal} onClick={e => e.stopPropagation()}>
         <h1 className={styles.header}>수정하기</h1>
         <button className={styles.closeButton} onClick={onClose}>
           <Image src={CloseIcon} alt="Close" width={32} height={32} />
@@ -202,7 +224,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                         type="number"
                         value={state.price}
                         min="0"
-                        onChange={(e) =>
+                        onChange={e =>
                           dispatch({
                             type: "SET_FIELD",
                             field: "price",
@@ -232,7 +254,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                       <select
                         className={styles.gradeSelect}
                         value={state.desiredGrade}
-                        onChange={(e) =>
+                        onChange={e =>
                           dispatch({
                             type: "SET_FIELD",
                             field: "desiredGrade",
@@ -266,7 +288,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                       <select
                         className={styles.genreSelect}
                         value={state.desiredGenre}
-                        onChange={(e) =>
+                        onChange={e =>
                           dispatch({
                             type: "SET_FIELD",
                             field: "desiredGenre",
@@ -305,7 +327,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                     placeholder="설명을 입력해 주세요"
                     className={styles.memo}
                     value={state.desiredDesc}
-                    onChange={(e) =>
+                    onChange={e =>
                       dispatch({
                         type: "SET_FIELD",
                         field: "desiredDesc",
