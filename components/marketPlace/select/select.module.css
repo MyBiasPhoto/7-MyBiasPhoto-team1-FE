@@ -1,28 +1,34 @@
-.selectBox {
+.selectContainer {
+  width: 130px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.selectBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   position: relative;
 }
 
 .selectIcon {
-  background-color: black;
+  background-color: var(--black);
 }
 
 .selectBoxFont {
   color: aliceblue;
 }
 
-.selectContainer {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
 .modal {
   position: absolute;
   top: 27px;
   left: 0;
-  border: 1px solid #fff;
-  background-color: black;
+  border: 1px solid var(--white);
+  background-color: var(--black);
   width: 130px;
   height: auto;
   display: flex;

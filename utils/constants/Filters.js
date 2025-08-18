@@ -9,10 +9,10 @@ export const initialMyGalleryFilters = {
 };
 
 export const myGalleryGradeOption = [
-  { value: "COMMON", label: "흔한" },
-  { value: "RARE", label: "레어" },
-  { value: "SUPER RARE", label: "슈퍼레어" },
-  { value: "LEGENDARY", label: "레전드리" },
+  { value: "COMMON", label: "COMMON" },
+  { value: "RARE", label: "RARE" },
+  { value: "SUPER RARE", label: "SUPER RARE" },
+  { value: "LEGENDARY", label: "LEGENDARY" },
 ];
 
 export const myGalleryGenreOption = [

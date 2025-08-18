@@ -23,7 +23,7 @@ export default function FilterBar({ filters, dispatch, onClose }) {
 
   const renderOptions = () => {
     if (activeFilter === "grade") {
-      return myGalleryGradeOption.map((opt) => (
+      return myGalleryGradeOption.map(opt => (
         <div
           key={opt.value}
           className={`${style.option} ${style.optionFont}`}
@@ -35,7 +35,7 @@ export default function FilterBar({ filters, dispatch, onClose }) {
       ));
     }
     if (activeFilter === "genre") {
-      return myGalleryGenreOption.map((opt) => (
+      return myGalleryGenreOption.map(opt => (
         <div
           key={opt.value}
           className={`${style.option} ${style.optionFont}`}

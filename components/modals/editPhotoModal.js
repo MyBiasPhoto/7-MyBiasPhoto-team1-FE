@@ -132,6 +132,17 @@ export default function EditPhotoModal({ sale, onClose }) {
     mutate(saleData);
   };
 
+  const selectColorClass =
+    state.desiredGrade === "LEGENDARY"
+      ? styles.selectLegendary
+      : state.desiredGrade === "SUPER_RARE"
+      ? styles.selectSuperRare
+      : state.desiredGrade === "RARE"
+      ? styles.selectRare
+      : state.desiredGrade === "COMMON"
+      ? styles.selectCommon
+      : "";
+
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={e => e.stopPropagation()}>
@@ -252,7 +263,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                     </div>
                     <div className={styles.exchangeFilterBox}>
                       <select
-                        className={styles.gradeSelect}
+                        className={`${styles.gradeSelect} ${selectColorClass}`}
                         value={state.desiredGrade}
                         onChange={e =>
                           dispatch({
@@ -265,10 +276,10 @@ export default function EditPhotoModal({ sale, onClose }) {
                         <option disabled value="">
                           등급을 선택해 주세요
                         </option>
-                        <option value="LEGENDARY">레전드리</option>
-                        <option value="SUPER_RARE">슈퍼레어</option>
-                        <option value="RARE">레어</option>
-                        <option value="COMMON">흔한</option>
+                        <option value="LEGENDARY">LEGENDARY</option>
+                        <option value="SUPER_RARE">SUPER RARE</option>
+                        <option value="RARE">RARE</option>
+                        <option value="COMMON">COMMON</option>
                       </select>
                       <Image
                         src={DownIcon}
