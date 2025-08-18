@@ -89,7 +89,7 @@ export default function MyGalleryCardGrid({ items, isLoading, isPending }) {
   items.forEach((item, idx) => {
     // 원래 카드
     withAd.push(
-      <div className={style.cardItem} key={item.userCardId}>
+      <div className={style.cardItem} key={item.photoCardId}>
         <MyGalleryCard {...item} />
       </div>
     );
