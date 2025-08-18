@@ -1,5 +1,5 @@
 // components/marketPlace/section/landing/skeleton/MarketPlaceCardSkeleton.js
-import style from "./marketPlaceCardSkeleton.module.css";
+import style from "@/components/marketPlace/skeleton/MarketPlaceCardSkeleton.module.css";
 
 export default function MarketPlaceCardSkeleton({ count = 6 }) {
   return (
