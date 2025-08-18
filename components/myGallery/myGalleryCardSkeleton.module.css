@@ -1,0 +1,97 @@
+.skeletonWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeletonBox {
+  background: #e0e0e0;
+  border-radius: 8px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.large {
+  height: 300px; /* 카드 이미지 자리 */
+  width: 100%;
+}
+
+.medium {
+  height: 16px; /* 제목 자리 */
+  width: 50%;
+}
+
+.small {
+  height: 16px; /* 설명 자리 */
+
+  width: 60px;
+}
+
+.content {
+  height: 16px; /* 설명 자리 */
+
+  width: 100%;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.cardContainer {
+  width: 440px;
+  height: 600px;
+  background-color: #111;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.subTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subTitleBox {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+@media (max-width: 1023px) {
+  .cardContainer {
+    width: 343px;
+    height: auto;
+    padding: 16px;
+  }
+  .cardImageBox {
+    height: 198px;
+  }
+}
+
+@media (max-width: 767px) {
+  .cardContainer {
+    width: 226px;
+    height: 311px;
+    padding: 12px;
+  }
+  .cardImageBox {
+    height: 150px;
+  }
+  .skeletonTitle {
+    height: 16px;
+  }
+  .skeletonSmall {
+    height: 12px;
+    width: 40px;
+  }
+}
