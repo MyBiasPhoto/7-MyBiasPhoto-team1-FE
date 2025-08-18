@@ -27,8 +27,8 @@ export default function CoupangCardSlot({
         widgetId={widgetId}
         trackingCode={trackingCode}
         template="card" // 카드형 위젯
-        width={width}
-        height={height}
+        width={300}
+        height={300}
       />
     </div>
   );

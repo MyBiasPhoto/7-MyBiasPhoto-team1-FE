@@ -66,8 +66,72 @@ export default function MyGalleryClient({ initialFilters }) {
     return (
       <div className={style.myGallery}>
         <PageHeader title="마이갤러리" />
-        <div className={style.myGalleryContainer}>
+        {/* <div className={style.myGalleryContainer}>
           <LoadingSpinner />
+        </div> */}
+        <div className={style.myGalleryContainer}>
+          <div className={style.topTitle}>
+            <CardRaritySummary
+              gradeCounts={gradeCounts ?? []}
+              nickname={userNickname ?? ""}
+            />
+          </div>
+          <FilterBar filters={filters} dispatch={dispatch} />
+
+          {error && <div>에러발생 : {error.message}</div>}
+
+          <MyGalleryCardGrid
+            items={myGalleryList}
+            isLoading={isLoading}
+            isPending={isPending}
+          />
+          <Pagination
+            page={currentPage}
+            pageSize={pageSize}
+            totalCount={totalCount}
+            onPageChange={(page) => {
+              dispatch({ type: "SET_PAGE", payload: page });
+            }}
+          />
+
+          {isFilterModalOpen && (
+            <div className={style.MobileModal}>
+              <div className={style.MobileModalTitle}>
+                <p>필터</p>
+                <p
+                  className={style.close}
+                  onClick={() => setIsFilterModalOpen(false)}
+                >
+                  x
+                </p>
+              </div>
+              <FilterBartwo
+                filters={filters}
+                dispatch={dispatch}
+                onClose={() => setIsFilterModalOpen(false)}
+              />
+            </div>
+          )}
+          {/* {console.log("필터값:", filters)} */}
+
+          {isFilterModalOpen && (
+            <div className={style.MobileModal}>
+              <div className={style.MobileModalTitle}>
+                <p>필터</p>
+                <p
+                  className={style.close}
+                  onClick={() => setIsFilterModalOpen(false)}
+                >
+                  x
+                </p>
+              </div>
+              <FilterBartwo
+                filters={filters}
+                dispatch={dispatch}
+                onClose={() => setIsFilterModalOpen(false)}
+              />
+            </div>
+          )}
         </div>
       </div>
     );
