@@ -13,6 +13,7 @@ import { useNotifications } from "@/utils/notifications/notificationsContext";
 import { useRouter } from "next/navigation";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { PulseLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 export default function UserInfo({ onLogout }) {
   const [showInfo, setShowInfo] = useState(false);
@@ -31,6 +32,18 @@ export default function UserInfo({ onLogout }) {
 
   const handleLogout = async () => {
     await onLogout();
+    toast.success("로그아웃 완료!", {
+      style: {
+        fontFamily: "BR-B",
+        background: "var(--black)",
+        border: "1px solid var(--main)",
+        padding: "16px 20px",
+        color: "var(--white)",
+        fontSize: "20px",
+      },
+      iconTheme: { primary: "var(--main)", secondary: "var(--black)" },
+      duration: 800,
+    });
     router.push("/");
   };
 
