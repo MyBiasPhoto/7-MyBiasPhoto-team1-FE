@@ -73,7 +73,6 @@ export default function MyGalleryClient({ initialFilters }) {
 
   return (
     <div className={style.myGallery}>
-      {console.log(initialFilters)}
       <PageHeader
         title={"마이갤러리"}
         buttonLabel={"포토카드 생성하기"}
@@ -86,58 +85,47 @@ export default function MyGalleryClient({ initialFilters }) {
       />
 
       <div className={style.myGalleryContainer}>
-        {isLogin && (
-          <>
-            <div className={style.topTitle}>
-              <CardRaritySummary
-                gradeCounts={gradeCounts ?? []}
-                nickname={userNickname ?? ""}
-              />
+        <div className={style.topTitle}>
+          <CardRaritySummary
+            gradeCounts={gradeCounts ?? []}
+            nickname={userNickname ?? ""}
+          />
+        </div>
+        <FilterBar filters={filters} dispatch={dispatch} />
+
+        {error && <div>에러발생 : {error.message}</div>}
+
+        <MyGalleryCardGrid
+          items={myGalleryList}
+          isLoading={isLoading}
+          isPending={isPending}
+        />
+        <Pagination
+          page={currentPage}
+          pageSize={pageSize}
+          totalCount={totalCount}
+          onPageChange={(page) => {
+            dispatch({ type: "SET_PAGE", payload: page });
+          }}
+        />
+
+        {isFilterModalOpen && (
+          <div className={style.MobileModal}>
+            <div className={style.MobileModalTitle}>
+              <p>필터</p>
+              <p
+                className={style.close}
+                onClick={() => setIsFilterModalOpen(false)}
+              >
+                x
+              </p>
             </div>
-            <FilterBar filters={filters} dispatch={dispatch} />
-
-            {error && <div>에러발생 : {error.message}</div>}
-
-            {isPending ? (
-              <div>
-                <LoadingSpinner />
-              </div>
-            ) : myGalleryList?.length === 0 ? (
-              <div>검색결과 없음</div>
-            ) : (
-              <>
-                <MyGalleryCardGrid items={myGalleryList} />
-                <Pagination
-                  page={currentPage}
-                  pageSize={pageSize}
-                  totalCount={totalCount}
-                  onPageChange={(page) => {
-                    dispatch({ type: "SET_PAGE", payload: page });
-                  }}
-                />
-              </>
-            )}
-            {console.log("필터값:", filters)}
-
-            {isFilterModalOpen && (
-              <div className={style.MobileModal}>
-                <div className={style.MobileModalTitle}>
-                  <p>필터</p>
-                  <p
-                    className={style.close}
-                    onClick={() => setIsFilterModalOpen(false)}
-                  >
-                    x
-                  </p>
-                </div>
-                <FilterBartwo
-                  filters={filters}
-                  dispatch={dispatch}
-                  onClose={() => setIsFilterModalOpen(false)}
-                />
-              </div>
-            )}
-          </>
+            <FilterBartwo
+              filters={filters}
+              dispatch={dispatch}
+              onClose={() => setIsFilterModalOpen(false)}
+            />
+          </div>
         )}
       </div>
 
