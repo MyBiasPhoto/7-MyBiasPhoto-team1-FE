@@ -30,6 +30,7 @@ export default function UserCardItem({ card, mode }) {
             className={style.responsiveImage}
             width={360}
             height={270}
+            sizes="(max-width: 640px) 50vw,(max-width: 1024px) 33vw, 25vw"
           />
         </div>
         {/* 카드정보 */}

@@ -102,7 +102,7 @@ export default function EditPhotoModal({ sale, onClose }) {
       });
       onClose();
     },
-    onError: error => {
+    onError: (error) => {
       console.error("수정 실패", error);
       toast.error("수정 중 오류가 발생했습니다.", {
         style: {
@@ -145,7 +145,7 @@ export default function EditPhotoModal({ sale, onClose }) {
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <h1 className={styles.header}>수정하기</h1>
         <button className={styles.closeButton} onClick={onClose}>
           <Image src={CloseIcon} alt="Close" width={32} height={32} />
@@ -235,7 +235,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                         type="number"
                         value={state.price}
                         min="0"
-                        onChange={e =>
+                        onChange={(e) =>
                           dispatch({
                             type: "SET_FIELD",
                             field: "price",
@@ -265,7 +265,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                       <select
                         className={`${styles.gradeSelect} ${selectColorClass}`}
                         value={state.desiredGrade}
-                        onChange={e =>
+                        onChange={(e) =>
                           dispatch({
                             type: "SET_FIELD",
                             field: "desiredGrade",
@@ -299,7 +299,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                       <select
                         className={styles.genreSelect}
                         value={state.desiredGenre}
-                        onChange={e =>
+                        onChange={(e) =>
                           dispatch({
                             type: "SET_FIELD",
                             field: "desiredGenre",
@@ -338,7 +338,7 @@ export default function EditPhotoModal({ sale, onClose }) {
                     placeholder="설명을 입력해 주세요"
                     className={styles.memo}
                     value={state.desiredDesc}
-                    onChange={e =>
+                    onChange={(e) =>
                       dispatch({
                         type: "SET_FIELD",
                         field: "desiredDesc",

@@ -77,6 +77,7 @@ function Card({
               fill
               className={style.responsiveImage} // 스타일에서 object-fit 등 설정
               loading="lazy"
+              sizes="(max-width: 640px) 50vw,(max-width: 1024px) 33vw, 25vw"
             />
           </div>
           <div className={`${style.CardTextBox} ${style.CardTextBoxUpgrade}`}>
