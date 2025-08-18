@@ -453,10 +453,10 @@ export default function SellPhotoModal({ onClose }) {
                               <option disabled value="">
                                 등급을 선택해 주세요
                               </option>
-                              <option value="LEGENDARY">Legendary</option>
-                              <option value="SUPER RARE">Super Rare</option>
-                              <option value="RARE">Rare</option>
-                              <option value="COMMON">Common</option>
+                              <option value="LEGENDARY">LEGENDARY</option>
+                              <option value="SUPER RARE">SUPER RARE</option>
+                              <option value="RARE">RARE</option>
+                              <option value="COMMON">COMMON</option>
                             </select>
                             <Image
                               src={DownIcon}
