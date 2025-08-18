@@ -13,7 +13,7 @@ import ModalCard from "./card/ModalCard";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import SearchIcon from "@/public/icons/ic_search.svg";
 import FilterIcon from "@/public/icons/ic_filter.svg";
-import { fetchMyGalleryData } from "@/utils/api/myGalleries";
+import { getUserCardOnIdle } from "@/utils/api/getUserCardOnIdle";
 import { createExchangeProposal } from "@/utils/api/exchange";
 
 function noop() {}
@@ -42,7 +42,7 @@ export default function ExchangePhotoModal(props) {
 
   async function fetchCards() {
     try {
-      const res = await fetchMyGalleryData({
+      const res = await getUserCardOnIdle({
         page: 1,
         search: search || "",
         grade: listGrade?.value,
