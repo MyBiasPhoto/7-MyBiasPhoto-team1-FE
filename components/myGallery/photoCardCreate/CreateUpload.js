@@ -1,6 +1,7 @@
 "use client";
 
 import styles from "@/app/myGallery/create/page.module.css";
+import toast from "react-hot-toast";
 
 export default function CreateUpload({
   value,
@@ -41,10 +42,20 @@ export default function CreateUpload({
         <label
           htmlFor={disabled ? undefined : fileInputId}
           className={styles.fileSelectBtn}
-          onClick={(e) => {
+          onClick={e => {
             if (disabled) {
               e.preventDefault();
-              alert(disabledMsg);
+              toast.error(disabledMsg, {
+                style: {
+                  fontFamily: "BR-B",
+                  background: "var(--black)",
+                  border: "1px solid var(--main)",
+                  padding: "16px 20px",
+                  color: "var(--white)",
+                  fontSize: "20px",
+                },
+                duration: 800,
+              });
             }
           }}
         >

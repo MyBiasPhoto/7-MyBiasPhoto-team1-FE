@@ -59,7 +59,7 @@ export default function RandomBox({ onNeedLogin, onSuccess }) {
 
       if (status === 401) {
         onNeedLogin?.();
-        toast.error("세션이 만료되었습니다. 다시 로그인해 주세요.", {
+        toast.error("세션이 만료되었습니다.\n\n다시 로그인해 주세요.", {
           style: {
             fontFamily: "BR-B",
             background: "var(--black)",
@@ -95,7 +95,7 @@ export default function RandomBox({ onNeedLogin, onSuccess }) {
 
       if (status === 409 && code === "EVENT_CONCURRENCY_CONFLICT") {
         toast.error(
-          message || "다른 요청이 먼저 처리되었습니다. 다시 시도하세요.",
+          message || "다른 요청이 먼저 처리되었습니다.\n\n다시 시도하세요.",
           {
             style: {
               fontFamily: "BR-B",
