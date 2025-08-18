@@ -105,19 +105,19 @@
 }
 
 .COMMON {
-  color: gray;
+  color: var(--main);
   /* border: 1px solid gray; */
 }
 .RARE {
-  color: blue;
+  color: var(--blue);
   /* border: 1px solid blue; */
 }
 .SUPER_RARE {
-  color: purple;
+  color: var(--purple);
   /* border: 1px solid purple; */
 }
 .LEGENDARY {
-  color: gold;
+  color: var(--pink);
   /* border: 1px solid gold; */
 }
 .ETC {
@@ -206,25 +206,25 @@
 }
 
 .glow-common:hover {
-  --glow-color: gray;
+  --glow-color: var(--main);
   animation: glowPulse 1.5s infinite ease-in-out;
   transform: scale(1.01);
 }
 
 .glow-rare:hover {
-  --glow-color: blue;
+  --glow-color: var(--blue);
   animation: glowPulse 1.5s infinite ease-in-out;
   transform: scale(1.01);
 }
 
 .glow-super_rare:hover {
-  --glow-color: purple;
+  --glow-color: var(--purple);
   animation: glowPulse 1.5s infinite ease-in-out;
   transform: scale(1.01);
 }
 
 .glow-legendary:hover {
-  --glow-color: gold;
+  --glow-color: var(--pink);
   animation: glowPulse 1.5s infinite ease-in-out;
   transform: scale(1.01);
 }

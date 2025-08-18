@@ -26,7 +26,7 @@ export default function MyGalleryClient({ initialFilters }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { isLogin, bootstrapped } = useAuth();
+  const { isLogin, bootstrapped, user } = useAuth();
 
   const { state: filters, dispatch } = useGalleryFilters({
     ...initialFilters,
@@ -91,7 +91,7 @@ export default function MyGalleryClient({ initialFilters }) {
         <div className={style.topTitle}>
           <CardRaritySummary
             gradeCounts={gradeCounts ?? []}
-            nickname={userNickname ?? ""}
+            nickname={user.nickname ?? ""}
           />
         </div>
         <FilterBar filters={filters} dispatch={dispatch} />

@@ -102,20 +102,16 @@
 }
 
 .common {
-  color: gray;
-  /* border: 1px solid gray; */
+  color: var(--main);
 }
 .rare {
-  color: blue;
-  /* border: 1px solid blue; */
+  color: var(--blue);
 }
 .super_rare {
-  color: purple;
-  /* border: 1px solid purple; */
+  color: var(--purple);
 }
 .legendary {
-  color: gold;
-  /* border: 1px solid gold; */
+  color: var(--pink);
 }
 .etc {
   color: darkgray;

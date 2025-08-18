@@ -118,7 +118,7 @@
 }
 
 .common {
-  color: gray;
+  color: var(--main);
   font-family: "Noto Sans KR";
   font-size: 24px;
   font-style: normal;
@@ -126,7 +126,7 @@
   line-height: normal;
 }
 .rare {
-  color: blue;
+  color: var(--blue);
   font-family: "Noto Sans KR";
   font-size: 24px;
   font-style: normal;
@@ -134,7 +134,7 @@
   line-height: normal;
 }
 .super_rare {
-  color: purple;
+  color: var(--purple);
   font-family: "Noto Sans KR";
   font-size: 24px;
   font-style: normal;
@@ -142,7 +142,7 @@
   line-height: normal;
 }
 .legendary {
-  color: gold;
+  color: var(--pink);
   font-family: "Noto Sans KR";
   font-size: 24px;
   font-style: normal;

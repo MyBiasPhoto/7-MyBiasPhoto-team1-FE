@@ -62,19 +62,19 @@
 }
 
 .common {
-  color: gray;
+  color: var(--main);
   font-weight: 600;
 }
 .rare {
-  color: blue;
+  color: var(--blue);
   font-weight: 600;
 }
 .super_rare {
-  color: purple;
+  color: var(--purple);
   font-weight: 600;
 }
 .legendary {
-  color: gold;
+  color: var(--pink);
   font-weight: 600;
 }
 .etc {

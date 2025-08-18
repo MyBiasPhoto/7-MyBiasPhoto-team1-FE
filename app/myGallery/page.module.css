@@ -148,16 +148,16 @@
 }
 
 .common {
-  color: gray;
+  color: var(--main);
 }
 .rare {
-  color: blue;
+  color: var(--blue);
 }
 .super_rare {
-  color: purple;
+  color: var(--purple);
 }
 .legendary {
-  color: gold;
+  color: var(--pink);
 }
 
 .options:hover {
@@ -215,7 +215,6 @@
     grid-template-columns: repeat(2, 1fr);
     width: max-content;
     margin: 0 auto;
-    gap: 16px;
   }
   .filterBox {
     display: none;
@@ -258,8 +257,18 @@
   }
 }
 
+@media (min-width: 746px) and (max-width: 1199px) {
+  .myGalleryContainer {
+    padding: 0;
+  }
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+    width: max-content;
+  }
+}
+
 /* 태블릿: 747px ~ 1513px */
-@media (min-width: 747px) and (max-width: 1513px) {
+@media (min-width: 1200px) and (max-width: 1513px) {
   .cardList {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -282,7 +291,7 @@
     padding: 0;
   }
   .myGalleryContainer {
-    padding: 0;
+    padding: 0 150px;
   }
 }
 
