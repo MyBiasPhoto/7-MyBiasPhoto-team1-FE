@@ -5,13 +5,13 @@
 
 .title {
   display: flex;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid var(--white);
   justify-content: space-between;
   align-items: center;
   padding-bottom: 20px;
 }
 .titleFont {
-  color: var(--white-white, #fff);
+  color: var(--white);
   font-family: "Noto Sans KR";
   font-size: 40px;
   font-style: normal;
@@ -27,13 +27,19 @@
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  border: none;
   border-radius: 2px;
-  background: var(--main-main, #efff04);
+  background: var(--main);
+  color: var(--black);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
   cursor: pointer;
 }
 
 .ContentFont {
-  color: var(--white-white, #fff);
+  color: var(--white);
   font-family: "Noto Sans KR";
   font-size: 24px;
   font-style: normal;
@@ -44,7 +50,7 @@
 .Line {
   width: 3px;
   height: 28px;
-  background-color: #a4a4a4;
+  background-color: var(--gray-300);
   margin-left: 15px;
 }
 
@@ -54,7 +60,7 @@
 }
 
 .Type {
-  color: var(--gray-gray300, #a4a4a4);
+  color: var(--gray-300);
   font-family: "Noto Sans KR";
   font-size: 24px;
   font-style: normal;
@@ -101,8 +107,14 @@
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  border: none;
   border-radius: 2px;
   background: var(--main);
+  color: var(--black);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
   cursor: pointer;
 }
 

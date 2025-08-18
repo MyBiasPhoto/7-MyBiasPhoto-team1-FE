@@ -39,6 +39,7 @@
 .confirmButton {
   background-color: var(--main);
   cursor: pointer;
+  border: none;
   border-radius: 2px;
   display: flex;
   width: 170px;

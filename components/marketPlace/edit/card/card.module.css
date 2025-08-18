@@ -5,7 +5,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  background-color: #161616;
+  background-color: var(--gray-500);
 }
 
 /* 이미지 영역 */
@@ -35,7 +35,7 @@
 
 /* 큰 제목 (예: 스페인 여행) */
 .titleFont {
-  color: #fff;
+  color: var(--white);
   font-family: "Noto Sans KR";
   font-size: 22px;
   font-weight: 700;
@@ -49,10 +49,10 @@
   font-size: 14px;
   font-family: "Noto Sans KR";
   font-weight: 400;
-  color: #a4a4a4;
+  color: var(--gray-300);
   justify-content: space-between;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--gray-gray400, #5a5a5a);
+  border-bottom: 1px solid var(--gray-400);
 }
 
 /* 등급 (예: COMMON) */
@@ -84,27 +84,27 @@
 
 /* 구분자 */
 .divider {
-  color: #a4a4a4;
+  color: var(--gray-300);
 }
 
 /* 카테고리 */
 .category {
-  color: #a4a4a4;
+  color: var(--gray-300);
 }
 
 /* 구매 희망금액 */
 .point {
-  color: #a4a4a4;
+  color: var(--gray-300);
 }
 
 .bold {
   font-weight: 700;
-  color: #fff;
+  color: var(--white);
 }
 
 /* 제작자 */
 .writer {
-  color: #fff;
+  color: var(--white);
   text-decoration: underline;
   font-weight: 400;
 }
@@ -113,7 +113,7 @@
 .content {
   padding: 0 30px;
   margin-top: 8px;
-  color: #fff;
+  color: var(--white);
   font-family: "Noto Sans KR";
   font-size: 16px;
   font-weight: 400;
@@ -125,9 +125,9 @@
   height: 60px;
   margin-top: 60px;
   border-radius: 2px;
-  border: 1px solid var(--gray-gray100, #eee);
-  background-color: #161616;
-  color: #fff;
+  border: 1px solid var(--gray-100);
+  background-color: var(--gray-500);
+  color: var(--white);
   font-size: 16px;
   font-family: "Noto Sans KR";
   cursor: pointer;
@@ -138,8 +138,8 @@
   margin-top: 60px;
   margin-left: 10px;
   border-radius: 2px;
-
-  background: var(--main-main, #efff04);
+  border: none;
+  background: var(--main);
   color: var(--black);
   font-size: 16px;
   font-family: "Noto Sans KR";

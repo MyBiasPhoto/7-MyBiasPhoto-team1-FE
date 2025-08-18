@@ -13,9 +13,14 @@
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-
   border-radius: 2px;
   background: var(--main);
+  border: none;
+  color: var(--black);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
   cursor: pointer;
 }
 
@@ -60,7 +65,7 @@
   flex-shrink: 0;
   border-radius: 2px;
   border: 1px solid var(--gray-gray200, #ddd);
-  background: var(--black-black, #0f0f0f);
+  background: var(--black);
   color: #fff;
 }
 
