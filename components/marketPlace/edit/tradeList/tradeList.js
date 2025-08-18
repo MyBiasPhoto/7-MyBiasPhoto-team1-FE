@@ -93,7 +93,7 @@ export default function EditTradeList({ sale }) {
       });
     } catch (e) {
       console.error(e);
-      toast.error("거절 처리 중 오류가 발생했습니다. 다시 시도해 주세요.", {
+      toast.error("거절 처리 중 오류가 발생했습니다.\n\n다시 시도해 주세요.", {
         style: {
           fontFamily: "BR-B",
           background: "var(--black)",
@@ -131,7 +131,7 @@ export default function EditTradeList({ sale }) {
       });
     } catch (e) {
       console.error(e);
-      toast.error("승인 처리 중 오류가 발생했습니다. 다시 시도해 주세요.", {
+      toast.error("승인 처리 중 오류가 발생했습니다.\n\n다시 시도해 주세요.", {
         style: {
           fontFamily: "BR-B",
           background: "var(--black)",

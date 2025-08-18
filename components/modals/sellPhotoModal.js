@@ -19,6 +19,7 @@ import DownIcon from "@/public/icons/ic_down.svg";
 import FilterIcon from "@/public/icons/ic_filter.svg";
 import { fetchMyGalleryData } from "@/utils/api/myGalleries";
 import { postSalePhotoCard } from "@/utils/api/postSalePhotoCard.js";
+import toast from "react-hot-toast";
 export default function SellPhotoModal({ onClose }) {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
@@ -50,7 +51,7 @@ export default function SellPhotoModal({ onClose }) {
       {
         /*변경된 api에 맞춰 매핑 수정완료 */
       }
-      const formattedCards = res.myGroupedCards.map((card) => ({
+      const formattedCards = res.myGroupedCards.map(card => ({
         photoCardId: card.photoCardId,
         name: card.name,
         imageUrl: card.imageUrl,
@@ -71,7 +72,7 @@ export default function SellPhotoModal({ onClose }) {
     fetchCards();
   }, [search, listGrade, listKind]);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = e => {
     setSearch(e.target.value);
   };
 
@@ -97,7 +98,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    setCardDrafts((prev) => ({
+    setCardDrafts(prev => ({
       ...prev,
       [selectedCard.photoCardId]: {
         amount,
@@ -117,7 +118,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = e => {
       if (e.key === "Escape") {
         handleBack();
       }
@@ -132,19 +133,50 @@ export default function SellPhotoModal({ onClose }) {
 
   async function handleConfirm() {
     if (!selectedCard?.photoCardId) {
-      alert("카드를 먼저 선택해 주세요.");
+      toast.error("카드를 먼저 선택해 주세요.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 800,
+      });
       return;
     }
 
     const priceNum = Number(price);
     if (!price || Number.isNaN(priceNum) || priceNum <= 0) {
-      alert("장당 가격을 올바르게 입력해 주세요.");
+      toast.error("장당 가격을 올바르게\n입력해 주세요.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+          textAlign: "center",
+        },
+        duration: 800,
+      });
       return;
     }
 
     const max = Number(selectedCard?.amount ?? 1);
     if (amount < 1 || amount > max) {
-      alert("판매 수량이 유효하지 않습니다.");
+      toast.error("판매 수량이 유효하지 않습니다.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 800,
+      });
       return;
     }
     // 2) payload
@@ -193,7 +225,7 @@ export default function SellPhotoModal({ onClose }) {
     if (amount > 1) setAmount(amount - 1);
   };
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = e => {
     dragStartY.current = e.touches[0].clientY;
     setIsDragging(true);
   };
@@ -205,7 +237,7 @@ export default function SellPhotoModal({ onClose }) {
     };
   }, []);
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = e => {
     if (!isDragging) return;
     const currentY = e.touches[0].clientY;
     const diffY = currentY - dragStartY.current;
@@ -260,7 +292,7 @@ export default function SellPhotoModal({ onClose }) {
         <div className={styles.overlay} onClick={onClose}>
           <div
             className={styles.modal}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             ref={modalRef}
           >
             <div
@@ -289,7 +321,7 @@ export default function SellPhotoModal({ onClose }) {
                   <div className={styles.searchArea}>
                     <button
                       className={styles.filterToggleBtn}
-                      onClick={() => setShowMobileFilter((prev) => !prev)}
+                      onClick={() => setShowMobileFilter(prev => !prev)}
                     >
                       <Image
                         src={FilterIcon}
@@ -318,12 +350,12 @@ export default function SellPhotoModal({ onClose }) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={(val) => setListGrade(val)}
+                        onChange={val => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={(val) => setListKind(val)}
+                        onChange={val => setListKind(val)}
                       />
                     </div>
                   </div>
@@ -332,17 +364,17 @@ export default function SellPhotoModal({ onClose }) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={(val) => setListGrade(val)}
+                        onChange={val => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={(val) => setListKind(val)}
+                        onChange={val => setListKind(val)}
                       />
                     </div>
                   )}
                   <div className={styles.cardList}>
-                    {cards.map((card) => (
+                    {cards.map(card => (
                       <div
                         className={styles.cardItem}
                         key={card.photoCardId}
@@ -426,7 +458,7 @@ export default function SellPhotoModal({ onClose }) {
                               type="number"
                               value={price}
                               min="0"
-                              onChange={(e) => setPrice(e.target.value)}
+                              onChange={e => setPrice(e.target.value)}
                               placeholder="숫자만 입력"
                               className={styles.inputField}
                             />
@@ -448,7 +480,7 @@ export default function SellPhotoModal({ onClose }) {
                             <select
                               className={styles.gradeSelect}
                               value={grade}
-                              onChange={(e) => setGrade(e.target.value)}
+                              onChange={e => setGrade(e.target.value)}
                             >
                               <option disabled value="">
                                 등급을 선택해 주세요
@@ -475,7 +507,7 @@ export default function SellPhotoModal({ onClose }) {
                             <select
                               className={styles.genreSelect}
                               value={kind}
-                              onChange={(e) => setKind(e.target.value)}
+                              onChange={e => setKind(e.target.value)}
                             >
                               <option disabled value="">
                                 장르를 선택해 주세요
@@ -507,7 +539,7 @@ export default function SellPhotoModal({ onClose }) {
                           placeholder="설명을 입력해 주세요"
                           className={styles.memo}
                           value={exchangeMemo}
-                          onChange={(e) => setExchangeMemo(e.target.value)}
+                          onChange={e => setExchangeMemo(e.target.value)}
                         />
                       </div>
                     </div>

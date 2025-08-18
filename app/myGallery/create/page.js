@@ -9,6 +9,7 @@ import CreateInput from "@/components/myGallery/photoCardCreate/CreateInput";
 import CreateSelect from "@/components/myGallery/photoCardCreate/CreateSelect";
 import CreateUpload from "@/components/myGallery/photoCardCreate/CreateUpload";
 import CreateTextarea from "@/components/myGallery/photoCardCreate/CreateTextarea";
+import toast from "react-hot-toast";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
@@ -17,7 +18,7 @@ async function sha256Hex(file) {
   const buf = await file.arrayBuffer();
   const hash = await crypto.subtle.digest("SHA-256", buf);
   return Array.from(new Uint8Array(hash))
-    .map((b) => b.toString(16).padStart(2, "0"))
+    .map(b => b.toString(16).padStart(2, "0"))
     .join("");
 }
 
@@ -110,7 +111,7 @@ export default function CreatePhotoCardPage() {
     fetchQuota();
   }, [user?.id]);
 
-  const handleCreate = async (e) => {
+  const handleCreate = async e => {
     e.preventDefault();
     if (!isValid()) return;
 
@@ -133,8 +134,20 @@ export default function CreatePhotoCardPage() {
       const m = res.data?.monthly;
       if (m) {
         setMonthly(m);
-        alert(
-          `이번 달 ${m.created}번째 생성 완료! (남은 ${m.remaining}/${m.limit})`
+        toast(
+          `이번 달 ${m.created}번째 생성 완료!\n\n(남은 ${m.remaining}/${m.limit})`,
+          {
+            style: {
+              fontFamily: "BR-B",
+              background: "var(--black)",
+              border: "1px solid var(--main)",
+              padding: "16px 20px",
+              color: "var(--white)",
+              fontSize: "20px",
+              textAlign: "center",
+            },
+            duration: 1500,
+          }
         );
       }
 
@@ -165,13 +178,17 @@ export default function CreatePhotoCardPage() {
 
         const { message, monthly } = err.response.data || {};
         if (monthly) setMonthly(monthly);
-
-        alert(
-          (message || "이번 달 생성 한도를 초과했습니다.") +
-            (monthly
-              ? `\n이번 달 ${monthly.created}/${monthly.limit} (남은 ${monthly.remaining})`
-              : "")
-        );
+        toast.error(message || "이번 달 생성 한도를 초과했습니다.", {
+          style: {
+            fontFamily: "BR-B",
+            background: "var(--black)",
+            border: "1px solid var(--main)",
+            padding: "16px 20px",
+            color: "var(--white)",
+            fontSize: "20px",
+          },
+          duration: 800,
+        });
         return;
       }
       setUserCardCount(999);
@@ -182,9 +199,19 @@ export default function CreatePhotoCardPage() {
     }
   };
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = async e => {
     if (!canCreateThisMonth) {
-      alert("이번 달 생성 한도를 초과했습니다.");
+      toast.error("이번 달 생성 한도를 초과했습니다.", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 800,
+      });
       e.target.value = "";
       return;
     }
@@ -206,14 +233,24 @@ export default function CreatePhotoCardPage() {
       setAlreadyExists(alreadyExists);
     } catch (err) {
       console.error(err);
-      alert(err.message || "이미지 업로드 실패");
+      toast.error(err.message || "이미지 업로드 실패", {
+        style: {
+          fontFamily: "BR-B",
+          background: "var(--black)",
+          border: "1px solid var(--main)",
+          padding: "16px 20px",
+          color: "var(--white)",
+          fontSize: "20px",
+        },
+        duration: 800,
+      });
       setImageUrl("");
       setUploadedKey(null);
       setAlreadyExists(false);
     }
   };
 
-  const handleQuantityChange = (e) => {
+  const handleQuantityChange = e => {
     const value = e.target.value;
     setQuantity(value);
 
@@ -268,7 +305,7 @@ export default function CreatePhotoCardPage() {
         label="포토카드 이름"
         placeholder="포토카드 이름을 입력해 주세요"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={e => setName(e.target.value)}
         required
       />
 
@@ -276,7 +313,7 @@ export default function CreatePhotoCardPage() {
         id="grade"
         label="등급"
         value={grade}
-        onChange={(e) => setGrade(e.target.value)}
+        onChange={e => setGrade(e.target.value)}
         required
         options={[
           { value: "COMMON", label: "흔한" },
@@ -291,7 +328,7 @@ export default function CreatePhotoCardPage() {
         id="genre"
         label="장르"
         value={genre}
-        onChange={(e) => setGenre(e.target.value)}
+        onChange={e => setGenre(e.target.value)}
         required
         options={[
           { value: "ALBUM", label: "앨범" },
@@ -316,7 +353,7 @@ export default function CreatePhotoCardPage() {
           id="price"
           type="text"
           value={price}
-          onChange={(e) => {
+          onChange={e => {
             const value = e.target.value;
             setPrice(value);
 
@@ -357,7 +394,7 @@ export default function CreatePhotoCardPage() {
 
       <CreateUpload
         value={imageUrl}
-        onChange={(e) => setImageUrl(e.target.value)}
+        onChange={e => setImageUrl(e.target.value)}
         imageFile={imageFile}
         onFileChange={handleFileChange}
         disabled={!canCreateThisMonth}
@@ -368,7 +405,7 @@ export default function CreatePhotoCardPage() {
         label="포토카드 설명"
         placeholder="카드 설명을 입력해 주세요"
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={e => setDescription(e.target.value)}
         required
       />
 
