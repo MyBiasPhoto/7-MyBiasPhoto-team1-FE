@@ -158,16 +158,16 @@
 }
 
 .common {
-  color: gray;
+  color: var(--main);
 }
 .rare {
-  color: blue;
+  color: var(--blue);
 }
 .super_rare {
-  color: purple;
+  color: var(--purple);
 }
 .legendary {
-  color: gold;
+  color: var(--pink);
 }
 
 .options:hover {

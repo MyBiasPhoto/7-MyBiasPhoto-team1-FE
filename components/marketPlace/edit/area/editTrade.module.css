@@ -66,28 +66,28 @@
   margin-top: 0px;
 }
 .common {
-  color: gray;
+  color: var(--main);
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
 }
 
 .rare {
-  color: blue;
+  color: var(--blue);
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
 }
 
 .super_rare {
-  color: purple;
+  color: var(--purple);
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
 }
 
 .legendary {
-  color: gold;
+  color: var(--pink);
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
