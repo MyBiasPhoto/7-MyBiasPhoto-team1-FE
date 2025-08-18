@@ -17,6 +17,7 @@ import Header from "@/components/marketPlace/section/landing/header/Header";
 import LoginModalWrapper from "@/components/marketPlace/section/landing/loginModalWrapper/loginModalWrapper";
 import getCountByOption from "@/components/marketPlace/util/util";
 import { useAuth } from "@/utils/auth/authContext";
+import MarketPlaceCardSkeleton from "@/components/marketPlace/skeleton/MarketPlaceCardSkeleton";
 
 export default function MarketPlace() {
   // 1. 상태 선언
@@ -251,11 +252,15 @@ export default function MarketPlace() {
           searchValue={filterState.selected.search || ""}
         />
         {console.log(filterState.allCards)}
-        <CardList
-          onCardClick={handleCardClick}
-          currentUserNickname={currentUserNickname}
-          cards={filterState.allCards}
-        />
+        {isLoading && filterState.page === 1 ? (
+          <MarketPlaceCardSkeleton count={6} />
+        ) : (
+          <CardList
+            onCardClick={handleCardClick}
+            currentUserNickname={currentUserNickname}
+            cards={filterState.allCards}
+          />
+        )}
         <button
           className={style.scrollButton}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

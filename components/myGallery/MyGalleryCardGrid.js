@@ -65,6 +65,8 @@ import style from "@/app/myGallery/page.module.css";
 import MyGalleryCard from "./MyGalleryCard";
 import CoupangCardSlot from "../common/ads/CoupangCardSlot";
 import MyGalleryCardSkeleton from "@/components/myGallery/MyGalleryCardSkeleton";
+import logo from "@/public/assets/logo.svg";
+import Image from "next/image";
 
 export default function MyGalleryCardGrid({ items, isLoading, isPending }) {
   if (isLoading || isPending) {
@@ -81,7 +83,12 @@ export default function MyGalleryCardGrid({ items, isLoading, isPending }) {
   }
 
   if (!items || items.length === 0) {
-    return <div>검색결과 없음</div>;
+    return (
+      <div className={style.notFoundContainer}>
+        <p className={style.notFound}>검색결과 없음</p>
+        <Image src={logo} width={200} height={200} alt={"로고"} />
+      </div>
+    );
   }
 
   const withAd = [];

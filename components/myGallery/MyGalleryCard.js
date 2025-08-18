@@ -46,7 +46,9 @@ export default function MyGalleryCard({
           <p className={style.CardTextBoxTitle}>{name || "제목"}</p>
           <div className={style.CardSubTitle}>
             <div className={style.CardSubTitleBox}>
-              <p className={`${style[grade]}`}>{grade || "등급"}</p>
+              <p className={`${style[grade.replace(/\s+/g, "_")]}`}>
+                {grade || "등급"}
+              </p>
               <div className={style.subdiv}></div>
               <p>{genre || "장르"}</p>
             </div>

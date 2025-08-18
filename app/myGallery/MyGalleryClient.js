@@ -132,24 +132,26 @@ export default function MyGalleryClient({ initialFilters }) {
         )}
         {/* {console.log("필터값:", filters)} */}
 
-        {isFilterModalOpen && (
-          <div className={style.MobileModal}>
-            <div className={style.MobileModalTitle}>
-              <p>필터</p>
-              <p
-                className={style.close}
-                onClick={() => setIsFilterModalOpen(false)}
-              >
-                x
-              </p>
-            </div>
-            <FilterBartwo
-              filters={filters}
-              dispatch={dispatch}
-              onClose={() => setIsFilterModalOpen(false)}
-            />
+        <div
+          className={`${style.MobileModal} ${
+            isFilterModalOpen ? style.show : ""
+          }`}
+        >
+          <div className={style.MobileModalTitle}>
+            <p>필터</p>
+            <p
+              className={style.close}
+              onClick={() => setIsFilterModalOpen(false)}
+            >
+              x
+            </p>
           </div>
-        )}
+          <FilterBartwo
+            filters={filters}
+            dispatch={dispatch}
+            onClose={() => setIsFilterModalOpen(false)}
+          />
+        </div>
       </div>
 
       {/* ✅ 로그인 안 되어 있으면 모달 표시 (닫아도 페이지는 머무름) */}

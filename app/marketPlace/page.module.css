@@ -252,8 +252,36 @@
 }
 
 /* 태블릿: 768px ~ 1023px */
-@media (min-width: 746px) and (max-width: 1695px) {
+@media (min-width: 1200px) and (max-width: 1695px) {
   /* 태블릿 스타일 */
+  .cardList {
+    display: grid;
+    width: max-content;
+    margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .title_Button {
+    width: 240px;
+  }
+  .title_Text {
+    font-size: 42px;
+  }
+  .marketPlaceContainer {
+    padding: 0 150px;
+  }
+  .filterInput {
+    width: 190px;
+  }
+
+  @media (max-width: 1355px) {
+    .cardList {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (min-width: 745px) and (max-width: 1199px) {
   .cardList {
     display: grid;
     width: max-content;

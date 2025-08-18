@@ -42,3 +42,7 @@ body,
   --gray-200: #dddddd;
   --gray-100: #eeeeee;
 }
+
+button {
+  border: none;
+}
