@@ -213,7 +213,6 @@
   .cardList {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    width: max-content;
     margin: 0 auto;
   }
   .filterBox {
@@ -359,6 +358,8 @@
   border-top-left-radius: 12px; /* 위 모서리 둥글게 */
   border-top-right-radius: 12px;
   z-index: 9999; /* 다른 요소 위에 표시 */
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
 }
 
 .MobileModalTitle {
@@ -374,4 +375,20 @@
   position: absolute;
   right: 5%;
   cursor: pointer;
+}
+
+.MobileModal.show {
+  transform: translateY(0); /* 나타날 때 */
+}
+
+.notFound {
+  color: #fff;
+}
+
+.notFoundContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
 }

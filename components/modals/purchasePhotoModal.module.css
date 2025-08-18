@@ -60,6 +60,10 @@
 .confirmButton:hover {
   filter: brightness(0.9);
 }
+.confirmButton:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
 
 .closeButton {
   position: absolute;

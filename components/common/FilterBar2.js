@@ -15,10 +15,10 @@ export default function FilterBar({ filters, dispatch, onClose }) {
     if (onClose) onClose();
   };
   const gradeColors = {
-    흔한: "#A4A4A4",
-    레어: "#4A90E2",
-    슈퍼레어: "#9013FE",
-    레전드리: "#F5A623",
+    흔한: "var(--main)",
+    레어: "var(--blue)",
+    슈퍼레어: "var(--purple)",
+    레전드리: "var(--pink)",
   };
 
   const renderOptions = () => {

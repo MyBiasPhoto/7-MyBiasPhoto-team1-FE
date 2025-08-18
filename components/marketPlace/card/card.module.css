@@ -70,6 +70,7 @@
   border-bottom: 1px solid #fff;
   padding-bottom: 8px;
   margin-bottom: 12px;
+  white-space: nowrap;
 }
 
 .CardSubTitleBox {
@@ -182,6 +183,12 @@
   }
   .CardTextBoxUpgrade {
     margin-top: 137px;
+  }
+  .CardSubTitleBox {
+    font-size: 10px;
+  }
+  .subTitleWriter {
+    font-size: 10px;
   }
 }
 
