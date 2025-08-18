@@ -13,6 +13,13 @@ export default function CreateSelect({
   className = "",
   labelClass = "",
 }) {
+  const colorMap = {
+    COMMON: "var(--main)",
+    RARE: "var(--blue)",
+    SUPER_RARE: "var(--purple)",
+    LEGENDARY: "var(--pink)",
+  };
+
   return (
     <div className={styles.photoCardGrade}>
       <label
@@ -27,14 +34,12 @@ export default function CreateSelect({
         onChange={onChange}
         className={`${styles.photoCardSelect} ${className}`}
         required={required}
-        style={{
-          color: value === "" ? "var(--gray-400)" : "var(--white)",
-        }}
+        style={{ color: colorMap[value] || "var(--white)" }}
       >
         <option value="" disabled hidden>
           {placeholder}
         </option>
-        {options.map((opt) => (
+        {options.map(opt => (
           <option
             key={opt.value}
             value={opt.value}

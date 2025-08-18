@@ -5,13 +5,13 @@
 
 .title {
   display: flex;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid var(--white);
   align-items: center;
   padding-bottom: 20px;
   gap: 10px;
 }
 .titleFont {
-  color: var(--white-white, #fff);
+  color: var(--white);
   font-family: "Noto Sans KR";
   font-size: 28px;
   font-style: normal;
@@ -28,11 +28,12 @@
   gap: 10px;
   flex-shrink: 0;
   border-radius: 2px;
-  background: var(--main-main, #efff04);
+  background: var(--main);
+  border: none;
 }
 
 .ContentFont {
-  color: var(--white-white, #fff);
+  color: var(--white);
   font-family: "Noto Sans KR";
   font-size: 24px;
   font-style: normal;
@@ -44,7 +45,7 @@
 .Line {
   width: 3px;
   height: 28px;
-  background-color: #a4a4a4;
+  background-color: var(--gray-300);
   margin-left: 15px;
 }
 
@@ -54,7 +55,7 @@
 }
 
 .Type {
-  color: var(--gray-gray300, #a4a4a4);
+  color: var(--gray-300);
   font-family: "Noto Sans KR";
   font-size: 24px;
   font-style: normal;
@@ -102,7 +103,8 @@
   gap: 10px;
   flex-shrink: 0;
   border-radius: 2px;
-  background: var(--main-main, #efff04);
+  background: var(--main);
+  border: none;
 }
 
 @media (max-width: 743px) {

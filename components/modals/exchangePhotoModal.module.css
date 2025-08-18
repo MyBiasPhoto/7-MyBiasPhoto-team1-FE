@@ -250,7 +250,7 @@
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
-  border: 1px solid var(--main);
+  border: none;
   border-radius: 2px;
   background: var(--main);
   color: var(--black);

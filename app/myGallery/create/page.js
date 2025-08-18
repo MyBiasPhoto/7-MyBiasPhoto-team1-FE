@@ -316,10 +316,10 @@ export default function CreatePhotoCardPage() {
         onChange={e => setGrade(e.target.value)}
         required
         options={[
-          { value: "COMMON", label: "흔한" },
-          { value: "RARE", label: "레어" },
-          { value: "SUPER_RARE", label: "슈퍼레어" },
-          { value: "LEGENDARY", label: "레전드리" },
+          { value: "COMMON", label: "COMMON" },
+          { value: "RARE", label: "RARE" },
+          { value: "SUPER_RARE", label: "SUPER RARE" },
+          { value: "LEGENDARY", label: "LEGENDARY" },
         ]}
         placeholder="등급을 선택해 주세요"
       />
@@ -410,10 +410,7 @@ export default function CreatePhotoCardPage() {
       />
 
       <button
-        className={styles.create}
-        style={{
-          background: isValid() ? "var(--main)" : "var(--gray-400)",
-        }}
+        className={`${styles.create} ${isValid() ? styles.createActive : ""}`}
         disabled={!isValid()}
         onClick={handleCreate}
       >
