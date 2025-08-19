@@ -405,3 +405,12 @@
 .modalButtonImg {
   display: flex;
 }
+
+.emptyMessageBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #fff;
+  font-size: 24px;
+}
