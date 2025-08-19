@@ -14,9 +14,14 @@ import { useRouter } from "next/navigation";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { PulseLoader } from "react-spinners";
 import toast from "react-hot-toast";
+import Modal from "./Modal";
+import RandomBox from "./RandomBox";
+import ChargePoint from "./ChargePoint";
 
 export default function UserInfo({ onLogout }) {
   const [showInfo, setShowInfo] = useState(false);
+  const [showRandom, setShowRandom] = useState(false);
+  const [showCharge, setShowCharge] = useState(false);
   const isMobile = useIsMobile();
   const infoBoxRef = useRef();
   const { data: me, isLoading: meLoading } = useMeQuery();
@@ -100,7 +105,6 @@ export default function UserInfo({ onLogout }) {
             `${points} P`
           )}
         </span>
-        {/* <div className={styles.alarm} onClick={handleAlarmClick} /> */}
         <div className={styles.alarm} onClick={handleAlarmClick}>
           {unreadCount > 0 && <span className={styles.badgeDot} />}
         </div>
@@ -123,9 +127,29 @@ export default function UserInfo({ onLogout }) {
       )}
       {showInfo === "user" && (
         <div className={styles.infoBox} ref={infoBoxRef}>
-          <UserMenu />
+          <UserMenu
+            onCloseMenu={() => setShowInfo(false)}
+            onOpenRandom={() => {
+              setShowRandom(true);
+              setShowInfo(false);
+            }}
+            onOpenCharge={() => {
+              setShowCharge(true);
+              setShowInfo(false);
+            }}
+          />
         </div>
       )}
+      <Modal open={showRandom} onClose={() => setShowRandom(false)}>
+        <RandomBox
+          onSuccess={() => {
+            refetchMe?.();
+          }}
+        />
+      </Modal>
+      <Modal open={showCharge} onClose={() => setShowCharge(false)}>
+        <ChargePoint onClose={() => setShowCharge(false)} />
+      </Modal>
     </div>
   );
 }
