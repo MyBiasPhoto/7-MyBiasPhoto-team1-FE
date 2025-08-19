@@ -12,7 +12,7 @@ import {
 } from "@/utils/api/exchange";
 import toast from "react-hot-toast";
 
-export default function EditTradeList({ sale }) {
+export default function EditTradeList({ sale, hideWhenEmpty = false }) {
   const [trade, setTrade] = useState([]);
   const [loadingId, setLoadingId] = useState(null);
 
@@ -26,8 +26,8 @@ export default function EditTradeList({ sale }) {
       const res = await getReceivedExchangeProposals(sale?.id);
       const list = Array.isArray(res?.proposals) ? res.proposals : [];
       // PENDING 상태만 유지
-      const filtered = list.filter(p => p.status === "PENDING");
-      const mapped = filtered.map(p => ({
+      const filtered = list.filter((p) => p.status === "PENDING");
+      const mapped = filtered.map((p) => ({
         id: p.id,
         saleId: p.saleId,
         image:
@@ -155,15 +155,32 @@ export default function EditTradeList({ sale }) {
       </div>
 
       <div className={style.list}>
-        {trade.map(p => (
-          <EditTradeCard
-            key={p.id}
-            {...p}
-            loading={loadingId === p.id}
-            onCancel={() => openRejectModal(p)}
-            onAccept={() => openApproveModal(p)}
-          />
-        ))}
+        {Array.isArray(trade) && trade.length === 0 ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+              color: "var(--white)",
+              border: "none",
+              fontFamily: "Noto Sans KR",
+              fontSize: "20px",
+              fontWeight: "700",
+            }}
+          >
+            아직 제시받은 교환이 없습니다!
+          </div>
+        ) : (
+          trade.map((p) => (
+            <EditTradeCard
+              key={p.id}
+              {...p}
+              loading={loadingId === p.id}
+              onCancel={() => openRejectModal(p)}
+              onAccept={() => openApproveModal(p)}
+            />
+          ))
+        )}
       </div>
 
       {isRejectOpen && (
