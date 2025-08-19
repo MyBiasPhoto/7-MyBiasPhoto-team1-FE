@@ -1,6 +1,6 @@
 // 비동기방식 x 일반적인 클라이언트 컴포넌트
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import iconDown from "../../../public/icons/ic_down.svg";
 import Image from "next/image";
 import style from "./select.module.css";
@@ -8,8 +8,9 @@ import style from "./select.module.css";
 export default function SelectFilter({ name, option, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectName, setSelectName] = useState();
+  const ref = useRef(null);
 
-  const toggleOpen = () => setIsOpen((prev) => !prev);
+  const toggleOpen = () => setIsOpen(prev => !prev);
 
   const handleSelect = (value, e) => {
     e.stopPropagation();
@@ -17,8 +18,19 @@ export default function SelectFilter({ name, option, onChange }) {
     onChange(value);
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = e => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className={style.selectContainerFilter}>
+    <div className={style.selectContainerFilter} ref={ref}>
       <div className={style.selectBox} onClick={toggleOpen}>
         <p className={style.selectBoxFont}>{selectName?.label || name}</p>
         <Image
@@ -30,9 +42,13 @@ export default function SelectFilter({ name, option, onChange }) {
         />
         {isOpen && (
           <div className={style.modalFilter}>
-            {option.map((opt) => (
-              <div key={opt.value} onClick={(e) => handleSelect(opt, e)}>
-                <p className={style.selectBoxFont}>{opt.label}</p>
+            {option.map(opt => (
+              <div
+                className={style.modalEvent}
+                key={opt.value}
+                onClick={e => handleSelect(opt, e)}
+              >
+                <p className={style.madalText}>{opt.label}</p>
               </div>
             ))}
           </div>

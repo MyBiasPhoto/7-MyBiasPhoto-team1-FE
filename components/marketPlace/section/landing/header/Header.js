@@ -9,7 +9,7 @@ function Header({ onLoginClick, onFilterChange, searchValue }) {
         placeholder="검색"
         className={style.filterInputMobile}
         value={searchValue}
-        onChange={(val) => onFilterChange("search", val.target)}
+        onChange={val => onFilterChange("search", val.target)}
       />
       <p className={style.title_Text}>마켓플레이스</p>
       <button onClick={onLoginClick} className={style.title_Button}>

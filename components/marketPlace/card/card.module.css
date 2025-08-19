@@ -1,15 +1,22 @@
+.LinkBox {
+  display: block;
+  width: 100%;
+  height: auto;
+  text-decoration: none;
+}
+
 .cardContainer {
-  width: 440px;
-  height: 600px;
-  background-color: #111;
-  color: white;
+  width: 100%;
+  height: 100%;
+  background-color: var(--gray-500);
+  color: var(--white);
   border: 1px solid rgba(255, 255, 255, 0.1);
   /* perspective: 1000px; */
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px;
+  padding: 25px;
   position: relative;
 }
 
@@ -23,7 +30,6 @@
 .cardImageBox {
   width: 100%;
   height: 300px;
-  padding-bottom: 16px;
   position: relative;
 }
 .soldOutLayer {
@@ -44,33 +50,40 @@
 
 .responsiveImage {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
-  /* padding: 10px; */
 }
 
 .CardTextBox {
   width: 100%;
-  padding: 0 10px;
-  margin-bottom: 16px;
   margin-top: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray-400);
 }
 
 .CardTextBoxTitle {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 10px;
 }
 
 .CardSubTitle {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
-  border-bottom: 1px solid #fff;
-  padding-bottom: 8px;
-  margin-bottom: 12px;
+  font-size: 16px;
   white-space: nowrap;
+}
+
+.subTitleWriter {
+  color: var(--white);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: underline;
 }
 
 .CardSubTitleBox {
@@ -79,30 +92,42 @@
   gap: 10px;
 }
 
+.CardTextSubBox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 20px 0 47px;
+  gap: 10px;
+}
+
 .CardSubTitle2 {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
 }
 .subTitleGenre {
-  color: var(--gray-gray300, #a4a4a4);
+  color: var(--gray-300);
+}
+
+.cardFontColor {
+  color: var(--gray-300);
+}
+
+.cardFontColorWhite {
+  color: var(--white);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .subdiv {
   width: 2px;
   height: 14px;
   background-color: var(--gray-400);
-}
-
-.subTitleWriter {
-  font-size: 12px;
-  color: #aaa;
-}
-
-.cardLogo {
-  text-align: center;
-  padding-top: 12px;
 }
 
 .COMMON {
@@ -126,38 +151,36 @@
   /* border: 1px solid darkgray; */
 }
 
-.LinkBox {
-  display: inline-block;
-  text-decoration: none;
-}
-
-@media (max-width: 1023px) {
+@media (min-width: 743px) and (max-width: 1199px) {
   .cardContainer {
-    max-width: 409px;
-    padding: 16px;
+    padding: 20px;
+  }
+  .cardImageBox {
+    height: 227px;
   }
 
-  .responsiveImage {
-    width: 100%;
-    height: 180px;
+  .CardTextBox {
+    margin-top: 25px;
   }
+
+  .CardTextBoxTitle {
+    font-size: 14px;
+  }
+
   .soldOutLayer {
     height: 100%;
   }
 }
 
-@media (max-width: 767px) {
-  .cardContainer {
-    width: 223px;
-    height: 286px;
-    padding: 12px;
+@media (max-width: 743px) {
+  .LinkBox {
+    height: 234px;
   }
-
-  .responsiveImage {
-    height: 150px !important;
-    width: 100%;
-    height: 100%;
-    inset: 0;
+  .cardContainer {
+    padding: 10px;
+  }
+  .cardImageBox {
+    height: 112px;
   }
 
   .cardLogo {
@@ -240,15 +263,6 @@
   --glow-color: darkgray;
   animation: glowPulse 1.5s infinite ease-in-out;
   transform: scale(1.01);
-}
-
-.cardFontColor {
-  color: var(--gray-gray300, #a4a4a4);
-}
-
-.cardFontColorWhite {
-  color: #fff;
-  padding-right: 4px;
 }
 
 .priceBox {

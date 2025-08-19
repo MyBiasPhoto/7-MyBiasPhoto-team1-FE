@@ -1,9 +1,24 @@
+export const GRADE_COLOR_MAP = {
+  COMMON: "var(--main)",
+  RARE: "var(--blue)",
+  "SUPER RARE": "var(--purple)",
+  LEGENDARY: "var(--pink)",
+};
+
 export const gradeOption = [
-  { value: "", label: "전체" },
-  { value: "COMMON", label: "COMMON" },
-  { value: "RARE", label: "RARE" },
-  { value: "SUPER RARE", label: "SUPER RARE" },
-  { value: "LEGENDARY", label: "LEGENDARY" },
+  { value: "", label: "전체", color: "var(--white)" },
+  { value: "COMMON", label: "COMMON", color: GRADE_COLOR_MAP["COMMON"] },
+  { value: "RARE", label: "RARE", color: GRADE_COLOR_MAP["RARE"] },
+  {
+    value: "SUPER RARE",
+    label: "SUPER RARE",
+    color: GRADE_COLOR_MAP["SUPER RARE"],
+  },
+  {
+    value: "LEGENDARY",
+    label: "LEGENDARY",
+    color: GRADE_COLOR_MAP["LEGENDARY"],
+  },
 ];
 
 export const amountOption = [

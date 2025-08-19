@@ -100,17 +100,21 @@ function Card({
               </p>
             </div>
           </div>
-          <div className={style.CardTextBox}>
+          <div className={style.CardTextSubBox}>
             {/* 가격및 수량 */}
             <div className={style.CardSubTitle2}>
               <p className={style.cardFontColor}>가격</p>
-              <p>{price || "0"} P</p>
+              <p className={style.cardFontColorWhite}>{price || "0"} P</p>
             </div>
             <div className={style.CardSubTitle2}>
               <p className={style.cardFontColor}>잔여</p>
               <div className={`${style.priceBox} ${style.cardFontColor}`}>
-                <p className={style.cardFontColorWhite}>{quantity || "0"}</p>
-                <p>/ {initialQuantity || "5"}</p>
+                <p className={style.cardFontColor}>
+                  <span className={style.cardFontColorWhite}>
+                    {quantity || "0"}{" "}
+                  </span>
+                  / {initialQuantity || "5"}
+                </p>
                 {/* 이거토탈퀀티티로바꿔야됨 */}
               </div>
             </div>

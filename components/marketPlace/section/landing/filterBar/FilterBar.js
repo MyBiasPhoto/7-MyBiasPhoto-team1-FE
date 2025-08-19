@@ -26,22 +26,22 @@ function FilterBar({
           placeholder="검색"
           value={searchValue}
           className={style.filterInput}
-          onChange={(val) => onFilterChange("search", val.target)}
+          onChange={val => onFilterChange("search", val.target)}
         />
         <Select
           option={gradeOption}
           name={"등급"}
-          onChange={(val) => onFilterChange("grade", val)}
+          onChange={val => onFilterChange("grade", val)}
         />
         <Select
           option={genreOption}
           name={"장르"}
-          onChange={(val) => onFilterChange("genre", val)}
+          onChange={val => onFilterChange("genre", val)}
         />
         <Select
           option={amountOption}
           name={"매진여부"}
-          onChange={(val) => onFilterChange("soldout", val)}
+          onChange={val => onFilterChange("soldout", val)}
         />
         <Image
           onClick={() => {
@@ -57,14 +57,14 @@ function FilterBar({
       </div>
 
       <button className={style.filterBoxTable} onClick={onToggleFilterModal}>
-        <Image src={buttonS} height={50} width={50} alt={"버튼"} />
+        <Image src={buttonS} height={35} width={35} alt={"버튼"} />
       </button>
 
       <div className={style.filterSelect}>
         <SelectFilter
           option={sortOption}
           name={"낮은 가격순"}
-          onChange={(val) => onFilterChange("orderBy", val)}
+          onChange={val => onFilterChange("orderBy", val)}
         />
       </div>
     </div>
