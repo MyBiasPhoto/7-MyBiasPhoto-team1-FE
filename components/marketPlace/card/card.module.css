@@ -167,6 +167,10 @@
     font-size: 14px;
   }
 
+  .CardTextSubBox {
+    margin-bottom: 45px;
+  }
+
   .soldOutLayer {
     height: 100%;
   }
@@ -190,28 +194,8 @@
   .CardTextBoxTitle {
     font-size: 16px;
   }
-
-  .CardSubTitle2 {
-    font-size: 12px;
-  }
-  .soldOutLayer {
-    height: 155px;
-  }
-  .CardTextBox {
-    height: 100%;
-    margin: 0;
-  }
-  .cardBox {
-    height: 100%;
-  }
-  .CardTextBoxUpgrade {
-    margin-top: 137px;
-  }
-  .CardSubTitleBox {
-    font-size: 10px;
-  }
-  .subTitleWriter {
-    font-size: 10px;
+  .CardTextSubBox {
+    margin-bottom: 7px;
   }
 }
 
