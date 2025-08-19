@@ -43,7 +43,7 @@ export default function CreateSelect({
           <option
             key={opt.value}
             value={opt.value}
-            style={{ color: "var(--white)" }}
+            style={{ color: "var(--white)", background: "var(--black)" }}
           >
             {opt.label}
           </option>

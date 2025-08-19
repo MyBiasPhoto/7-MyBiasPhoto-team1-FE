@@ -205,6 +205,76 @@
   white-space: nowrap;
 }
 
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.aibtn {
+  display: flex;
+  width: 520px;
+  height: 60px;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-size: 24px;
+  font-family: "BR-B", sans-serif;
+  font-weight: 400;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: linear-gradient(var(--black), var(--black)) padding-box,
+    conic-gradient(from var(--angle), #ff00ff, #6a5acd, #00e5ff, #ff00ff)
+      border-box;
+  cursor: pointer;
+  --angle: 0deg;
+  animation: spin 5s linear infinite;
+  text-shadow: 0 0 8px #ff00ff, 0 0 16px #00e5ff, 0 0 24px #6a5acd;
+}
+/* 오버레이는 그대로 */
+.aiModalOverlay {
+  animation: overlayFadeIn 0.3s ease-out both;
+  perspective: 1000px;
+}
+
+/* 프로펠러 스핀 인 */
+@keyframes modalPropellerIn {
+  0% {
+    transform: translateY(80px) scale(0.9) rotate(-4320deg);
+    opacity: 0;
+    filter: blur(2px);
+  }
+  70% {
+    transform: translateY(-6px) scale(1.03) rotate(-30deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* 제출전에 삭제해야함 */
+.aiModal {
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+  animation: modalPropellerIn 6.2s cubic-bezier(0.22, 0.7, 0.26, 1) both;
+}
+
+/* 접근성 */
+@media (prefers-reduced-motion: reduce) {
+  .aiModal {
+    animation: none;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     width: 100%;
@@ -245,6 +315,9 @@
     padding: 10px 12px;
     box-sizing: border-box;
     height: 55px;
+  }
+  .aibtn {
+    width: 80%;
   }
   .photoCardDescriptionInput {
     width: 100%;

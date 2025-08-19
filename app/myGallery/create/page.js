@@ -95,6 +95,85 @@ export default function CreatePhotoCardPage() {
   const [monthly, setMonthly] = useState(null);
   const canCreateThisMonth = (monthly?.remaining ?? 1) > 0;
 
+  // ai 이미지 생성
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState("");
+  const [aiPreviewUrl, setAiPreviewUrl] = useState("");
+
+  function dataURLtoBlob(dataURL) {
+    const [head, b64] = dataURL.split(",");
+    const mime = head.match(/data:(.*);base64/)[1] || "image/png";
+    const bin = atob(b64);
+    const len = bin.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  }
+
+  const openAiModal = () => {
+    setAiOpen(true);
+    setAiPrompt("");
+    setAiError("");
+    setAiPreviewUrl("");
+  };
+  const closeAiModal = () => {
+    if (!aiLoading) {
+      setAiOpen(false);
+      setAiError("");
+    }
+  };
+
+  // 생성 호출
+  const handleGenerateAI = async () => {
+    if (!aiPrompt.trim()) {
+      setAiError("프롬프트를 입력해 주세요.");
+      return;
+    }
+    setAiError("");
+    setAiLoading(true);
+    try {
+      const res = await fetch("/api/aiImage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: aiPrompt }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "이미지 생성 실패");
+      setAiPreviewUrl(data.url);
+    } catch (e) {
+      setAiError(e.message || "이미지 생성 실패");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  // 미리보기 확인 → S3 업로드 → imageUrl 주입
+  const handleConfirmAI = async () => {
+    if (!aiPreviewUrl) return;
+    setAiLoading(true);
+    try {
+      const blob = dataURLtoBlob(aiPreviewUrl);
+      const file = new File([blob], `ai_${Date.now()}.png`, {
+        type: blob.type || "image/png",
+      });
+
+      const { url, key, alreadyExists } = await uploadToS3(file, user.id);
+
+      setImageFile(file);
+      setImageUrl(url);
+      setUploadedKey(key);
+      setAlreadyExists(alreadyExists);
+
+      setAiOpen(false);
+    } catch (e) {
+      setAiError(e.message || "S3 업로드 실패");
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchQuota = async () => {
       if (!user?.id) return;
@@ -399,6 +478,14 @@ export default function CreatePhotoCardPage() {
         onFileChange={handleFileChange}
         disabled={!canCreateThisMonth}
       />
+      <button
+        type="button"
+        onClick={openAiModal}
+        disabled={!canCreateThisMonth}
+        className={styles.aibtn}
+      >
+        AI 이미지 생성{" "}
+      </button>
 
       <CreateTextarea
         id="description"
@@ -428,6 +515,151 @@ export default function CreatePhotoCardPage() {
           cardTitle={createdName}
           onClose={() => setShowModal(false)}
         />
+      )}
+
+      {aiOpen && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 99,
+          }}
+          className={styles.aiModalOverlay}
+          onClick={closeAiModal}
+        >
+          <div
+            style={{
+              width: "min(560px, 92vw)",
+              background: "#1b1b1b",
+              color: "#fff",
+              border: "1px solid #333",
+              borderRadius: 8,
+              padding: 20,
+            }}
+            className={styles.aiModal}
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <h3 style={{ margin: 0, marginBottom: 12 }}>AI 이미지 생성</h3>
+
+            <label style={{ fontSize: 14, color: "#ccc" }}>프롬프트</label>
+            <textarea
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              placeholder="예) cute lesser panda (영어로 입력) "
+              rows={4}
+              style={{
+                width: "100%",
+                boxSizing: "border-box",
+                marginTop: 8,
+                marginBottom: 12,
+                background: "#0f0f0f",
+                color: "#fff",
+                border: "1px solid #444",
+                borderRadius: 6,
+                padding: "10px 12px",
+                resize: "vertical",
+              }}
+            />
+
+            {aiError && (
+              <div style={{ color: "var(--red)", marginBottom: 8 }}>
+                {aiError}
+              </div>
+            )}
+
+            <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+              <button
+                type="button"
+                onClick={handleGenerateAI}
+                disabled={aiLoading}
+                style={{
+                  padding: "10px 16px",
+                  background: "var(--main)",
+                  color: "#000",
+                  border: 0,
+                  borderRadius: 6,
+                  cursor: aiLoading ? "wait" : "pointer",
+                }}
+              >
+                {aiLoading ? "생성 중..." : "이미지 생성"}
+              </button>
+              <button
+                type="button"
+                onClick={closeAiModal}
+                disabled={aiLoading}
+                style={{
+                  padding: "10px 16px",
+                  background: "#333",
+                  color: "#fff",
+                  border: 0,
+                  borderRadius: 6,
+                  cursor: aiLoading ? "not-allowed" : "pointer",
+                }}
+              >
+                닫기
+              </button>
+            </div>
+
+            {aiPreviewUrl && (
+              <>
+                <div
+                  style={{
+                    border: "1px solid #333",
+                    borderRadius: 6,
+                    overflow: "hidden",
+                    marginBottom: 12,
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={aiPreviewUrl}
+                    alt="AI Preview"
+                    style={{ width: "100%", display: "block" }}
+                  />
+                </div>
+
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button
+                    type="button"
+                    onClick={handleConfirmAI}
+                    disabled={aiLoading}
+                    style={{
+                      padding: "10px 16px",
+                      background: "var(--main)",
+                      color: "#000",
+                      border: 0,
+                      borderRadius: 6,
+                      cursor: aiLoading ? "wait" : "pointer",
+                    }}
+                  >
+                    이 이미지 사용하기
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAiPreviewUrl("")}
+                    disabled={aiLoading}
+                    style={{
+                      padding: "10px 16px",
+                      background: "#444",
+                      color: "#fff",
+                      border: 0,
+                      borderRadius: 6,
+                      cursor: aiLoading ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    생성 취소
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );
