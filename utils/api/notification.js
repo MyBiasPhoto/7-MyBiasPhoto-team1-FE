@@ -15,7 +15,12 @@ const cleanParams = (obj = {}) => {
 };
 
 /** 알림 목록 */
-export async function getNotifications({ limit = 10, cursor, unreadOnly, types } = {}) {
+export async function getNotifications({
+  limit = 5,
+  cursor,
+  unreadOnly,
+  types,
+} = {}) {
   const params = cleanParams({ limit, cursor, unreadOnly, types });
   const res = await api.get("/notifications", { params });
   // 서버 표준 응답: { success, data: { items, nextCursor, hasMore } }
@@ -36,7 +41,12 @@ export async function markRead(id) {
 }
 
 /** 일괄 읽음 처리 */
-export async function markAllRead({ beforeId, beforeDate, types, unreadOnly = true } = {}) {
+export async function markAllRead({
+  beforeId,
+  beforeDate,
+  types,
+  unreadOnly = true,
+} = {}) {
   const body = cleanParams({ beforeId, beforeDate, types, unreadOnly });
   const res = await api.patch("/notifications/read-all", body);
   return res.data?.data ?? { updated: 0 };
@@ -68,7 +78,9 @@ export function openNotificationStream({
     }
   });
 
-  const url = `/notifications/stream${qs.toString() ? `?${qs.toString()}` : ""}`;
+  const url = `/notifications/stream${
+    qs.toString() ? `?${qs.toString()}` : ""
+  }`;
 
   // withCredentials 지원되는 브라우저 EventSource 옵션
   const es = new EventSource(url, { withCredentials: true });
@@ -84,7 +96,7 @@ export function openNotificationStream({
   });
 
   // 타입별 커스텀 이벤트 (서버가 event: CARD_PURCHASED 등으로 보냄)
-  
+
   notificationType.forEach((evt) => {
     es.addEventListener(evt, (ev) => {
       try {

@@ -4,19 +4,30 @@ import styles from "./Alarm.module.css";
 import { useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useNotifications } from "@/utils/notifications/notificationsContext";
+import { formatTimeAgo } from "@/utils/formatTimeAgo";
 
 export default function Alarm() {
   const {
     notificationItems,
     hasMoreItems,
     loadMoreList,
+    loadInitialList,
     markOneAsRead,
     markAllAsRead,
   } = useNotifications();
 
   const router = useRouter();
-  const sentinelRef = useRef(null);
+  const listRef = useRef(null); // 스크롤 되는 컨테이너
+  const sentinelRef = useRef(null); // 바닥 감지용 센티넬
   //sentinel 보이면 loadMore호출
+
+  // ✅ 최초 1회만 초기 목록 로드
+  const didInitRef = useRef(false);
+  useEffect(() => {
+    if (didInitRef.current) return;
+    didInitRef.current = true;
+    loadInitialList();
+  }, [loadInitialList]);
 
   const handleIntersect = useCallback(
     (entries) => {
@@ -29,9 +40,11 @@ export default function Alarm() {
   );
 
   useEffect(() => {
-    if (!sentinelRef.current) return;
+    if (!sentinelRef.current || !listRef.current) return;
     const observer = new IntersectionObserver(handleIntersect, {
-      rootMargin: "120px",
+      root: listRef.current, // 🔹 내부 스크롤 컨테이너 기준
+      rootMargin: "120px 0px 120px 0px", // 바닥 근처에서 미리 로드
+      threshold: 0,
     });
     observer.observe(sentinelRef.current);
     return () => observer.disconnect();
@@ -51,6 +64,16 @@ export default function Alarm() {
     }
   };
 
+  // 🚀 처음 렌더 후 리스트 높이가 부족하면 즉시 1회 더 로드
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    if (el.scrollHeight <= el.clientHeight && hasMoreItems) {
+      // 쿨다운 무시하고 한 번만 더
+      loadMoreList({ force: true });
+    }
+  }, [notificationItems, hasMoreItems, loadMoreList]);
+
   return (
     <div className={styles.area}>
       <div className={styles.headerRow}>
@@ -64,7 +87,7 @@ export default function Alarm() {
         </button>
       </div>
 
-      <div className={styles.alarmList}>
+      <div className={styles.alarmList} ref={listRef}>
         {notificationItems.length === 0 && (
           <div className={styles.empty}>새 알림이 없어요</div>
         )}
@@ -80,8 +103,7 @@ export default function Alarm() {
           >
             <span className={styles.text}>{notification.content}</span>
             <span className={styles.time}>
-              {new Date(notification.createdAt).toLocaleString()}
-              {/* @TODO 시간표시 ~시간전 코드잇요구사항대로 */}
+              {formatTimeAgo(notification.createdAt)}
             </span>
           </button>
         ))}

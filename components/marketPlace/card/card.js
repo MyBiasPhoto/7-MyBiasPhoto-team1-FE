@@ -73,7 +73,7 @@ function Card({
             )}
             <Image
               src={imageUrl || cardImage}
-              alt={"임시"}
+              alt={name}
               fill
               className={style.responsiveImage} // 스타일에서 object-fit 등 설정
               loading="lazy"
@@ -82,7 +82,7 @@ function Card({
           </div>
           <div className={`${style.CardTextBox} ${style.CardTextBoxUpgrade}`}>
             {/* 카드정보들 */}
-            <p className={style.CardTextBoxTitle}>{name || "임시 제목."}</p>
+            <p className={style.CardTextBoxTitle}>{name || "제목"}</p>
             <div className={style.CardSubTitle}>
               <div className={style.CardSubTitleBox}>
                 <p
@@ -90,13 +90,13 @@ function Card({
                     style[grade.replace(/\s+/g, "_").toUpperCase()]
                   }`}
                 >
-                  {grade || "임시등급."}
+                  {grade || "등급"}
                 </p>
                 <div className={style.subdiv}></div>
-                <p className={style.subTitleGenre}>{genre || "임시종류."}</p>
+                <p className={style.subTitleGenre}>{genre || "종류"}</p>
               </div>
               <p className={style.subTitleWriter}>
-                {sellerNickname || "임시제작자."}
+                {sellerNickname || "제작자"}
               </p>
             </div>
           </div>
@@ -116,7 +116,7 @@ function Card({
             </div>
           </div>
           <div className={style.cardLogo}>
-            <Image src={logo} hegiht={100} width={120} alt={"임시"} />
+            <Image src={logo} hegiht={100} width={120} alt={"로고"} />
           </div>
         </div>
         {/* <div className={style.cardBack}>

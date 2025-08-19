@@ -1,31 +1,37 @@
 .area {
   width: 320px;
-  min-height: 107px;
-  max-height: 520px;
+  /* min-height: 107px; */
+  /* max-height: 520px; */
   position: relative;
   z-index: 10;
   border: 1px solid var(--border-subtle);
   /* background-color: var(--gray-500); */
   background-color: var(--surface-2);
   box-shadow: var(--shadow-elev);
-  overflow: hidden;
+  /* overflow: hidden; */
   font-weight: 300;
   font-family: "BR-B", sans-serif;
 }
 .alarmList {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  justify-content: flex-start;
+  /* align-items: center; */
+  align-items: stretch;
   overflow-y: auto;
   font-weight: 300;
   font-family: "BR-B", sans-serif;
+  /* max-height: 520px; */
+  overscroll-behavior: contain; /* 모달/드랍다운 밖으로 스크롤전파 방지 */
+  height: calc(107px * 5);
+  min-height: 0;
 }
 .list {
-  width: 300px;
+  width: 100%;
   height: 107px;
   padding: 20px;
-  /* border-bottom: 1px solid var(--gray-400); */
+  border-bottom: 1px solid var(--gray-400);
   display: flex;
   gap: 10px;
   flex-direction: column;
