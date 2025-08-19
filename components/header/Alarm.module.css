@@ -1,33 +1,45 @@
 .area {
-  width: 300px;
+  width: 320px;
   min-height: 107px;
-  background-color: var(--gray-500);
+  max-height: 520px;
   position: relative;
   z-index: 10;
+  border: 1px solid var(--border-subtle);
+  /* background-color: var(--gray-500); */
+  background-color: var(--surface-2);
+  box-shadow: var(--shadow-elev);
+  overflow: hidden;
+  font-weight: 300;
+  font-family: "BR-B", sans-serif;
 }
 .alarmList {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
+  font-weight: 300;
+  font-family: "BR-B", sans-serif;
 }
 .list {
   width: 300px;
   height: 107px;
   padding: 20px;
-  border-bottom: 1px solid var(--gray-400);
+  /* border-bottom: 1px solid var(--gray-400); */
   display: flex;
+  gap: 10px;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  background-color: rgba(255, 77, 79, 0.08);
+  background-color: var(--gray-500);
 }
 .text {
-  color: var(--purple);
-  font-size: 14px;
+  color: var(--gray-200);
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  font-family: "BR-B", sans-serif;
 }
 .time {
   color: var(--gray-300);
@@ -35,26 +47,41 @@
   font-style: normal;
   font-weight: 300;
   line-height: normal;
+  font-family: "BR-B", sans-serif;
 }
 
 .headerRow {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 6px 8px;
-  background-color: skyblue;
+  justify-content: space-between;
+  /* padding: 6px 8px; */
+  padding: 10px 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
+  border-bottom: 4px solid var(--border-subtle);
 }
 .title {
+  color: var(--text-primary);
   font-weight: 600;
 }
 .markAllBtn {
+  color: var(--brand);
   font-size: 12px;
   background: transparent;
   border: none;
   cursor: pointer;
+  border-radius: 8px;
+  font-weight: 300;
+  font-family: "BR-B", sans-serif;
+}
+.markAllBtn:hover {
+  background: rgba(139, 92, 246, 0.08);
+}
+.markAllBtn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 .unread {
-  background: aquamarine;
+  background: var(--gray-400);
 }
 
 .sentinel {

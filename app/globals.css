@@ -41,6 +41,19 @@ body,
   --gray-300: #a4a4a4;
   --gray-200: #dddddd;
   --gray-100: #eeeeee;
+  /* 우진알림추가 */
+  --surface-1: #101114;         /* 페이지 바탕 */
+  --surface-2: #15171b;         /* 패널(알림 박스) */
+  --surface-3: #1b1e24;         /* 리스트 아이템 배경 */
+  --border-subtle: #2a2e36;
+  --text-primary: #e7e9ee;      /* 본문 텍스트 */
+  --text-secondary: #9aa3b2;    /* 서브 텍스트/타임스탬프 */
+  --brand: #8b5cf6;             /* 포인트(보라계열) */
+  --accent: #22d3ee;            /* 보조 포인트(청록) */
+  --unread-bg: rgba(139,92,246,0.10);
+  --focus: #60a5fa;
+  --shadow-elev: 0 10px 30px rgba(0,0,0,0.45);
+  --radius-xl: 14px;
 }
 
 button {
