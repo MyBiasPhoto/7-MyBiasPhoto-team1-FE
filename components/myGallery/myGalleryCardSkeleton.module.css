@@ -24,7 +24,7 @@
 
 /* 스켈레톤 기본 박스 */
 .skeletonBox {
-  background: #e0e0e0;
+  background: #2a2a2a;
   border-radius: 8px;
   animation: pulse 1.5s infinite ease-in-out;
 }
