@@ -58,12 +58,13 @@ export default function SellPhotoModal({ onClose }) {
       }
       const list = Array.isArray(res?.myGroupedCards) ? res.myGroupedCards : [];
       const formattedCards = list.map((card) => ({
+        // const formattedCards = res.myGroupedCards.map((card) => ({
         photoCardId: card.photoCardId,
         name: card.name,
         imageUrl: card.imageUrl,
         grade: card.grade,
         genre: card.genre,
-        price: 0,
+        price: card.price || 0,
         quantity: card.count || 1,
         sellerNickname: card.ownerNickName || "나",
       }));
