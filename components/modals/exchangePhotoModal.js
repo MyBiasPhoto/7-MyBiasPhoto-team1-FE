@@ -10,6 +10,7 @@ import {
 } from "@/components/marketPlace/config/config";
 import ExchangeResultModal from "./exchangeResultModal";
 import ModalCard from "./card/ModalCard";
+import ModalState from "./state/ModalState";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import SearchIcon from "@/public/icons/ic_search.svg";
 import FilterIcon from "@/public/icons/ic_filter.svg";
@@ -358,15 +359,31 @@ export default function ExchangePhotoModal(props) {
                     </div>
                   )}
                   <div className={styles.cardList}>
-                    {cards.map((card) => (
-                      <div
-                        className={styles.cardItem}
-                        key={card.userCardId}
-                        onClick={() => handleCardClick(card)}
-                      >
-                        <ModalCard {...card} />
-                      </div>
-                    ))}
+                    {ModalState.status !== "success" ? (
+                      <ModalState
+                        status={ModalState.status}
+                        error={ModalState.error}
+                        onRetry={fetchCards}
+                        loadingText="포토 카드 불러오는 중…"
+                        emptyText="마이 갤러리가 비어 있습니다!"
+                        errorText="에러!"
+                        height={240}
+                      />
+                    ) : (
+                      cards.map(function (card) {
+                        return (
+                          <div
+                            className={styles.cardItem}
+                            key={card.userCardId}
+                            onClick={function () {
+                              handleCardClick(card);
+                            }}
+                          >
+                            <ModalCard {...card} />
+                          </div>
+                        );
+                      })
+                    )}
                   </div>
                 </>
               ) : (
