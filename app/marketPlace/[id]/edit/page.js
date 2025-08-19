@@ -15,39 +15,39 @@ export default function MarketPlaceEdit() {
   const router = useRouter();
 
   const [currentUser, setCurrentUser] = useState(null);
+  const [userLoading, setUserLoading] = useState(true); // 유저 로딩 상태
 
   // 현재 로그인 유저 정보 가져오기
-  useEffect(() => {
+  useEffect(function loadCurrentUser() {
+    let cancelled = false; // fetch 중 컴포넌트 언마운트 대비
+
     async function fetchCurrentUser() {
+      setUserLoading(true); // 로딩 시작
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
       const url = `${baseUrl}/users/me`;
 
       try {
-        const res = await fetch(url, {
-          credentials: "include",
-        });
-
-        const text = await res.text();
-
-        // JSON 파싱 시도
+        const res = await fetch(url, { credentials: "include" });
+        let data = null;
         try {
-          const data = JSON.parse(text);
-          if (data?.me) {
-            setCurrentUser(data.me);
-          } else {
-            console.warn("서버에서 me 정보가 없습니다:", data);
-          }
+          data = await res.json();
         } catch {
-          console.error(
-            "현재 유저 정보 불러오기 실패: JSON 아님, 원본 응답:",
-            text
-          );
+          data = null;
         }
-      } catch (e) {
-        console.error("현재 유저 정보 요청 중 에러:", e);
+        if (!cancelled) {
+          setCurrentUser(data?.me ?? null);
+        }
+      } catch {
+        if (!cancelled) setCurrentUser(null);
+      } finally {
+        if (!cancelled) setUserLoading(false); // 로딩 종료 (성공/실패 무관)
       }
     }
+
     fetchCurrentUser();
+    return function cleanup() {
+      cancelled = true;
+    };
   }, []);
 
   const {
@@ -68,11 +68,16 @@ export default function MarketPlaceEdit() {
   }, [currentUser?.id, sale?.sellerId]);
 
   // 판매자 아닐 시 구매 페이지로 이동
-  useEffect(() => {
-    if (!isLoading && sale?.id && !isSeller) {
-      router.replace(`/marketPlace/${sale.id}`);
-    }
-  }, [isLoading, sale?.id, isSeller, router]);
+  useEffect(
+    function maybeRedirectNonSeller() {
+      if (isLoading || userLoading) return; // 경쟁 상태 차단: 둘 다 로딩 끝나고 판단
+      if (!sale?.id) return;
+      if (!isSeller) {
+        router.replace(`/marketPlace/${sale.id}`);
+      }
+    },
+    [isLoading, userLoading, sale?.id, isSeller, router]
+  );
 
   if (isLoading) {
     return (

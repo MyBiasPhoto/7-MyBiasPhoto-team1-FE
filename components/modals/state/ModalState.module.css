@@ -1,0 +1,38 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  color: var(--white);
+  padding: 16px;
+}
+
+.column {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.retryBtn {
+  background-color: var(--main);
+  cursor: pointer;
+  border: none;
+  border-radius: 2px;
+  display: flex;
+  width: 170px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  color: var(--black);
+  text-align: center;
+  font-family: "Noto Sans KR";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-decoration: none;
+}
