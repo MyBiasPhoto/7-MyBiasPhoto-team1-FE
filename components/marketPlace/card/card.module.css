@@ -177,9 +177,6 @@
 }
 
 @media (max-width: 743px) {
-  .LinkBox {
-    height: 234px;
-  }
   .cardContainer {
     padding: 10px;
   }
@@ -187,15 +184,40 @@
     height: 112px;
   }
 
-  .cardLogo {
-    display: none;
+  .CardTextBox {
+    margin-top: 10px;
+    padding-bottom: 10px;
   }
 
   .CardTextBoxTitle {
-    font-size: 16px;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .CardSubTitleBox {
+    gap: 5px;
+  }
+  .CardSubTitle {
+    font-size: 10px;
+  }
+  .subTitleGenre {
+    font-size: 10px;
+  }
+  .subTitleWriter {
+    font-size: 10px;
+  }
+  .cardFontColorWhite {
+    font-size: 10px;
   }
   .CardTextSubBox {
-    margin-bottom: 7px;
+    margin: 10px 0 7px;
+    gap: 5px;
+  }
+  .cardFontColor {
+    font-size: 10px;
+  }
+  .cardLogo {
+    display: none;
   }
 }
 
