@@ -21,6 +21,8 @@ import {
 import style from "./page.module.css";
 import { useAuth } from "@/utils/auth/authContext";
 import LoginModal from "@/components/modals/loginModal";
+import MyGalleryCardSkeleton from "@/components/myGallery/MyGalleryCardSkeleton";
+import MyGalleryUserSkeleton from "@/components/myGallery/MyGalleryUserSkeleton";
 
 export default function MyGalleryClient({ initialFilters }) {
   const router = useRouter();
@@ -66,8 +68,13 @@ export default function MyGalleryClient({ initialFilters }) {
     return (
       <div className={style.myGallery}>
         <PageHeader title="마이갤러리" />
-        <div className={style.myGalleryContainer}>
-          <LoadingSpinner />
+        <MyGalleryUserSkeleton />
+        <div className={style.loadingcardList}>
+          {[...Array(8)].map((_, idx) => (
+            <div className={style.cardItem} key={idx}>
+              <MyGalleryCardSkeleton />
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -75,7 +82,6 @@ export default function MyGalleryClient({ initialFilters }) {
 
   return (
     <div className={style.myGallery}>
-      {/* {console.log(initialFilters)} */}
       <PageHeader
         title={"마이갤러리"}
         buttonLabel={"포토카드 생성하기"}
@@ -91,7 +97,8 @@ export default function MyGalleryClient({ initialFilters }) {
         <div className={style.topTitle}>
           <CardRaritySummary
             gradeCounts={gradeCounts ?? []}
-            nickname={user.nickname ?? ""}
+            nickname={user?.nickname ?? ""}
+            isLoading={isLoading || isPending}
           />
         </div>
         <FilterBar filters={filters} dispatch={dispatch} />

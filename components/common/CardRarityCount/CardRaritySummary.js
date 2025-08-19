@@ -1,5 +1,6 @@
 import CardRarityCountList from "./CardRarityCountList.js";
 import style from "./CardRaritySummary.module.css";
+import Skeleton from "@/components/myGallery/skeleton";
 
 /**
  * 사용자의 포토카드 등급별 보유 현황과 총 개수를 보여주는 컴포넌트
@@ -12,7 +13,11 @@ import style from "./CardRaritySummary.module.css";
  * @returns {JSX.Element} 포토카드 등급별 수량과 총 수량을 보여주는 UI 컴포넌트
  */
 
-export default function CardRaritySummary({ gradeCounts, nickname }) {
+export default function CardRaritySummary({
+  gradeCounts,
+  nickname,
+  isLoading,
+}) {
   const totalCount = gradeCounts.reduce(
     (acc, { count }) => acc + (Number(count) || 0),
     0
@@ -24,7 +29,11 @@ export default function CardRaritySummary({ gradeCounts, nickname }) {
         {nickname}님이 보유한 포토카드{" "}
         <span className={style.total}>({totalCount}장)</span>
       </div>
-      <CardRarityCountList gradeCounts={gradeCounts}></CardRarityCountList>
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <CardRarityCountList gradeCounts={gradeCounts} />
+      )}
     </div>
   );
 }

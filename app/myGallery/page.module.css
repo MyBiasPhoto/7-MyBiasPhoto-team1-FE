@@ -398,3 +398,60 @@
   align-items: center;
   font-size: 24px;
 }
+
+.loadingArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.loadingcardList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 기본 3열 */
+  gap: 16px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 746px) {
+  .loadingcardList {
+    grid-template-columns: repeat(2, 1fr); /* 모바일 2열 */
+    margin: 0 auto;
+  }
+}
+
+/* 중간 화면: 747px ~ 1199px */
+@media (min-width: 746px) and (max-width: 1199px) {
+  .loadingcardList {
+    grid-template-columns: repeat(2, 1fr); /* 2열 */
+    width: max-content;
+  }
+}
+
+/* 태블릿: 1200px ~ 1513px */
+@media (min-width: 1200px) and (max-width: 1513px) {
+  .loadingcardList {
+    grid-template-columns: repeat(2, 1fr); /* 2열 */
+    gap: 16px;
+    width: max-content;
+  }
+}
+
+/* 데스크탑: 1514px ~ 1999px */
+@media (min-width: 1514px) and (max-width: 1999px) {
+  .loadingcardList {
+    grid-template-columns: repeat(3, 1fr); /* 3열 */
+    gap: 16px;
+    padding: 0 150px;
+  }
+}
+
+/* 큰 화면: 2000px 이상 */
+@media (min-width: 2000px) {
+  .loadingcardList {
+    grid-template-columns: repeat(4, 1fr); /* 4열 */
+    gap: 16px;
+    padding: 0 150px;
+  }
+}

@@ -1,0 +1,76 @@
+/* MyGalleryUserSkeleton.module.css */
+.skeletonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.skeletonCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 0 150px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.skeletonTop {
+  width: 400px;
+  height: 35px; /* 위 40% */
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeletonBottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.skeletonBottomBox {
+  width: 200px; /* 2개씩 한 줄로 배치 */
+  height: 35px; /* 총 70% 중 4개 나누기 느낌 */
+  background-color: #2a2a2a;
+  border-radius: 6px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 746px) {
+  .skeletonCard {
+    padding: 0;
+  }
+}
+
+/* 중간 화면: 747px ~ 1199px */
+@media (min-width: 746px) and (max-width: 1199px) {
+  .skeletonCard {
+    padding: 0;
+  }
+}
+
+/* 태블릿: 1200px ~ 1513px */
+@media (min-width: 1200px) and (max-width: 1513px) {
+}
+
+/* 데스크탑: 1514px ~ 1999px */
+@media (min-width: 1514px) and (max-width: 1999px) {
+}
+
+/* 큰 화면: 2000px 이상 */
+@media (min-width: 2000px) {
+}

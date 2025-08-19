@@ -29,8 +29,8 @@
   justify-content: space-between;
   align-items: center;
   /* border-bottom: 1px solid #fff; */
-  padding-left: 150px;
-  padding-right: 150px;
+  margin-left: 150px;
+  margin-right: 150px;
   padding-bottom: 20px;
   border-bottom: 1px solid #fff;
 }
@@ -79,6 +79,8 @@
   }
   .title_Box {
     padding: 0;
+    margin-left: 0px;
+    margin-right: 0px;
   }
 }
 
@@ -100,6 +102,8 @@
     padding: 0;
     gap: 10px;
     border: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
   }
   .filterInputMobile {
     display: flex;
