@@ -292,7 +292,7 @@ export default function SellPhotoModal({ onClose }) {
   const selectColorClass =
     normalizedGrade === "LEGENDARY"
       ? styles.selectLegendary
-      : normalizedGrade === "SUPER_RARE"
+      : normalizedGrade === "SUPER RARE"
       ? styles.selectSuperRare
       : normalizedGrade === "RARE"
       ? styles.selectRare

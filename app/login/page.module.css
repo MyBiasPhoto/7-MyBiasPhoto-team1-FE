@@ -152,7 +152,7 @@
 }
 
 /* ============ 태블릿 (M) ============ */
-@media (max-width: 1023px) {
+@media (min-width: 743px) and (max-width: 1199px) {
   .container {
     padding: 0 16px;
   }

@@ -481,11 +481,6 @@
   -moz-appearance: none;
 }
 
-.gradeSelect option:checked {
-  background: var(--main);
-  color: var(--black);
-}
-
 .genreSelect option:checked {
   background: var(--main);
   color: var(--black);

@@ -1,9 +1,9 @@
 // components/common/FilterBar.js
 import style from "@/app/myGallery/page.module.css";
 import {
-  myGalleryGradeOption,
-  myGalleryGenreOption,
-} from "@/utils/constants/Filters";
+  gradeOption,
+  genreOption,
+} from "@/components/marketPlace/config/config";
 import Select from "../marketPlace/select/select";
 
 export default function FilterBar({ filters, dispatch }) {
@@ -14,7 +14,7 @@ export default function FilterBar({ filters, dispatch }) {
         <input
           type="text"
           value={filters.search || ""}
-          onChange={(e) =>
+          onChange={e =>
             dispatch({ type: "SET_SEARCH", payload: e.target.value })
           }
           placeholder="검색어 입력"
@@ -23,22 +23,16 @@ export default function FilterBar({ filters, dispatch }) {
 
         {/* 등급 필터 */}
         <Select
-          name="등급 전체"
-          defaultOption={{ value: "", label: "등급 전체" }}
-          option={myGalleryGradeOption}
-          onChange={(opt) =>
-            dispatch({ type: "SET_GRADE", payload: opt.value })
-          }
+          name="전체"
+          option={gradeOption}
+          onChange={opt => dispatch({ type: "SET_GRADE", payload: opt.value })}
         />
 
         {/* 장르 필터 */}
         <Select
-          name="장르 전체"
-          defaultOption={{ value: "", label: "등급 전체" }}
-          option={myGalleryGenreOption}
-          onChange={(opt) =>
-            dispatch({ type: "SET_GENRE", payload: opt.value })
-          }
+          name="전체"
+          option={genreOption}
+          onChange={opt => dispatch({ type: "SET_GENRE", payload: opt.value })}
         />
       </div>
     </div>

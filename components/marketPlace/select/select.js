@@ -11,7 +11,7 @@ function Select({ name, option, onChange, defaultOption }) {
   const [selectName, setSelectName] = useState();
   const ref = useRef(null);
 
-  const toggleOpen = () => setIsOpen((prev) => !prev);
+  const toggleOpen = () => setIsOpen(prev => !prev);
 
   const handleSelect = (value, e) => {
     e.stopPropagation();
@@ -21,7 +21,7 @@ function Select({ name, option, onChange, defaultOption }) {
   };
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = e => {
       if (ref.current && !ref.current.contains(e.target)) {
         setIsOpen(false);
       }
@@ -35,7 +35,12 @@ function Select({ name, option, onChange, defaultOption }) {
   return (
     <div className={style.selectContainer} ref={ref}>
       <div className={style.selectBox} onClick={toggleOpen}>
-        <p className={style.selectBoxFont}>{selectName?.label || name}</p>
+        <p
+          className={style.selectBoxFont}
+          style={{ "--selected-color": selectName?.color || "var(--white)" }}
+        >
+          {selectName?.label || name}
+        </p>
         <Image
           className={style.selectIcon}
           src={iconDown}
@@ -45,13 +50,14 @@ function Select({ name, option, onChange, defaultOption }) {
         />
         {isOpen && (
           <div className={style.modal}>
-            {finalOptions.map((opt) => (
+            {finalOptions.map(opt => (
               <div
                 className={style.modalEvent}
                 key={opt.value}
-                onClick={(e) => handleSelect(opt, e)}
+                onClick={e => handleSelect(opt, e)}
+                style={{ ["--opt-color"]: opt.color || "var(--white)" }}
               >
-                <p className={style.selectBoxFont}>{opt.label}</p>
+                <p className={style.madalText}>{opt.label}</p>
               </div>
             ))}
           </div>
