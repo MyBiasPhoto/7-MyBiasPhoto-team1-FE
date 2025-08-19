@@ -20,6 +20,8 @@ import FilterIcon from "@/public/icons/ic_filter.svg";
 import { fetchMyGalleryData } from "@/utils/api/myGalleries";
 import { postSalePhotoCard } from "@/utils/api/postSalePhotoCard.js";
 import toast from "react-hot-toast";
+import ModalState from "./state/ModalState";
+
 export default function SellPhotoModal({ onClose }) {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
@@ -39,7 +41,10 @@ export default function SellPhotoModal({ onClose }) {
   const [isDragging, setIsDragging] = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [modalState, setModalState] = useState({ status: "idle", error: "" });
+
   const fetchCards = async () => {
+    setModalState({ status: "loading", error: "" });
     try {
       const res = await fetchMyGalleryData({
         page: 1,
@@ -51,7 +56,8 @@ export default function SellPhotoModal({ onClose }) {
       {
         /*변경된 api에 맞춰 매핑 수정완료 */
       }
-      const formattedCards = res.myGroupedCards.map(card => ({
+      const list = Array.isArray(res?.myGroupedCards) ? res.myGroupedCards : [];
+      const formattedCards = list.map((card) => ({
         photoCardId: card.photoCardId,
         name: card.name,
         imageUrl: card.imageUrl,
@@ -63,8 +69,17 @@ export default function SellPhotoModal({ onClose }) {
       }));
 
       setCards(formattedCards);
+      setModalState({
+        status: formattedCards.length ? "success" : "empty",
+        error: "",
+      });
     } catch (error) {
       console.error("마이갤러리 조회 실패:", error);
+      setCards([]);
+      setModalState({
+        status: "error",
+        error: error?.message || "목록을 불러오지 못했습니다.",
+      });
     }
   };
 
@@ -72,7 +87,7 @@ export default function SellPhotoModal({ onClose }) {
     fetchCards();
   }, [search, listGrade, listKind]);
 
-  const handleSearchChange = e => {
+  const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
 
@@ -98,7 +113,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    setCardDrafts(prev => ({
+    setCardDrafts((prev) => ({
       ...prev,
       [selectedCard.photoCardId]: {
         amount,
@@ -118,7 +133,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    const handleKeyDown = e => {
+    const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         handleBack();
       }
@@ -225,7 +240,7 @@ export default function SellPhotoModal({ onClose }) {
     if (amount > 1) setAmount(amount - 1);
   };
 
-  const handleTouchStart = e => {
+  const handleTouchStart = (e) => {
     dragStartY.current = e.touches[0].clientY;
     setIsDragging(true);
   };
@@ -237,7 +252,7 @@ export default function SellPhotoModal({ onClose }) {
     };
   }, []);
 
-  const handleTouchMove = e => {
+  const handleTouchMove = (e) => {
     if (!isDragging) return;
     const currentY = e.touches[0].clientY;
     const diffY = currentY - dragStartY.current;
@@ -304,7 +319,7 @@ export default function SellPhotoModal({ onClose }) {
         <div className={styles.overlay} onClick={onClose}>
           <div
             className={styles.modal}
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             ref={modalRef}
           >
             <div
@@ -333,7 +348,7 @@ export default function SellPhotoModal({ onClose }) {
                   <div className={styles.searchArea}>
                     <button
                       className={styles.filterToggleBtn}
-                      onClick={() => setShowMobileFilter(prev => !prev)}
+                      onClick={() => setShowMobileFilter((prev) => !prev)}
                     >
                       <Image
                         src={FilterIcon}
@@ -362,12 +377,12 @@ export default function SellPhotoModal({ onClose }) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={val => setListGrade(val)}
+                        onChange={(val) => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={val => setListKind(val)}
+                        onChange={(val) => setListKind(val)}
                       />
                     </div>
                   </div>
@@ -376,25 +391,39 @@ export default function SellPhotoModal({ onClose }) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={val => setListGrade(val)}
+                        onChange={(val) => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={val => setListKind(val)}
+                        onChange={(val) => setListKind(val)}
                       />
                     </div>
                   )}
                   <div className={styles.cardList}>
-                    {cards.map(card => (
-                      <div
-                        className={styles.cardItem}
-                        key={card.photoCardId}
-                        onClick={() => handleCardClick(card)}
-                      >
-                        <ModalCard {...card} />
-                      </div>
-                    ))}
+                    {modalState.status !== "success" ? (
+                      <ModalState
+                        status={modalState.status}
+                        error={modalState.error}
+                        onRetry={fetchCards}
+                        loadingText="포토 카드 불러오는 중…"
+                        emptyText="마이 갤러리가 비어 있습니다!"
+                        errorText="에러!"
+                        height={240}
+                        emptyActionText="포토카드 생성하러 가기"
+                        emptyActionHref="/myGallery"
+                      />
+                    ) : (
+                      cards.map((card) => (
+                        <div
+                          className={styles.cardItem}
+                          key={card.photoCardId}
+                          onClick={() => handleCardClick(card)}
+                        >
+                          <ModalCard {...card} />
+                        </div>
+                      ))
+                    )}
                   </div>
                 </>
               ) : (
@@ -470,7 +499,7 @@ export default function SellPhotoModal({ onClose }) {
                               type="number"
                               value={price}
                               min="0"
-                              onChange={e => setPrice(e.target.value)}
+                              onChange={(e) => setPrice(e.target.value)}
                               placeholder="숫자만 입력"
                               className={styles.inputField}
                             />
@@ -492,7 +521,7 @@ export default function SellPhotoModal({ onClose }) {
                             <select
                               className={`${styles.gradeSelect} ${selectColorClass}`}
                               value={grade}
-                              onChange={e => setGrade(e.target.value)}
+                              onChange={(e) => setGrade(e.target.value)}
                             >
                               <option disabled value="">
                                 등급을 선택해 주세요
@@ -519,7 +548,7 @@ export default function SellPhotoModal({ onClose }) {
                             <select
                               className={styles.genreSelect}
                               value={kind}
-                              onChange={e => setKind(e.target.value)}
+                              onChange={(e) => setKind(e.target.value)}
                             >
                               <option disabled value="">
                                 장르를 선택해 주세요
@@ -551,7 +580,7 @@ export default function SellPhotoModal({ onClose }) {
                           placeholder="설명을 입력해 주세요"
                           className={styles.memo}
                           value={exchangeMemo}
-                          onChange={e => setExchangeMemo(e.target.value)}
+                          onChange={(e) => setExchangeMemo(e.target.value)}
                         />
                       </div>
                     </div>
