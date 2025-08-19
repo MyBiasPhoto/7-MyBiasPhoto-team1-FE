@@ -10,7 +10,8 @@ import {
 } from "@/utils/api/exchange";
 import toast from "react-hot-toast";
 
-export default function TradeList({ sale }) {
+export default function TradeList({ sale, hideWhenEmpty = false }) {
+  // new
   const [proposals, setProposals] = useState([]);
   const [loadingId, setLoadingId] = useState(null);
 
@@ -27,9 +28,9 @@ export default function TradeList({ sale }) {
       const list = Array.isArray(res?.proposals) ? res.proposals : [];
 
       // 백업 프론트 필터 및 sale 범위 한정
-      const filtered = list.filter(p => p.status === "PENDING");
+      const filtered = list.filter((p) => p.status === "PENDING");
       const scoped = sale?.id
-        ? filtered.filter(p => p.saleId === sale.id)
+        ? filtered.filter((p) => p.saleId === sale.id)
         : filtered;
 
       setProposals(scoped);
@@ -76,7 +77,7 @@ export default function TradeList({ sale }) {
       await cancelExchangeProposal(cancelTarget.id);
 
       // 즉시 목록에서 제거
-      setProposals(prev => prev.filter(p => p.id !== cancelTarget.id));
+      setProposals((prev) => prev.filter((p) => p.id !== cancelTarget.id));
 
       // 교환 취소 toast
       toast.success("교환이 취소되었습니다.", {
@@ -117,14 +118,31 @@ export default function TradeList({ sale }) {
       </div>
 
       <div className={style.list}>
-        {proposals.map(p => (
-          <TradeCard
-            key={p.id}
-            proposal={p}
-            loading={loadingId === p.id}
-            onCancel={() => openCancelModal(p)}
-          />
-        ))}
+        {Array.isArray(proposals) && proposals.length === 0 ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+              color: "var(--white)",
+              border: "none",
+              fontFamily: "Noto Sans KR",
+              fontSize: "20px",
+              fontWeight: "700",
+            }}
+          >
+            아직 제시한 교환이 없습니다!
+          </div>
+        ) : (
+          proposals.map((p) => (
+            <TradeCard
+              key={p.id}
+              proposal={p}
+              loading={loadingId === p.id}
+              onCancel={() => openCancelModal(p)}
+            />
+          ))
+        )}
       </div>
 
       {isCancelOpen && (
