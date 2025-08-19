@@ -17,10 +17,8 @@ function formatTime(seconds) {
   return `${mm}:${ss}`;
 }
 
-export default function UserMenu() {
+export default function UserMenu({ onCloseMenu, onOpenRandom, onOpenCharge }) {
   const [mounted, setMounted] = useState(false);
-  const [showRandom, setShowRandom] = useState(false);
-  const [showCharge, setShowCharge] = useState(false);
   const { bootstrapped, isLogin } = useAuth();
   const { remaining: cooldown, ready } = useCooldown();
   const { data: me, isLoading: meLoading, refetch: refetchMe } = useMeQuery();
@@ -58,14 +56,22 @@ export default function UserMenu() {
             )}
           </span>
         </div>
-        <button className={styles.pointAdd} onClick={() => setShowCharge(true)}>
+        <button
+          className={styles.pointAdd}
+          onClick={() => {
+            onOpenCharge?.();
+          }}
+        >
           포인트 충전
         </button>
         <button
           className={`${styles.randomBtn} ${
             isRandomUnavailable ? styles.cooldown : ""
           }`}
-          onClick={() => setShowRandom(true)}
+          onClick={() => {
+            if (isRandomUnavailable) return;
+            onOpenRandom?.();
+          }}
         >
           <span className={styles.btnText}>
             {syncing ? (
@@ -80,26 +86,16 @@ export default function UserMenu() {
         </button>
       </div>
       <div className={styles.linkArea}>
-        <Link className={styles.link} href="/marketPlace">
+        <Link className={styles.link} href="/marketPlace" onClick={onCloseMenu}>
           마켓플레이스
         </Link>
-        <Link className={styles.link} href="/myGallery">
+        <Link className={styles.link} href="/myGallery" onClick={onCloseMenu}>
           마이갤러리
         </Link>
-        <Link className={styles.link} href="/mySale">
+        <Link className={styles.link} href="/mySale" onClick={onCloseMenu}>
           판매 중인 포토카드
         </Link>
       </div>
-      <Modal open={showRandom} onClose={() => setShowRandom(false)}>
-        <RandomBox
-          onSuccess={() => {
-            refetchMe?.();
-          }}
-        />
-      </Modal>
-      <Modal open={showCharge} onClose={() => setShowCharge(false)}>
-        <ChargePoint onClose={() => setShowCharge(false)} />
-      </Modal>
     </div>
   );
 }

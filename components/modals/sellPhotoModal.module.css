@@ -587,6 +587,37 @@
   z-index: 49;
 }
 
+/* 드롭다운 목록의 각 항목 텍스트 색상 (브라우저별로 배경/굵기 등은 제한적) */
+.gradeSelect option[disabled] {
+  color: var(--gray-400);
+}
+.gradeSelect option[value="LEGENDARY"] {
+  color: var(--pink);
+}
+.gradeSelect option[value="SUPER_RARE"] {
+  color: var(--purple);
+}
+.gradeSelect option[value="RARE"] {
+  color: var(--blue);
+}
+.gradeSelect option[value="COMMON"] {
+  color: var(--main);
+}
+
+/* 선택되어 닫힌 상태에서 보이는 텍스트 색상 */
+.selectLegendary {
+  color: var(--pink);
+}
+.selectSuperRare {
+  color: var(--purple);
+}
+.selectRare {
+  color: var(--blue);
+}
+.selectCommon {
+  color: var(--main);
+}
+
 /* 반응형 */
 
 /* PC(모달보다 작아질 때) */

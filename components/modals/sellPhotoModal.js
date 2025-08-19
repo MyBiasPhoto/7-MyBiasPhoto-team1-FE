@@ -273,6 +273,18 @@ export default function SellPhotoModal({ onClose }) {
     ETC: styles.etc,
   };
 
+  const normalizedGrade = (grade || "").replaceAll("_", " ").toUpperCase();
+  const selectColorClass =
+    normalizedGrade === "LEGENDARY"
+      ? styles.selectLegendary
+      : normalizedGrade === "SUPER_RARE"
+      ? styles.selectSuperRare
+      : normalizedGrade === "RARE"
+      ? styles.selectRare
+      : normalizedGrade === "COMMON"
+      ? styles.selectCommon
+      : "";
+
   return (
     <>
       {showResultModal.show ? (
@@ -478,7 +490,7 @@ export default function SellPhotoModal({ onClose }) {
                           </div>
                           <div className={styles.exchangeFilterBox}>
                             <select
-                              className={styles.gradeSelect}
+                              className={`${styles.gradeSelect} ${selectColorClass}`}
                               value={grade}
                               onChange={e => setGrade(e.target.value)}
                             >
@@ -486,7 +498,7 @@ export default function SellPhotoModal({ onClose }) {
                                 등급을 선택해 주세요
                               </option>
                               <option value="LEGENDARY">LEGENDARY</option>
-                              <option value="SUPER RARE">SUPER RARE</option>
+                              <option value="SUPER_RARE">SUPER RARE</option>
                               <option value="RARE">RARE</option>
                               <option value="COMMON">COMMON</option>
                             </select>
