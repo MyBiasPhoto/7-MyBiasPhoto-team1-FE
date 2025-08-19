@@ -389,6 +389,8 @@
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
     gap: 16px;
+    position: relative;
+    min-height: 420px;
   }
 
   .cardList :global(.cardContainer) {

@@ -10,12 +10,12 @@ import {
 } from "@/components/marketPlace/config/config";
 import ExchangeResultModal from "./exchangeResultModal";
 import ModalCard from "./card/ModalCard";
-import ModalState from "./state/ModalState";
 import CloseIcon from "@/public/icons/ic_close.svg";
 import SearchIcon from "@/public/icons/ic_search.svg";
 import FilterIcon from "@/public/icons/ic_filter.svg";
 import { getUserCardOnIdle } from "@/utils/api/getUserCardOnIdle";
 import { createExchangeProposal } from "@/utils/api/exchange";
+import ModalState from "@/components/modals/state/ModalState";
 
 function noop() {}
 
@@ -40,8 +40,10 @@ export default function ExchangePhotoModal(props) {
   const [isDragging, setIsDragging] = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [modalState, setModalState] = useState({ status: "idle", error: "" });
 
   async function fetchCards() {
+    setModalState({ status: "loading", error: "" });
     try {
       const res = await getUserCardOnIdle({
         page: 1,
@@ -53,7 +55,8 @@ export default function ExchangePhotoModal(props) {
       const list = Array.isArray(res?.MyGalleryList) ? res.MyGalleryList : [];
 
       // 필요 필드 표준화
-      const formattedCards = res.MyGalleryList.map((card) => ({
+      const formattedCards = list.map((card) => ({
+        // new
         userCardId: card.userCardId,
         name: card.name,
         imageUrl: card.imageUrl,
@@ -65,9 +68,17 @@ export default function ExchangePhotoModal(props) {
         sellerNickname: card.ownerNickName || "나", // 제작자
       }));
       setCards(formattedCards);
+      setModalState({
+        status: formattedCards.length ? "success" : "empty",
+        error: "",
+      }); // new
     } catch (e) {
       console.error("마이갤러리 조회 실패:", e);
       setCards([]);
+      setModalState({
+        status: "error",
+        error: e?.message || "목록을 불러오지 못했습니다.",
+      }); // new
     }
   }
 
@@ -132,9 +143,6 @@ export default function ExchangePhotoModal(props) {
   async function handleConfirm(e) {
     if (e && typeof e.preventDefault === "function") e.preventDefault();
 
-    // 디버그: 필수 값 확인
-    // console.log("[DEBUG] saleId:", saleId, " selectedCard:", selectedCard);
-
     // 1) saleId 누락
     if (!saleId) {
       setResultPayload({
@@ -142,7 +150,7 @@ export default function ExchangePhotoModal(props) {
         message:
           "필수 정보가 누락되었습니다. (saleId 없음) 페이지를 새로고침 후 다시 시도해 주세요.",
       });
-      setShowResultModal(true); // ← 무조건 결과 모달 표시
+      setShowResultModal(true);
       return;
     }
 
@@ -174,12 +182,10 @@ export default function ExchangePhotoModal(props) {
         exchangeMemo.trim()
       );
 
-      // 성공 시 상위에 즉시 반영(상세 하단 목록에 new proposal prepend)
       if (res && res.data) {
         try {
           onSuccess(res.data);
         } catch (_e) {
-          // 부모 콜백 오류는 막아줌
           console.warn("onSuccess callback error:", _e);
         }
       }
@@ -198,23 +204,22 @@ export default function ExchangePhotoModal(props) {
       });
     } finally {
       setSubmitting(false);
-      setShowResultModal(true); // ← 성공/실패 관계없이 항상 결과 모달 오픈
+      setShowResultModal(true);
     }
   }
 
   function handleResultClose() {
     setShowResultModal(false);
-    // 결과 모달 닫을 때 본 모달도 같이 닫기
     onClose();
   }
 
-  // ====== 렌더링 헬퍼 (인라인 화살표함수 지양) ======
+  // ====== 렌더링 헬퍼 ======
   function renderCard(card) {
     return (
       <div
         className={styles.cardItem}
         key={card.userCardId}
-        onClick={handleSelectCard.bind(null, card)} // 화살표 함수 대신 bind
+        onClick={handleSelectCard.bind(null, card)}
       >
         <ModalCard
           userCardId={card.userCardId}
@@ -359,30 +364,28 @@ export default function ExchangePhotoModal(props) {
                     </div>
                   )}
                   <div className={styles.cardList}>
-                    {ModalState.status !== "success" ? (
+                    {modalState.status !== "success" ? ( // new
                       <ModalState
-                        status={ModalState.status}
-                        error={ModalState.error}
+                        status={modalState.status} // new
+                        error={modalState.error} // new
                         onRetry={fetchCards}
-                        loadingText="포토 카드 불러오는 중…"
-                        emptyText="마이 갤러리가 비어 있습니다!"
+                        loadingText="포토카드 불러오는 중 …"
+                        emptyText="마이갤러리가 비어 있습니다!"
                         errorText="에러!"
                         height={240}
+                        emptyActionText="포토카드 생성하러 가기"
+                        emptyActionHref="/myGallery"
                       />
                     ) : (
-                      cards.map(function (card) {
-                        return (
-                          <div
-                            className={styles.cardItem}
-                            key={card.userCardId}
-                            onClick={function () {
-                              handleCardClick(card);
-                            }}
-                          >
-                            <ModalCard {...card} />
-                          </div>
-                        );
-                      })
+                      cards.map((card) => (
+                        <div
+                          className={styles.cardItem}
+                          key={card.userCardId}
+                          onClick={() => handleCardClick(card)}
+                        >
+                          <ModalCard {...card} />
+                        </div>
+                      ))
                     )}
                   </div>
                 </>
