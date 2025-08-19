@@ -39,7 +39,7 @@ export default function MyGalleryCard({
             className={style.responsiveImage} // 스타일에서 object-fit 등 설정
             width={360}
             height={270}
-            sizes="(max-width: 640px) 50vw,(max-width: 1024px) 33vw, 25vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         </div>
         <div className={style.CardTextBox}>

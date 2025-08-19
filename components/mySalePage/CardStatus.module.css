@@ -1,0 +1,17 @@
+.cardStatus {
+  display: inline-flex;
+  padding: 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.ON_SALE {
+  color: var(--white);
+}
+
+.PROPOSED {
+  color: var(--main);
+}
