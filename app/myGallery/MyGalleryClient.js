@@ -59,7 +59,7 @@ export default function MyGalleryClient({ initialFilters }) {
   const { userNickname, myMarketList = [], page = 1, gradeCounts } = data ?? {};
 
   const toggleFilterModal = useCallback(
-    () => setIsFilterModalOpen((prev) => !prev),
+    () => setIsFilterModalOpen(prev => !prev),
     []
   );
 
@@ -114,7 +114,7 @@ export default function MyGalleryClient({ initialFilters }) {
           page={currentPage}
           pageSize={pageSize}
           totalCount={totalCount}
-          onPageChange={(page) => {
+          onPageChange={page => {
             dispatch({ type: "SET_PAGE", payload: page });
           }}
         />
@@ -145,13 +145,12 @@ export default function MyGalleryClient({ initialFilters }) {
           }`}
         >
           <div className={style.MobileModalTitle}>
+            <div />
             <p>필터</p>
-            <p
-              className={style.close}
+            <div
+              className={style.modalClose}
               onClick={() => setIsFilterModalOpen(false)}
-            >
-              x
-            </p>
+            />
           </div>
           <FilterBartwo
             filters={filters}

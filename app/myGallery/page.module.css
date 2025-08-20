@@ -1,51 +1,27 @@
+.myGallery {
+  background-color: var(--black);
+  width: 100%;
+  max-width: 1920px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 60px auto;
+  padding: 0 110px;
+}
+.myGalleryContainer {
+  width: 100%;
+}
+
+.topTitle {
+  margin-top: 40px;
+}
+
 .title_Text {
   font-size: 62px;
   color: var(--white);
   font-weight: 400;
   font-family: "BR-B", sans-serif;
 }
-
-.title_Button {
-  display: flex;
-  width: 440px;
-  height: 60px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  border-radius: 2px;
-  background: var(--main);
-  border: none;
-  color: var(--black);
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  cursor: pointer;
-}
-
-.title_Box {
-  display: flex;
-  justify-content: space-between;
-  /* border-bottom: 1px solid #fff; */
-  padding-left: 150px;
-  padding-right: 150px;
-  padding-bottom: 20px;
-}
-
-.myGallery {
-  /* background-color: var(--black); 
-  */
-  background-color: var(--black);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 1920px;
-  margin: 60px auto;
-  padding: 0 110px;
-}
-
 .filterBox {
   display: flex;
   gap: 20px;
@@ -56,7 +32,6 @@
   display: flex;
   justify-content: space-between;
   padding-bottom: 50px;
-  /* border-top: 1px solid #fff; */
 }
 
 .filterInput {
@@ -69,13 +44,9 @@
   gap: 10px;
   flex-shrink: 0;
   border-radius: 2px;
-  border: 1px solid var(--gray-gray200, #ddd);
-  background: var(--black-black, #0f0f0f);
+  border: 1px solid var(--gray-200);
+  background: var(--black);
   color: #fff;
-}
-
-.myGalleryContainer {
-  width: 100%;
 }
 
 .filterSelect {
@@ -89,7 +60,6 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   width: 100%;
-  margin: 0 auto;
 }
 .cardItem {
   position: static;
@@ -114,7 +84,7 @@
 }
 
 .modalContent {
-  background-color: #1b1b1b;
+  background-color: var(--black);
   width: 100%;
   height: 70%;
   border-top-left-radius: 16px;
@@ -145,7 +115,7 @@
   color: var(--gray-400);
 }
 .modalOptionLine {
-  background-color: #0f0f0f;
+  background-color: var(--black);
   width: 100%;
   height: 2px;
 }
@@ -193,8 +163,7 @@
   gap: 10px;
   flex-shrink: 0;
   border-radius: 2px;
-  background: var(--main-main, #efff04);
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  background: var(--main);
 }
 .modalButtonBox {
   display: flex;
@@ -217,12 +186,30 @@
   color: #fff;
 }
 
-/* 모바일: 0px ~ 746px */
-@media (max-width: 746px) {
+@media (min-width: 743px) and (max-width: 1199px) {
+  .myGallery {
+    max-width: 744px;
+    padding: 0 20px;
+    margin: 40px auto;
+  }
   .cardList {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    margin: 0 auto;
+    gap: 20px;
+  }
+}
+/* 모바일: 0px ~ 746px */
+@media (max-width: 743px) {
+  .myGallery {
+    max-width: 375px;
+    padding: 0 15px;
+    margin: 20px auto;
+  }
+  .topTitle {
+    margin-top: 20px;
+  }
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
   }
   .filterBox {
     display: none;
@@ -246,7 +233,7 @@
     left: 10%;
   }
   .filterContainer {
-    padding-top: 16px;
+    display: none;
   }
   .marketPlaceContainer {
     padding: 0;
@@ -260,83 +247,6 @@
   .title_Box {
     padding: 0;
   }
-  .myGalleryContainer {
-    padding: 0;
-  }
-  .myGallery {
-    max-width: 425px;
-    padding: 0 15px;
-  }
-}
-
-@media (min-width: 746px) and (max-width: 1199px) {
-  .myGalleryContainer {
-    padding: 0;
-  }
-  .cardList {
-    grid-template-columns: repeat(2, 1fr);
-    width: 100%;
-  }
-  .myGallery {
-    max-width: 744px;
-    padding: 0 20px;
-  }
-}
-
-/* 태블릿: 747px ~ 1513px */
-/* @media (min-width: 1200px) and (max-width: 1513px) {
-  .cardList {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    width: max-content;
-  }
-  .title_Button {
-    width: 240px;
-  }
-  .title_Text {
-    font-size: 42px;
-  }
-  .marketPlaceContainer {
-    padding: 0;
-  }
-  .filterInput {
-    width: 190px;
-  }
-  .title_Box {
-    padding: 0;
-  }
-  .myGalleryContainer {
-    padding: 0 150px;
-  }
-} */
-
-/* 데스크탑: 1514px ~ 1999px */
-@media (min-width: 1514px) and (max-width: 1999px) {
-  .cardList {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .myGalleryContainer {
-  }
-}
-
-/* 큰 화면: 2000px 이상 */
-@media (min-width: 2000px) {
-  .cardList {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .myGalleryContainer {
-  }
-}
-
-.topTitle {
-  margin-top: 40px;
-  padding-bottom: 40px;
-  border-bottom: 1px solid var(--gray-gray400, #5a5a5a);
 }
 
 .filterInput {
@@ -349,18 +259,18 @@
   gap: 10px;
   flex-shrink: 0;
   border-radius: 2px;
-  border: 1px solid var(--gray-gray200, #ddd);
-  background: var(--black-black, #0f0f0f);
+  border: 1px solid var(--gray-200);
+  background: var(--black);
 }
 
 .filterSelect {
   color: #fff;
-  background-color: var(--black-black);
+  background-color: var(--black);
   border: 0;
 }
 .filterOption {
   color: #fff;
-  background-color: var(--black-black);
+  background-color: var(--black);
 }
 
 .MobileModal {
@@ -368,27 +278,36 @@
   bottom: 0; /* 화면 맨 아래에 붙임 */
   left: 0;
   width: 100%; /* 가로 전체 */
-  height: 60%; /* 화면 높이의 60% 차지 */
+  height: 70%; /* 화면 높이의 60% 차지 */
   background-color: #1b1b1b;
-  border-top-left-radius: 12px; /* 위 모서리 둥글게 */
-  border-top-right-radius: 12px;
+  border-top-left-radius: 16px; /* 위 모서리 둥글게 */
+  border-top-right-radius: 16px;
   z-index: 9999; /* 다른 요소 위에 표시 */
   transform: translateY(100%);
   transition: transform 0.3s ease-in-out;
+  padding: 20px 0;
 }
 
 .MobileModalTitle {
+  width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  font-size: 24px;
-  color: var(--gray-gray400, #5a5a5a);
-  justify-content: center;
-  padding-top: 10px;
+  padding: 14px 15px;
+  color: var(--gray-400);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
-.close {
-  position: absolute;
-  right: 5%;
+.modalClose {
+  width: 24px;
+  height: 24px;
+  background-image: url(/icons/ic_close_gray.svg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   cursor: pointer;
 }
 
@@ -423,42 +342,16 @@
   margin: 0 auto;
 }
 
-@media (max-width: 746px) {
+/* 중간 화면: 747px ~ 1199px */
+@media (min-width: 743px) and (max-width: 1199px) {
+  .loadingcardList {
+    grid-template-columns: repeat(2, 1fr); /* 2열 */
+    width: 100%;
+  }
+}
+
+@media (max-width: 743px) {
   .loadingcardList {
     grid-template-columns: repeat(2, 1fr); /* 모바일 2열 */
-    margin: 0 auto;
-  }
-}
-
-/* 중간 화면: 747px ~ 1199px */
-@media (min-width: 746px) and (max-width: 1199px) {
-  .loadingcardList {
-    grid-template-columns: repeat(2, 1fr); /* 2열 */
-    width: 100%;
-  }
-}
-
-/* 태블릿: 1200px ~ 1513px */
-@media (min-width: 1200px) and (max-width: 1513px) {
-  .loadingcardList {
-    grid-template-columns: repeat(2, 1fr); /* 2열 */
-    gap: 16px;
-    width: 100%;
-  }
-}
-
-/* 데스크탑: 1514px ~ 1999px */
-@media (min-width: 1514px) and (max-width: 1999px) {
-  .loadingcardList {
-    grid-template-columns: repeat(3, 1fr); /* 3열 */
-    gap: 16px;
-  }
-}
-
-/* 큰 화면: 2000px 이상 */
-@media (min-width: 2000px) {
-  .loadingcardList {
-    grid-template-columns: repeat(3, 1fr); /* 4열 */
-    gap: 16px;
   }
 }

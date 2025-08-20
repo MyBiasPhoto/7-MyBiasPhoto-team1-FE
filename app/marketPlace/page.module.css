@@ -136,6 +136,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 .modalTitle {
@@ -199,6 +200,7 @@
   justify-content: center;
   align-items: center;
   margin-left: 8px;
+  cursor: pointer;
 }
 
 .modalButton {
@@ -216,6 +218,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  cursor: pointer;
 }
 
 .options {
@@ -223,6 +226,7 @@
   padding: 16px 40px;
   justify-content: space-between;
   color: var(--gray-300);
+  cursor: pointer;
 }
 .optionsActive {
   background-color: #3b3b3b;
@@ -318,6 +322,9 @@
   }
 
   .filterBoxTable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 35px;
     height: 35px;
     display: flex;

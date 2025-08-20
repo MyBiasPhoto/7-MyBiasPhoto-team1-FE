@@ -46,7 +46,7 @@ export default function FilterContainer({
           aria-label="필터 열기"
           onClick={onOpenFilterModal}
         >
-          <Image src={filterImg} width={30} height={30} alt="필터 버튼"></Image>
+          <Image src={filterImg} width={24} height={24} alt="필터 버튼"></Image>
         </button>
         <SearchInput
           value={value?.search ?? ""}

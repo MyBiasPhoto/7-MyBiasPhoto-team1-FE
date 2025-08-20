@@ -55,7 +55,7 @@ export default function ExchangePhotoModal(props) {
       const list = Array.isArray(res?.MyGalleryList) ? res.MyGalleryList : [];
 
       // 필요 필드 표준화
-      const formattedCards = list.map((card) => ({
+      const formattedCards = list.map(card => ({
         // new
         userCardId: card.userCardId,
         name: card.name,
@@ -284,7 +284,7 @@ export default function ExchangePhotoModal(props) {
         <div className={styles.overlay} onClick={onClose}>
           <div
             className={`${styles.modal} ${selectedCard ? styles.detail : ""}`}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             ref={modalRef}
           >
             <div
@@ -311,7 +311,7 @@ export default function ExchangePhotoModal(props) {
                   <div className={styles.searchArea}>
                     <button
                       className={styles.filterToggleBtn}
-                      onClick={() => setShowMobileFilter((prev) => !prev)}
+                      onClick={() => setShowMobileFilter(prev => !prev)}
                     >
                       <Image
                         src={FilterIcon}
@@ -340,12 +340,12 @@ export default function ExchangePhotoModal(props) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={(val) => setListGrade(val)}
+                        onChange={val => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={(val) => setListKind(val)}
+                        onChange={val => setListKind(val)}
                       />
                     </div>
                   </div>
@@ -354,12 +354,12 @@ export default function ExchangePhotoModal(props) {
                       <Select
                         option={gradeOption}
                         name={"등급"}
-                        onChange={(val) => setListGrade(val)}
+                        onChange={val => setListGrade(val)}
                       />
                       <Select
                         option={genreOption}
                         name={"장르"}
-                        onChange={(val) => setListKind(val)}
+                        onChange={val => setListKind(val)}
                       />
                     </div>
                   )}
@@ -377,7 +377,7 @@ export default function ExchangePhotoModal(props) {
                         emptyActionHref="/myGallery"
                       />
                     ) : (
-                      cards.map((card) => (
+                      cards.map(card => (
                         <div
                           className={styles.cardItem}
                           key={card.userCardId}

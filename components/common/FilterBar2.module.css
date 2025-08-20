@@ -1,36 +1,41 @@
-.box {
-  display: flex;
-  gap: 40px;
-  padding-bottom: 0px;
-  border-bottom: 2px solid var(--gray-gray500, #161616);
-  padding-left: 12px;
+.Container {
+  color: var(--gray-300);
 }
 
-.Container {
-  color: var(--gray-gray300, #a4a4a4);
-  margin-top: 50px;
-  padding: 10px;
+.box {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-left: 40px;
+  gap: 24px;
+  border-bottom: 2px solid var(--black);
 }
 
 .font {
-  font-size: 24px;
-  padding-bottom: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
   position: relative;
   cursor: pointer;
-  font-weight: 700;
-}
-
-.optionFont {
-  font-size: 24px;
-  font-weight: 700;
 }
 
 .option {
-  padding: 10px;
+  color: var(--gray-300);
+  padding: 16px 40px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .option:hover {
-  background-color: var(--gray-gray500, #161616);
+  background-color: var(--gray-500);
   color: #fff;
 }
 
@@ -42,8 +47,8 @@
 }
 
 .active {
-  color: #fff;
-  border-bottom: 1px solid #fff;
+  color: var(--white);
+  border-bottom: 2px solid var(--white);
 }
 
 .active::after {
@@ -53,5 +58,5 @@
   bottom: 0;
   height: 1px;
   width: 100%;
-  background-color: #fff;
+  background-color: #3b3b3b;
 }
