@@ -15,11 +15,21 @@ export default function ModalCard({
   price,
   imageUrl,
   initialQuantity,
+  variant = "grid",
+  className = "",
 }) {
   const cardRef = useRef(null);
 
   return (
-    <div className={`${styles.cardContainer}`} ref={cardRef}>
+    <div
+      ref={cardRef}
+      className={[
+        styles.cardContainer,
+        styles["variant_" + variant],
+        className,
+      ].join(" ")}
+      data-variant={variant}
+    >
       {/* ${style[grade]} ${style.glowEffect} */}
       <div className={styles.cardBox}>
         <div className={styles.cardImageBox}>
@@ -45,7 +55,9 @@ export default function ModalCard({
           <p className={styles.CardTextBoxTitle}>{name || "제목"}</p>
           <div className={styles.CardSubTitle}>
             <div className={styles.CardSubTitleBox}>
-              <p className={`${styles[grade]}`}>{grade || "등급"}</p>
+              <p className={`${styles[grade.replace(/\s+/g, "_")]}`}>
+                {grade || "등급"}
+              </p>
               <div className={styles.subDiv}></div>
               <p>{genre || "종류"}</p>
             </div>
