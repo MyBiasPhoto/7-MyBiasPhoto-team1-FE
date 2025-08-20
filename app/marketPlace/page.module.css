@@ -225,8 +225,12 @@
   color: var(--gray-300);
 }
 .optionsActive {
-  background-color: #474747;
-  color: #fff;
+  background-color: #3b3b3b;
+  color: var(--white);
+}
+
+.options:hover {
+  background-color: #3b3b3b;
 }
 
 .common {
@@ -240,10 +244,6 @@
 }
 .legendary {
   color: var(--pink);
-}
-
-.options:hover {
-  background-color: #3b3b3b;
 }
 
 .filterInputMobile {
