@@ -1,5 +1,6 @@
 "use client";
-
+import api from "@/lib/axiosAuth.js";
+import axios from "axios";
 import style from "./page.module.css";
 import EditArea from "@/components/marketPlace/edit/section/edit";
 import EditTradeList from "@/components/marketPlace/edit/tradeList/tradeList";
@@ -17,38 +18,69 @@ export default function MarketPlaceEdit() {
   const [currentUser, setCurrentUser] = useState(null);
   const [userLoading, setUserLoading] = useState(true); // 유저 로딩 상태
 
-  // 현재 로그인 유저 정보 가져오기
+  // 현재 로그인 유저 정보 가져오기 (axios 버전)
   useEffect(function loadCurrentUser() {
-    let cancelled = false; // fetch 중 컴포넌트 언마운트 대비
+    let cancelled = false; // 언마운트 대비
+    const controller = new AbortController(); // 요청 취소용
 
     async function fetchCurrentUser() {
-      setUserLoading(true); // 로딩 시작
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
-      const url = `${baseUrl}/users/me`;
-
+      setUserLoading(true);
       try {
-        const res = await fetch(url, { credentials: "include" });
-        let data = null;
-        try {
-          data = await res.json();
-        } catch {
-          data = null;
-        }
-        if (!cancelled) {
-          setCurrentUser(data?.me ?? null);
-        }
-      } catch {
+        const res = await api.get("/users/me", {
+          _auth: true, // 401 → refresh 인터셉터 동작
+          signal: controller.signal, // 언마운트 시 요청 취소
+        });
+        const me = res.data?.me ?? null;
+        if (!cancelled) setCurrentUser(me);
+      } catch (err) {
+        // 취소는 무시
+        if (axios.isAxiosError(err) && err.code === "ERR_CANCELED") return;
         if (!cancelled) setCurrentUser(null);
       } finally {
-        if (!cancelled) setUserLoading(false); // 로딩 종료 (성공/실패 무관)
+        if (!cancelled) setUserLoading(false);
       }
     }
 
     fetchCurrentUser();
     return function cleanup() {
       cancelled = true;
+      controller.abort(); // 진행 중 요청 취소
     };
   }, []);
+
+  // axios 도입전
+  // 현재 로그인 유저 정보 가져오기
+  // useEffect(function loadCurrentUser() {
+  //   let cancelled = false; // fetch 중 컴포넌트 언마운트 대비
+
+  //   async function fetchCurrentUser() {
+  //     setUserLoading(true); // 로딩 시작
+  //     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+  //     const url = `${baseUrl}/users/me`;
+
+  //     try {
+  //       const res = await fetch(url, { credentials: "include" });
+  //       let data = null;
+  //       try {
+  //         data = await res.json();
+  //       } catch {
+  //         data = null;
+  //       }
+  //       if (!cancelled) {
+  //         setCurrentUser(data?.me ?? null);
+  //       }
+  //     } catch {
+  //       if (!cancelled) setCurrentUser(null);
+  //     } finally {
+  //       if (!cancelled) setUserLoading(false); // 로딩 종료 (성공/실패 무관)
+  //     }
+  //   }
+
+  //   fetchCurrentUser();
+  //   return function cleanup() {
+  //     cancelled = true;
+  //   };
+  // }, []);
 
   const {
     data: sale,

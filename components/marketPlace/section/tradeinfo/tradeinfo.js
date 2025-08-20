@@ -38,22 +38,34 @@ export default function TradeInfo({ sale }) {
     return "";
   }
 
-  function fetchMe() {
-    return (async function () {
-      try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
-        const res = await fetch(`${baseUrl}/users/me`, {
-          credentials: "include",
-        });
-        const data = await res.json().catch(function () {
-          return null;
-        });
-        return !!(data && data.me && data.me.id);
-      } catch (e) {
-        return false;
-      }
-    })();
+  async function fetchMe() {
+    try {
+      const res = await api.get("/users/me", { _auth: true });
+      const data = res?.data ?? null;
+      return !!(data && data.me && data.me.id);
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.code === "ERR_CANCELED") return false;
+      return false;
+    }
   }
+
+  // axios 도입전
+  // function fetchMe() {
+  //   return (async function () {
+  //     try {
+  //       const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+  //       const res = await fetch(`${baseUrl}/users/me`, {
+  //         credentials: "include",
+  //       });
+  //       const data = await res.json().catch(function () {
+  //         return null;
+  //       });
+  //       return !!(data && data.me && data.me.id);
+  //     } catch (e) {
+  //       return false;
+  //     }
+  //   })();
+  // }
 
   function handleTradeClick() {
     (async function () {
