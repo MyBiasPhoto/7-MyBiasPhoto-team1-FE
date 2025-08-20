@@ -4,7 +4,7 @@ import { useState } from "react";
 import style from "./tradeinfo.module.css";
 import ExchangePhotoModal from "@/components/modals/exchangePhotoModal.js";
 import LoginModal from "@/components/modals/loginModal.js";
-
+import api from "@/lib/axiosAuth.js";
 export default function TradeInfo({ sale }) {
   const [isModal, setIsModal] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
