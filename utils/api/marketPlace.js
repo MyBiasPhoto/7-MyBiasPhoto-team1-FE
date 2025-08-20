@@ -33,6 +33,7 @@ export async function fetchSaleById(id) {
 export async function updatedSale({ id, data }) {
   const res = await fetch(`${API_URL}/sales/${id}`, {
     method: "PATCH",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -51,6 +52,7 @@ export async function updatedSale({ id, data }) {
 export async function deletedAtSaleById({ id, data }) {
   const res = await fetch(`${API_URL}/sales/${id}/delete`, {
     method: "PATCH",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },

@@ -589,7 +589,7 @@
 .gradeSelect option[value="LEGENDARY"] {
   color: var(--pink);
 }
-.gradeSelect option[value="SUPER_RARE"] {
+.gradeSelect option[value="SUPER RARE"] {
   color: var(--purple);
 }
 .gradeSelect option[value="RARE"] {

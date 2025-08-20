@@ -156,7 +156,7 @@ export default function MarketPlace() {
   );
 
   const handleLoginClick = useCallback((e) => {
-    e.stopPropagation();
+    e?.stopPropagation?.();
     setLoginModalOpen((prev) => !prev);
   }, []);
 
