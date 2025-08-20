@@ -159,10 +159,18 @@
 @media (max-width: 743px) {
   .cardContainer {
     padding: 10px;
-    max-width: 185px;
+    max-width: 350px;
   }
   .cardImageBox {
-    height: 112px;
+    height: 230px;
+  }
+
+  .variant_grid {
+    height: 350px;
+  }
+
+  .variant_detail {
+    width: 340px;
   }
 
   .cardLogo {

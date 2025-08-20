@@ -22,6 +22,7 @@ import { postSalePhotoCard } from "@/utils/api/postSalePhotoCard.js";
 import toast from "react-hot-toast";
 import ModalState from "./state/ModalState";
 import galleryStyle from "@/app/myGallery/page.module.css";
+import FilterBartwo from "@/components/common/FilterBar2";
 
 // ✅ 필터 상태 추가
 const initialFilters = {
@@ -67,15 +68,47 @@ export default function SellPhotoModal({ onClose }) {
   const [submitting, setSubmitting] = useState(false);
   const [modalState, setModalState] = useState({ status: "idle", error: "" });
 
+  function getFilterProxy() {
+    // FilterBartwo가 기대하는 키: search, grade, genre
+    return { search, grade: listGrade, genre: listKind };
+  }
+
+  function filterDispatch(action) {
+    switch (action?.type) {
+      case "SET_SEARCH":
+        setSearch(action.payload ?? "");
+        break;
+      case "SET_GRADE":
+        setListGrade(action.payload ?? "");
+        break;
+      case "SET_GENRE":
+        setListKind(action.payload ?? "");
+        break;
+      case "RESET":
+        setSearch("");
+        setListGrade("");
+        setListKind("");
+        break;
+      default:
+        break;
+    }
+  }
+
+  function pickValue(v) {
+    if (v == null) return "";
+    return typeof v === "object" ? v.value ?? "" : String(v);
+  }
+
   const fetchCards = async () => {
     setModalState({ status: "loading", error: "" });
     try {
-      const res = await fetchMyGalleryData({
-        page: 1,
-        search: search || "",
-        grade: listGrade?.value,
-        genre: listKind?.value,
-      });
+      const params = { page: 1 };
+      if (search && search.trim()) params.search = search.trim();
+      const g = pickValue(listGrade);
+      if (g) params.grade = g;
+      const ge = pickValue(listKind);
+      if (ge) params.genre = ge;
+      const res = await fetchMyGalleryData(params);
 
       {
         /*변경된 api에 맞춰 매핑 수정완료 */
@@ -106,6 +139,21 @@ export default function SellPhotoModal({ onClose }) {
       });
     }
   };
+
+  const fetchDebounceRef = useRef(null);
+
+  useEffect(
+    function () {
+      if (fetchDebounceRef.current) clearTimeout(fetchDebounceRef.current);
+      fetchDebounceRef.current = setTimeout(function () {
+        fetchCards();
+      }, 250);
+      return function () {
+        if (fetchDebounceRef.current) clearTimeout(fetchDebounceRef.current);
+      };
+    },
+    [search, listGrade, listKind]
+  );
 
   useEffect(() => {
     fetchCards();
@@ -373,7 +421,7 @@ export default function SellPhotoModal({ onClose }) {
                     <div className={styles.searchArea}>
                       <button
                         className={styles.filterToggleBtn}
-                        onClick={() => setIsFilterModalOpen(true)}
+                        onClick={() => setShowMobileFilter(true)}
                       >
                         <Image
                           src={FilterIcon}
@@ -426,23 +474,13 @@ export default function SellPhotoModal({ onClose }) {
                           x
                         </p>
                       </div>
-                      {/* 옵션 영역: 등급/장르 Select를 그대로 사용 */}
-                      <div className={galleryStyle.options}>
-                        <div style={{ flex: 1 }}>
-                          <Select
-                            option={gradeOption}
-                            name={"등급"}
-                            onChange={(val) => setListGrade(val)}
-                          />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                          <Select
-                            option={genreOption}
-                            name={"장르"}
-                            onChange={(val) => setListKind(val)}
-                          />
-                        </div>
-                      </div>
+                      <FilterBartwo
+                        filters={getFilterProxy()}
+                        dispatch={filterDispatch}
+                        onClose={function () {
+                          setShowMobileFilter(false);
+                        }}
+                      />
                     </div>
                     <div className={styles.cardList}>
                       {modalState.status !== "success" ? (

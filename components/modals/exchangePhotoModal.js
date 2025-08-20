@@ -16,19 +16,13 @@ import FilterIcon from "@/public/icons/ic_filter.svg";
 import { getUserCardOnIdle } from "@/utils/api/getUserCardOnIdle";
 import { createExchangeProposal } from "@/utils/api/exchange";
 import ModalState from "@/components/modals/state/ModalState";
-import galleryStyle from "@/app/myGallery/page.module.css";
 import FilterBartwo from "@/components/common/FilterBar2";
-import useGalleryFilters from "@/hooks/useMyGalleryFilters";
+import galleryStyle from "@/app/myGallery/page.module.css";
 
 function noop() {}
 
 export default function ExchangePhotoModal(props) {
   const { saleId, onClose = noop, onSuccess = noop } = props;
-
-  const { state: filters, dispatch } = useGalleryFilters({
-    selectedOptionType: "grade",
-  });
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
@@ -50,18 +44,49 @@ export default function ExchangePhotoModal(props) {
   const [submitting, setSubmitting] = useState(false);
   const [modalState, setModalState] = useState({ status: "idle", error: "" });
 
+  // 로컬 상태를 FilterBartwo 인터페이스로 매핑
+  function getFilterProxy() {
+    return { search, grade: listGrade, genre: listKind };
+  }
+
+  // FilterBartwo가 던지는 액션을 로컬 setState로 변환
+  function filterDispatch(action) {
+    switch (action?.type) {
+      case "SET_SEARCH":
+        setSearch(action.payload ?? "");
+        break;
+      case "SET_GRADE":
+        setListGrade(action.payload ?? "");
+        break;
+      case "SET_GENRE":
+        setListKind(action.payload ?? "");
+        break;
+      case "RESET":
+        setSearch("");
+        setListGrade("");
+        setListKind("");
+        break;
+      default:
+        break;
+    }
+  }
+
+  function pickValue(v) {
+    if (v == null) return "";
+    return typeof v === "object" ? v.value ?? "" : String(v);
+  }
+
   async function fetchCards() {
     setModalState({ status: "loading", error: "" });
     try {
-      const res = await getUserCardOnIdle({
-        page: 1,
-        search: search || "",
-        grade: listGrade?.value,
-        genre: listKind?.value,
-        search: filters.search || "",
-        grade: filters.grade?.value,
-        genre: filters.genre?.value,
-      });
+      const params = { page: 1 };
+      if (search && search.trim()) params.search = search.trim();
+      const g = pickValue(listGrade);
+      if (g) params.grade = g; // 값이 있을 때만 전송
+      const ge = pickValue(listKind);
+      if (ge) params.genre = ge; // 값이 있을 때만 전송
+
+      const res = await getUserCardOnIdle(params);
 
       const list = Array.isArray(res?.MyGalleryList) ? res.MyGalleryList : [];
 
@@ -93,19 +118,44 @@ export default function ExchangePhotoModal(props) {
     }
   }
 
-  // useEffect(
-  //   function () {
-  //     fetchCards();
-  //   },
-  //   [search, listGrade, listKind]
-  // );
+  const fetchDebounceRef = useRef(null);
 
-  useEffect(() => {
-    fetchCards();
-  }, [filters.search, filters.grade, filters.genre]);
+  useEffect(
+    function () {
+      if (fetchDebounceRef.current) clearTimeout(fetchDebounceRef.current);
+      fetchDebounceRef.current = setTimeout(function () {
+        fetchCards();
+      }, 250);
+      return function () {
+        if (fetchDebounceRef.current) clearTimeout(fetchDebounceRef.current);
+      };
+    },
+    [search, listGrade, listKind]
+  );
 
+  // FIX: dispatch 제거, 로컬 setSearch 사용
   function handleSearchChange(e) {
     setSearch(e.target.value);
+  }
+
+  // 선택 핸들러(일반 함수 선언)
+  function handleDesktopGradeChange(opt) {
+    setListGrade(opt);
+  }
+  function handleDesktopGenreChange(opt) {
+    setListKind(opt);
+  }
+
+  function toggleFilterModal() {
+    setShowMobileFilter(function (prev) {
+      return !prev;
+    });
+  }
+  function openMobileFilter() {
+    setShowMobileFilter(true);
+  }
+  function closeMobileFilter() {
+    setShowMobileFilter(false);
   }
 
   function handleCardClick(card) {
@@ -234,7 +284,7 @@ export default function ExchangePhotoModal(props) {
       <div
         className={styles.cardItem}
         key={card.userCardId}
-        onClick={handleSelectCard.bind(null, card)}
+        onClick={handleCardClick.bind(null, card)}
       >
         <ModalCard
           userCardId={card.userCardId}
@@ -293,11 +343,6 @@ export default function ExchangePhotoModal(props) {
     }
   }
 
-  const { state: filters, dispatch } = useGalleryFilters({
-    selectedOptionType: "grade",
-  });
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-
   return (
     <>
       {!showResultModal ? (
@@ -332,7 +377,9 @@ export default function ExchangePhotoModal(props) {
                     <div className={styles.searchArea}>
                       <button
                         className={styles.filterToggleBtn}
-                        onClick={() => setIsFilterModalOpen((prev) => !prev)}
+                        onClick={function () {
+                          setShowMobileFilter(true);
+                        }}
                       >
                         <Image
                           src={FilterIcon}
@@ -361,37 +408,34 @@ export default function ExchangePhotoModal(props) {
                         <Select
                           option={gradeOption}
                           name={"등급"}
-                          onChange={(val) => setListGrade(val)}
+                          onChange={handleDesktopGradeChange}
                         />
                         <Select
                           option={genreOption}
                           name={"장르"}
-                          onChange={(val) => setListKind(val)}
+                          onChange={handleDesktopGenreChange}
                         />
                       </div>
                     </div>
-                    {/* ★ MyGallery 모바일 필터 형식으로 교체 */}
                     <div
                       className={`${galleryStyle.MobileModal} ${
                         showMobileFilter ? galleryStyle.show : ""
                       }`}
                     >
                       <div className={galleryStyle.MobileModalTitle}>
+                        <div />
                         <p>필터</p>
-                        <p
-                          className={galleryStyle.close}
-                          onClick={() => setShowMobileFilter(false)}
-                        >
-                          x
-                        </p>
+                        <div
+                          className={galleryStyle.modalClose}
+                          onClick={function () {
+                            setShowMobileFilter(false);
+                          }}
+                        />
                       </div>
                       <FilterBartwo
-                        filters={filters}
-                        dispatch={dispatch}
-                        onClose={() => setIsFilterModalOpen(false)}
-                        onChangeGrade={(val) => setListGrade(val)}
-                        onChangeGenre={(val) => setListKind(val)}
-                        onChangeSearch={(val) => setSearch(val)}
+                        filters={getFilterProxy()}
+                        dispatch={filterDispatch}
+                        onClose={closeMobileFilter}
                       />
                     </div>
                     <div className={styles.cardList}>
@@ -414,7 +458,7 @@ export default function ExchangePhotoModal(props) {
                             key={card.userCardId}
                             onClick={() => handleCardClick(card)}
                           >
-                            <ModalCard {...card} />
+                            <ModalCard {...card} variant="grid" />
                           </div>
                         ))
                       )}
@@ -424,7 +468,7 @@ export default function ExchangePhotoModal(props) {
                   <div className={styles.detailContainer}>
                     <div className={styles.aboutPhoto}>
                       <div className={styles.cardImage}>
-                        <ModalCard {...selectedCard} />
+                        <ModalCard {...selectedCard} variant="detail" />
                       </div>
                       <div className={styles.cardInfo}>
                         <div className={styles.exchangeInput}>
