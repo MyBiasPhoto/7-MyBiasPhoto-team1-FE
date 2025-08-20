@@ -16,16 +16,29 @@ export default function Buy({ sale }) {
 
   async function fetchMe() {
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
-      const res = await fetch(`${baseUrl}/users/me`, {
-        credentials: "include",
-      });
-      const data = await res.json().catch(() => null);
+      const res = await api.get("/users/me", { _auth: true });
+      const data = res?.data ?? null;
       return !!data?.me?.id;
-    } catch {
+    } catch (err) {
+      // 취소 등 특수 케이스는 false 처리(기존과 동일)
+      if (axios.isAxiosError(err) && err.code === "ERR_CANCELED") return false;
       return false;
     }
   }
+
+  // axios 도입전
+  // async function fetchMe() {
+  //   try {
+  //     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+  //     const res = await fetch(`${baseUrl}/users/me`, {
+  //       credentials: "include",
+  //     });
+  //     const data = await res.json().catch(() => null);
+  //     return !!data?.me?.id;
+  //   } catch {
+  //     return false;
+  //   }
+  // }
 
   async function handleBuyClick() {
     const isLoggedIn = await fetchMe();
