@@ -18,7 +18,7 @@ async function sha256Hex(file) {
   const buf = await file.arrayBuffer();
   const hash = await crypto.subtle.digest("SHA-256", buf);
   return Array.from(new Uint8Array(hash))
-    .map(b => b.toString(16).padStart(2, "0"))
+    .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 }
 
@@ -190,7 +190,7 @@ export default function CreatePhotoCardPage() {
     fetchQuota();
   }, [user?.id]);
 
-  const handleCreate = async e => {
+  const handleCreate = async (e) => {
     e.preventDefault();
     if (!isValid()) return;
 
@@ -263,7 +263,7 @@ export default function CreatePhotoCardPage() {
     }
   };
 
-  const handleFileChange = async e => {
+  const handleFileChange = async (e) => {
     if (!canCreateThisMonth) {
       toast.error("이번 달 생성 한도를 초과했습니다.", {
         style: {
@@ -314,7 +314,7 @@ export default function CreatePhotoCardPage() {
     }
   };
 
-  const handleQuantityChange = e => {
+  const handleQuantityChange = (e) => {
     const value = e.target.value;
     setQuantity(value);
 
@@ -369,7 +369,7 @@ export default function CreatePhotoCardPage() {
         label="포토카드 이름"
         placeholder="포토카드 이름을 입력해 주세요"
         value={name}
-        onChange={e => setName(e.target.value)}
+        onChange={(e) => setName(e.target.value)}
         required
       />
 
@@ -377,7 +377,7 @@ export default function CreatePhotoCardPage() {
         id="grade"
         label="등급"
         value={grade}
-        onChange={e => setGrade(e.target.value)}
+        onChange={(e) => setGrade(e.target.value)}
         required
         options={[
           { value: "COMMON", label: "COMMON" },
@@ -392,7 +392,7 @@ export default function CreatePhotoCardPage() {
         id="genre"
         label="장르"
         value={genre}
-        onChange={e => setGenre(e.target.value)}
+        onChange={(e) => setGenre(e.target.value)}
         required
         options={[
           { value: "ALBUM", label: "앨범" },
@@ -417,7 +417,7 @@ export default function CreatePhotoCardPage() {
           id="price"
           type="text"
           value={price}
-          onChange={e => {
+          onChange={(e) => {
             const value = e.target.value;
             setPrice(value);
 
@@ -458,7 +458,7 @@ export default function CreatePhotoCardPage() {
 
       <CreateUpload
         value={imageUrl}
-        onChange={e => setImageUrl(e.target.value)}
+        onChange={(e) => setImageUrl(e.target.value)}
         imageFile={imageFile}
         onFileChange={handleFileChange}
         disabled={!canCreateThisMonth}
@@ -477,7 +477,7 @@ export default function CreatePhotoCardPage() {
         label="포토카드 설명"
         placeholder="카드 설명을 입력해 주세요"
         value={description}
-        onChange={e => setDescription(e.target.value)}
+        onChange={(e) => setDescription(e.target.value)}
         required
       />
 
@@ -499,6 +499,7 @@ export default function CreatePhotoCardPage() {
           cardGrade={createdGrade}
           cardTitle={createdName}
           onClose={() => setShowModal(false)}
+          monthlyInfo={monthly}
         />
       )}
 
