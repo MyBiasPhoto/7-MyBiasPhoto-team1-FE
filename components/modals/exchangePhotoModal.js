@@ -16,11 +16,19 @@ import FilterIcon from "@/public/icons/ic_filter.svg";
 import { getUserCardOnIdle } from "@/utils/api/getUserCardOnIdle";
 import { createExchangeProposal } from "@/utils/api/exchange";
 import ModalState from "@/components/modals/state/ModalState";
+import galleryStyle from "@/app/myGallery/page.module.css";
+import FilterBartwo from "@/components/common/FilterBar2";
+import useGalleryFilters from "@/hooks/useMyGalleryFilters";
 
 function noop() {}
 
 export default function ExchangePhotoModal(props) {
   const { saleId, onClose = noop, onSuccess = noop } = props;
+
+  const { state: filters, dispatch } = useGalleryFilters({
+    selectedOptionType: "grade",
+  });
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
@@ -50,12 +58,15 @@ export default function ExchangePhotoModal(props) {
         search: search || "",
         grade: listGrade?.value,
         genre: listKind?.value,
+        search: filters.search || "",
+        grade: filters.grade?.value,
+        genre: filters.genre?.value,
       });
 
       const list = Array.isArray(res?.MyGalleryList) ? res.MyGalleryList : [];
 
       // 필요 필드 표준화
-      const formattedCards = list.map(card => ({
+      const formattedCards = list.map((card) => ({
         // new
         userCardId: card.userCardId,
         name: card.name,
@@ -82,12 +93,16 @@ export default function ExchangePhotoModal(props) {
     }
   }
 
-  useEffect(
-    function () {
-      fetchCards();
-    },
-    [search, listGrade, listKind]
-  );
+  // useEffect(
+  //   function () {
+  //     fetchCards();
+  //   },
+  //   [search, listGrade, listKind]
+  // );
+
+  useEffect(() => {
+    fetchCards();
+  }, [filters.search, filters.grade, filters.genre]);
 
   function handleSearchChange(e) {
     setSearch(e.target.value);
@@ -278,155 +293,172 @@ export default function ExchangePhotoModal(props) {
     }
   }
 
+  const { state: filters, dispatch } = useGalleryFilters({
+    selectedOptionType: "grade",
+  });
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
   return (
     <>
       {!showResultModal ? (
         <div className={styles.overlay} onClick={onClose}>
           <div
             className={`${styles.modal} ${selectedCard ? styles.detail : ""}`}
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             ref={modalRef}
           >
-            <div
-              className={styles.dragBar}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            ></div>
-            <h1 className={styles.header}>
-              {selectedCard ? "포토카드 교환하기" : "마이갤러리"}
-            </h1>
-            <button className={styles.closeButton} onClick={onClose}>
-              <Image src={CloseIcon} alt="Close" width={32} height={32} />
-            </button>
-            <div className={styles.titleArea}>
-              <h2 className={styles.titleTxt}>
-                {selectedCard ? `${selectedCard.title}` : "포토카드 교환하기"}
-              </h2>
-            </div>
+            <div className={styles.modalWrap}>
+              <div
+                className={styles.dragBar}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              ></div>
+              <h1 className={styles.header}>
+                {selectedCard ? "포토카드 교환하기" : "마이갤러리"}
+              </h1>
+              <button className={styles.closeButton} onClick={onClose}>
+                <Image src={CloseIcon} alt="Close" width={32} height={32} />
+              </button>
+              <div className={styles.titleArea}>
+                <h2 className={styles.titleTxt}>
+                  {selectedCard ? `${selectedCard.title}` : "포토카드 교환하기"}
+                </h2>
+              </div>
 
-            <div className={styles.contentArea}>
-              {!selectedCard ? (
-                <>
-                  <div className={styles.searchArea}>
-                    <button
-                      className={styles.filterToggleBtn}
-                      onClick={() => setShowMobileFilter(prev => !prev)}
-                    >
-                      <Image
-                        src={FilterIcon}
-                        alt="필터 아이콘"
-                        width={24}
-                        height={24}
-                      />
-                    </button>
-                    <div className={styles.searchWrap}>
-                      <input
-                        type="text"
-                        placeholder="검색"
-                        className={styles.searchInput}
-                        value={search}
-                        onChange={handleSearchChange}
-                      />
-                      <Image
-                        src={SearchIcon}
-                        alt="Search"
-                        className={styles.searchIcon}
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                    <div className={styles.filterBox}>
-                      <Select
-                        option={gradeOption}
-                        name={"등급"}
-                        onChange={val => setListGrade(val)}
-                      />
-                      <Select
-                        option={genreOption}
-                        name={"장르"}
-                        onChange={val => setListKind(val)}
-                      />
-                    </div>
-                  </div>
-                  {showMobileFilter && (
-                    <div className={styles.mobileFilterBox}>
-                      <Select
-                        option={gradeOption}
-                        name={"등급"}
-                        onChange={val => setListGrade(val)}
-                      />
-                      <Select
-                        option={genreOption}
-                        name={"장르"}
-                        onChange={val => setListKind(val)}
-                      />
-                    </div>
-                  )}
-                  <div className={styles.cardList}>
-                    {modalState.status !== "success" ? ( // new
-                      <ModalState
-                        status={modalState.status} // new
-                        error={modalState.error} // new
-                        onRetry={fetchCards}
-                        loadingText="포토카드 불러오는 중 …"
-                        emptyText="마이갤러리가 비어 있습니다!"
-                        errorText="에러!"
-                        height={240}
-                        emptyActionText="포토카드 생성하러 가기"
-                        emptyActionHref="/myGallery"
-                      />
-                    ) : (
-                      cards.map(card => (
-                        <div
-                          className={styles.cardItem}
-                          key={card.userCardId}
-                          onClick={() => handleCardClick(card)}
-                        >
-                          <ModalCard {...card} />
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </>
-              ) : (
-                <div className={styles.detailContainer}>
-                  <div className={styles.aboutPhoto}>
-                    <div className={styles.cardImage}>
-                      <ModalCard {...selectedCard} />
-                    </div>
-                    <div className={styles.cardInfo}>
-                      <div className={styles.exchangeInput}>
-                        <p>교환 제시 내용</p>
-                        <textarea
-                          placeholder="내용을 입력해 주세요"
-                          className={styles.memo}
-                          value={exchangeMemo}
-                          onChange={function (e) {
-                            setExchangeMemo(e.target.value);
-                          }}
+              <div className={styles.contentArea}>
+                {!selectedCard ? (
+                  <>
+                    <div className={styles.searchArea}>
+                      <button
+                        className={styles.filterToggleBtn}
+                        onClick={() => setIsFilterModalOpen((prev) => !prev)}
+                      >
+                        <Image
+                          src={FilterIcon}
+                          alt="필터 아이콘"
+                          width={24}
+                          height={24}
+                        />
+                      </button>
+                      <div className={styles.searchWrap}>
+                        <input
+                          type="text"
+                          placeholder="검색"
+                          className={styles.searchInput}
+                          value={search}
+                          onChange={handleSearchChange}
+                        />
+                        <Image
+                          src={SearchIcon}
+                          alt="Search"
+                          className={styles.searchIcon}
+                          width={24}
+                          height={24}
                         />
                       </div>
-                      <div className={styles.btnArea}>
-                        <button
-                          className={styles.cancelBtn}
-                          onClick={handleBack}
-                          disabled={submitting}
+                      <div className={styles.filterBox}>
+                        <Select
+                          option={gradeOption}
+                          name={"등급"}
+                          onChange={(val) => setListGrade(val)}
+                        />
+                        <Select
+                          option={genreOption}
+                          name={"장르"}
+                          onChange={(val) => setListKind(val)}
+                        />
+                      </div>
+                    </div>
+                    {/* ★ MyGallery 모바일 필터 형식으로 교체 */}
+                    <div
+                      className={`${galleryStyle.MobileModal} ${
+                        showMobileFilter ? galleryStyle.show : ""
+                      }`}
+                    >
+                      <div className={galleryStyle.MobileModalTitle}>
+                        <p>필터</p>
+                        <p
+                          className={galleryStyle.close}
+                          onClick={() => setShowMobileFilter(false)}
                         >
-                          취소하기
-                        </button>
-                        <button
-                          className={styles.confirmBtn}
-                          onClick={handleConfirm}
-                          disabled={submitting}
-                        >
-                          {submitting ? "전송 중..." : "교환하기"}
-                        </button>
+                          x
+                        </p>
+                      </div>
+                      <FilterBartwo
+                        filters={filters}
+                        dispatch={dispatch}
+                        onClose={() => setIsFilterModalOpen(false)}
+                        onChangeGrade={(val) => setListGrade(val)}
+                        onChangeGenre={(val) => setListKind(val)}
+                        onChangeSearch={(val) => setSearch(val)}
+                      />
+                    </div>
+                    <div className={styles.cardList}>
+                      {modalState.status !== "success" ? (
+                        <ModalState
+                          status={modalState.status}
+                          error={modalState.error}
+                          onRetry={fetchCards}
+                          loadingText="포토카드 불러오는 중 …"
+                          emptyText="마이갤러리가 비어 있습니다!"
+                          errorText="에러!"
+                          height={240}
+                          emptyActionText="포토카드 생성하러 가기"
+                          emptyActionHref="/myGallery"
+                        />
+                      ) : (
+                        cards.map((card) => (
+                          <div
+                            className={styles.cardItem}
+                            key={card.userCardId}
+                            onClick={() => handleCardClick(card)}
+                          >
+                            <ModalCard {...card} />
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div className={styles.detailContainer}>
+                    <div className={styles.aboutPhoto}>
+                      <div className={styles.cardImage}>
+                        <ModalCard {...selectedCard} />
+                      </div>
+                      <div className={styles.cardInfo}>
+                        <div className={styles.exchangeInput}>
+                          <p>교환 제시 내용</p>
+                          <textarea
+                            placeholder="내용을 입력해 주세요"
+                            className={styles.memo}
+                            value={exchangeMemo}
+                            onChange={function (e) {
+                              setExchangeMemo(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className={styles.btnArea}>
+                          <button
+                            className={styles.cancelBtn}
+                            onClick={handleBack}
+                            disabled={submitting}
+                          >
+                            취소하기
+                          </button>
+                          <button
+                            className={styles.confirmBtn}
+                            onClick={handleConfirm}
+                            disabled={submitting}
+                          >
+                            {submitting ? "전송 중..." : "교환하기"}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
