@@ -29,7 +29,7 @@ export default function MySaleClient({ initialFilters }) {
   const debouncedSearch = useDebounce(searchDraft, 500);
 
   useEffect(() => {
-    setFilters((prev) =>
+    setFilters(prev =>
       prev.search === debouncedSearch
         ? prev
         : { ...prev, search: debouncedSearch, page: 1 }
@@ -38,7 +38,7 @@ export default function MySaleClient({ initialFilters }) {
 
   // 엔터/돋보기 클릭 시 즉시 검색
   const handleSearchCommit = useCallback(() => {
-    setFilters((prev) =>
+    setFilters(prev =>
       prev.search === searchDraft
         ? prev
         : { ...prev, search: searchDraft, page: 1 }
@@ -47,7 +47,7 @@ export default function MySaleClient({ initialFilters }) {
 
   const handleFilterChange = useCallback((key, val) => {
     if (key === "search") return setSearchDraft(val ?? "");
-    setFilters((prev) => {
+    setFilters(prev => {
       const next = { ...prev, [key]: val ?? "" };
       // TODO: 서버에서 saleType 쿼리 구현 후 아래 주석 반영
       if (["grade", "genre", /*"saleType",*/ "soldOut"].includes(key))
@@ -85,43 +85,28 @@ export default function MySaleClient({ initialFilters }) {
 
   return (
     <div className={style.pageContainer}>
-      <div className={`${style.section} ${style.headerSection}`}>
-        <ContentHeader pageTitle="나의 판매 포토카드" />
-      </div>
-
-      <div className={style.section}>
-        <CardRaritySummary gradeCounts={gradeCounts} nickname={userNickname} />
-      </div>
-
-      <div className={style.section}>
-        <FilterContainer
-          value={{ ...filters, search: searchDraft }}
-          onFilterChange={handleFilterChange}
-          onSearchCommit={handleSearchCommit}
-          isFetching={isFetching}
-          onOpenFilterModal={openFilterModal}
-        />
-      </div>
-
-      <div className={style.section}>
-        <UserCardList cards={myMarketList} />
-      </div>
-      <div>
-        <Pagination
-          page={page}
-          pageSize={pageSize}
-          totalCount={totalCount}
-          onPageChange={(nextPage) => {
-            setFilters((prev) => ({ ...prev, page: nextPage }));
-          }}
-        ></Pagination>
-      </div>
+      <ContentHeader pageTitle="나의 판매 포토카드" />
+      <CardRaritySummary gradeCounts={gradeCounts} nickname={userNickname} />
+      <FilterContainer
+        value={{ ...filters, search: searchDraft }}
+        onFilterChange={handleFilterChange}
+        onSearchCommit={handleSearchCommit}
+        isFetching={isFetching}
+        onOpenFilterModal={openFilterModal}
+      />
+      <UserCardList cards={myMarketList} />
+      <Pagination
+        page={page}
+        pageSize={pageSize}
+        totalCount={totalCount}
+        onPageChange={nextPage => {
+          setFilters(prev => ({ ...prev, page: nextPage }));
+        }}
+      ></Pagination>
       {isFilterModalOpen && (
         <ConnectedFilterModal
           value={filters}
-          onApply={(next) =>
-            setFilters((prev) => ({ ...prev, ...next, page: 1 }))
-          }
+          onApply={next => setFilters(prev => ({ ...prev, ...next, page: 1 }))}
           onClose={() => setIsFilterModalOpen(false)}
         />
       )}

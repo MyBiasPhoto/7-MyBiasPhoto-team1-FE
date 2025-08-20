@@ -1,47 +1,25 @@
 .cardList {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 50px;
-  box-sizing: border-box;
+  gap: 16px;
 }
+
 .cardItem {
+  width: 100%;
   position: static;
 }
 
-@media screen and (max-width: 1513px) {
-  /* 여기에 1513px 이하일 때 적용할 스타일 작성 */
+@media (min-width: 743px) and (max-width: 1199px) {
   .cardList {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    width: max-content;
-    margin: 0 auto;
-    gap: 16px;
+    gap: 20px;
   }
 }
 
-@media (min-width: 2155px) {
-  .cardList {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* 태블릿: 768px ~ 1023px */
-@media (min-width: 746px) and (max-width: 1695px) {
-  /* 태블릿 스타일 */
-  .cardList {
-    display: grid;
-    width: max-content;
-    margin: 0 auto;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-}
-
-/* 모바일: 0px ~ 767px */
-/* @media (max-width: 746px) {
+@media (max-width: 743px) {
   .cardList {
     grid-template-columns: repeat(2, 1fr);
-    width: max-content;
-    margin: 0 auto;
+    gap: 5px;
   }
-} */
+}
