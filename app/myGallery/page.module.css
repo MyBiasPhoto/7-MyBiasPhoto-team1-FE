@@ -316,7 +316,10 @@
 }
 
 .notFound {
-  color: #fff;
+  font-family: "BR-B";
+  color: var(--white);
+  font-size: 30px;
+  margin-top: 50px;
 }
 
 .notFoundContainer {
@@ -324,7 +327,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
 }
 
 .loadingArea {

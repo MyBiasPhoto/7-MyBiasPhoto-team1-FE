@@ -86,7 +86,7 @@ export default function MyGalleryCardGrid({ items, isLoading, isPending }) {
     return (
       <div className={style.notFoundContainer}>
         <p className={style.notFound}>검색결과 없음</p>
-        <Image src={logo} width={200} height={200} alt={"로고"} />
+        <Image src={logo} width={300} height={200} alt={"로고"} />
       </div>
     );
   }
