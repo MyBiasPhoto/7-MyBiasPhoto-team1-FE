@@ -15,27 +15,30 @@ export default function FilterBar({ filters, dispatch, onClose }) {
     if (onClose) onClose();
   };
   const gradeColors = {
-    흔한: "var(--main)",
-    레어: "var(--blue)",
-    슈퍼레어: "var(--purple)",
-    레전드리: "var(--pink)",
+    COMMON: "var(--main)",
+    RARE: "var(--blue)",
+    SUPER_RARE: "var(--purple)",
+    LEGENDARY: "var(--pink)",
   };
 
   const renderOptions = () => {
     if (activeFilter === "grade") {
-      return myGalleryGradeOption.map(opt => (
+      return myGalleryGradeOption.map((opt) => (
         <div
           key={opt.value}
           className={`${style.option} ${style.optionFont}`}
           onClick={() => handleSelect("SET_GRADE", opt.value)}
-          style={{ color: gradeColors[opt.label] || "#fff" }}
+          style={{
+            color:
+              gradeColors[opt.label.toUpperCase().replace(/ /g, "_")] || "#fff",
+          }}
         >
           {opt.label}
         </div>
       ));
     }
     if (activeFilter === "genre") {
-      return myGalleryGenreOption.map(opt => (
+      return myGalleryGenreOption.map((opt) => (
         <div
           key={opt.value}
           className={`${style.option} ${style.optionFont}`}

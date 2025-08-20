@@ -131,7 +131,7 @@ export default function MarketPlace() {
 
   // 5. 이벤트 핸들러 함수 그룹
   const handleOptionClick = useCallback(
-    type => {
+    (type) => {
       dispatch({ type: "SET_OPTION_TYPE", payload: type });
     },
     [dispatch]
@@ -151,17 +151,17 @@ export default function MarketPlace() {
   );
 
   const toggleFilterModal = useCallback(
-    () => setIsFilterModalOpen(prev => !prev),
+    () => setIsFilterModalOpen((prev) => !prev),
     []
   );
 
-  const handleLoginClick = useCallback(e => {
+  const handleLoginClick = useCallback((e) => {
     e.stopPropagation();
-    setLoginModalOpen(prev => !prev);
+    setLoginModalOpen((prev) => !prev);
   }, []);
 
   const handleSortChange = useCallback(
-    value => {
+    (value) => {
       dispatch({
         type: "SET_SELECTED",
         payload: { orderBy: value },
@@ -174,7 +174,7 @@ export default function MarketPlace() {
     //@TODO 버그리포트 setMaster
     // 한 컴퓨터에서 여러 브라우저로 테스트하다보면 같은 아이디여서 edit페이지로 가야함에도
     // 다른 아이디로 인식하는 문제 - 아마 캐시 문제인듯?
-    card => {
+    (card) => {
       console.log("현재 유저 ID:", currentUserNickname);
       console.log("카드 제작자 닉네임:", card.sellerNickname);
       if (card.sellerNickname === currentUserNickname) {
@@ -211,7 +211,7 @@ export default function MarketPlace() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      entries => {
+      (entries) => {
         if (
           entries[0].isIntersecting &&
           !isLoading &&
@@ -274,6 +274,7 @@ export default function MarketPlace() {
           </div>
         )}
       </div>
+      {console.log("필터스테이트", filterState)}
 
       {isFilterModalOpen && (
         <FilterModal

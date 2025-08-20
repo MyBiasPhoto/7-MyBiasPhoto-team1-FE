@@ -90,13 +90,17 @@ export default function ConnectedFilterModal({ value, onApply, onClose }) {
   );
 
   return (
-    <FilterModal
-      filterState={modalState}
-      dispatch={dispatch}
-      optionTypes={optionTypes}
-      optionMap={optionMap}
-      onClose={onClose}
-      // countMap 필요 없으니 안 넘김
-    />
+    <>
+      {console.log("필터모달", optionMap)}
+      <FilterModal
+        temp={modalState.temp}
+        selectedOptionType={modalState.selectedOptionType}
+        dispatch={dispatch}
+        optionTypes={optionTypes}
+        optionMap={optionMap}
+        onClose={onClose}
+        // countMap 필요 없으니 안 넘김
+      />
+    </>
   );
 }

@@ -434,7 +434,7 @@
 @media (min-width: 746px) and (max-width: 1199px) {
   .loadingcardList {
     grid-template-columns: repeat(2, 1fr); /* 2열 */
-    width: max-content;
+    width: 100%;
   }
 }
 
@@ -443,7 +443,7 @@
   .loadingcardList {
     grid-template-columns: repeat(2, 1fr); /* 2열 */
     gap: 16px;
-    width: max-content;
+    width: 100%;
   }
 }
 
@@ -452,7 +452,6 @@
   .loadingcardList {
     grid-template-columns: repeat(3, 1fr); /* 3열 */
     gap: 16px;
-    padding: 0 150px;
   }
 }
 
@@ -461,6 +460,5 @@
   .loadingcardList {
     grid-template-columns: repeat(3, 1fr); /* 4열 */
     gap: 16px;
-    padding: 0 150px;
   }
 }

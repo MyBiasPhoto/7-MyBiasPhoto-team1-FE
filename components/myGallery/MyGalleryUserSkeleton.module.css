@@ -11,13 +11,12 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  padding: 0 150px;
   margin-top: 30px;
   margin-bottom: 50px;
 }
 
 .skeletonTop {
-  width: 400px;
+  width: 325px;
   height: 35px; /* 위 40% */
   background-color: #2a2a2a;
   border-radius: 8px;
@@ -31,8 +30,8 @@
 }
 
 .skeletonBottomBox {
-  width: 200px; /* 2개씩 한 줄로 배치 */
-  height: 35px; /* 총 70% 중 4개 나누기 느낌 */
+  width: 200px;
+  height: 35px;
   background-color: #2a2a2a;
   border-radius: 6px;
   animation: pulse 1.5s infinite ease-in-out;
@@ -53,6 +52,10 @@
 @media (max-width: 746px) {
   .skeletonCard {
     padding: 0;
+  }
+  .skeletonBottomBox {
+    width: 140px;
+    height: 35px;
   }
 }
 
