@@ -35,26 +35,26 @@ export default function ModalCard({
           )}
           <Image
             src={imageUrl || cardImage}
-            alt={"임시"}
+            alt={"name"}
             fill
-            className={styles.responsiveImage} // 스타일에서 object-fit 등 설정
+            className={styles.responsiveImage}
           />
         </div>
         <div className={styles.CardTextBox}>
           {/* 카드정보들 */}
-          <p className={styles.CardTextBoxTitle}>{name || "임시 제목."}</p>
+          <p className={styles.CardTextBoxTitle}>{name || "제목"}</p>
           <div className={styles.CardSubTitle}>
             <div className={styles.CardSubTitleBox}>
-              <p className={`${styles[grade]}`}>{grade || "임시등급."}</p>
+              <p className={`${styles[grade]}`}>{grade || "등급"}</p>
               <div className={styles.subDiv}></div>
-              <p>{genre || "임시종류."}</p>
+              <p>{genre || "종류"}</p>
             </div>
             <p className={styles.subTitleWriter}>
-              {sellerNickname || "임시제작자."}
+              {sellerNickname || "제작자"}
             </p>
           </div>
         </div>
-        <div className={styles.CardTextBox}>
+        <div className={styles.CardTextSubBox}>
           {/* 가격및 수량 */}
           <div className={styles.CardSubTitle2}>
             <p>가격</p>
@@ -72,7 +72,7 @@ export default function ModalCard({
           </div>
         </div>
         <div className={styles.cardLogo}>
-          <Image src={logo} height={100} width={120} alt={"임시"} />
+          <Image src={logo} height={18} width={120} alt={"로고"} />
         </div>
       </div>
     </div>
