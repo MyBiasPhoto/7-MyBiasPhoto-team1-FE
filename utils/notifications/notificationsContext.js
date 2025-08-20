@@ -94,37 +94,37 @@ export function NotificationsProvider({ children }) {
       }
       disconnectRef.current = openNotificationStream({
         lastEventId: lastDeliveredEventId ?? undefined, //마지막으로 받은 이벤트 id (backfill용)
-        backfillLimit: 0, // 재전송 받을 최대 알림 개수
+        backfillLimit: 5, // 재전송 받을 최대 알림 개수
         onMessage: (payload, { event: serverEventType, id: serverEventId }) => {
           // 서버에서 내려준 알림 데이터 payload: { id, type, content, read, createdAt }
-          const numericId = Number(payload?.id);
-          // 이미 받은 알림이면 무시
-          if (!numericId || knownIdsRef.current.has(numericId)) return;
 
-          // //새 알림 id 저장
+          // const numericId = Number(payload?.id);
+          // // 이미 받은 알림이면 무시
+          // if (!numericId || knownIdsRef.current.has(numericId)) return;
+
+          // // 새 알림 id 기록
           // knownIdsRef.current.add(numericId);
-          // //마지막으로 받은 이벤트 id 업데이트
+          // // 마지막 이벤트 id는 즉시 갱신
           // setLastDeliveredEventId(Number(serverEventId) || numericId);
-
-          // // 새 알림을 목록 맨 앞에 추가
-          // setNotificationItems((prev) => [payload, ...prev]);
-          // // 읽지 않은 알림이면 카운트 +1 (서버가 이미 read=false로 내려줌)
-          // if (!payload.read) {
-          //   setUnreadCount((prev) => prev + 1);
-          // }
-
-          // // 🔄 즉시 상태 반영 대신 버퍼에 쌓기
-          // knownIdsRef.current.add(numericId);
-          // // 마지막 이벤트 id는 바로 갱신
-          // setLastDeliveredEventId(Number(serverEventId) || numericId);
+          // // 🔄 버퍼에만 쌓기
           // bufferRef.current.push(payload);
 
-          // 새 알림 id 기록
-          knownIdsRef.current.add(numericId);
-          // 마지막 이벤트 id는 즉시 갱신
-          setLastDeliveredEventId(Number(serverEventId) || numericId);
-          // 🔄 버퍼에만 쌓기
-          bufferRef.current.push(payload);
+          const pushOne = (item) => {
+            const key = String(item?.id ?? "");
+            if (!key || knownIdsRef.current.has(key)) return;
+            knownIdsRef.current.add(key);
+            // 서버가 lastEventId를 주면 그걸, 없으면 아이템 id를 기록
+            setLastDeliveredEventId(
+              serverEventId ? String(serverEventId) : key
+            );
+            bufferRef.current.push(item);
+          };
+
+          if (Array.isArray(payload)) {
+            payload.forEach(pushOne); // 🔹 배치 처리
+          } else {
+            pushOne(payload); // 🔹 단건 처리
+          }
 
           // 🔄 플러시 타이머 시작(이미 돌고 있으면 무시)
           if (!flushTimerRef.current) {
@@ -141,6 +141,7 @@ export function NotificationsProvider({ children }) {
             }, FLUSH_MS);
           }
         },
+        onOpen: () => setIsStreamConnected(true),
         onError: () => {
           //sse 연결 끊김 -> setIsStreamConnected 상태 변경
           setIsStreamConnected(false);

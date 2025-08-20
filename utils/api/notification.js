@@ -4,6 +4,9 @@
 import api from "@/lib/axiosAuth";
 import { notificationType } from "../constants/enums";
 
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+
 /** 공통: undefined 제거 */
 const cleanParams = (obj = {}) => {
   const out = {};
@@ -64,6 +67,7 @@ export function openNotificationStream({
   types,
   onMessage,
   onError,
+  onOpen,
 } = {}) {
   // 쿼리 문자열 구성
   const params = cleanParams({ lastEventId, backfillLimit, types });
@@ -78,13 +82,17 @@ export function openNotificationStream({
     }
   });
 
-  const url = `/notifications/stream${
+  // const url = `/notifications/stream${
+  //   qs.toString() ? `?${qs.toString()}` : ""
+  // }`;
+  const url = `${API_BASE}/notifications/stream${
     qs.toString() ? `?${qs.toString()}` : ""
   }`;
 
   // withCredentials 지원되는 브라우저 EventSource 옵션
   const es = new EventSource(url, { withCredentials: true });
 
+  es.addEventListener("open", () => onOpen?.());
   // 기본 message 이벤트 (event: 미지정일 때)
   es.addEventListener("message", (ev) => {
     try {
@@ -105,6 +113,16 @@ export function openNotificationStream({
       } catch {
         // ignore parse error
       }
+    });
+  });
+
+  // 서버가 "notifications" / "notification" 등으로 보낼 수도 있으니 커버
+  ["notifications", "notification", "ping"].forEach((evt) => {
+    es.addEventListener(evt, (ev) => {
+      try {
+        const data = JSON.parse(ev.data);
+        onMessage?.(data, { event: evt, id: ev.lastEventId, rawEvent: ev });
+      } catch {}
     });
   });
 
