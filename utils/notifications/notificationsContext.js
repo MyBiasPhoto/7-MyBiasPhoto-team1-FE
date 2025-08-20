@@ -30,6 +30,7 @@ export function NotificationsProvider({ children }) {
   const [hasMoreItems, setHasMoreItems] = useState(false);
   const [isStreamConnected, setIsStreamConnected] = useState(false);
   const [lastDeliveredEventId, setLastDeliveredEventId] = useState(null);
+  const [isInitialLoading, setIsInitialLoading] = useState(false);
 
   // 중복 방지용: 이미 가진 알림 id집합 저장
   const knownIdsRef = useRef(new Set());
@@ -97,17 +98,6 @@ export function NotificationsProvider({ children }) {
         backfillLimit: 5, // 재전송 받을 최대 알림 개수
         onMessage: (payload, { event: serverEventType, id: serverEventId }) => {
           // 서버에서 내려준 알림 데이터 payload: { id, type, content, read, createdAt }
-
-          // const numericId = Number(payload?.id);
-          // // 이미 받은 알림이면 무시
-          // if (!numericId || knownIdsRef.current.has(numericId)) return;
-
-          // // 새 알림 id 기록
-          // knownIdsRef.current.add(numericId);
-          // // 마지막 이벤트 id는 즉시 갱신
-          // setLastDeliveredEventId(Number(serverEventId) || numericId);
-          // // 🔄 버퍼에만 쌓기
-          // bufferRef.current.push(payload);
 
           const pushOne = (item) => {
             const key = String(item?.id ?? "");
@@ -184,9 +174,10 @@ export function NotificationsProvider({ children }) {
     if (inFlightRef.current) return;
     if (now - lastFetchAtRef.current < COOLDOWN_MS) return;
     inFlightRef.current = true;
+    setIsInitialLoading(true);
 
     const { items, nextCursor, hasMore } = await getNotifications({
-      limit: 5,
+      limit: 10,
     });
     // 중복 방지 집합 업데이트
     const newIds = new Set(knownIdsRef.current);
@@ -201,6 +192,7 @@ export function NotificationsProvider({ children }) {
     initialLoadedRef.current = true;
     lastFetchAtRef.current = Date.now();
     inFlightRef.current = false;
+    setIsInitialLoading(false);
   };
 
   // 추가로딩 페이지네이션
@@ -273,6 +265,7 @@ export function NotificationsProvider({ children }) {
       hasMoreItems,
       isStreamConnected,
       lastDeliveredEventId,
+      isInitialLoading,
       // actions
       loadInitialList,
       loadMoreList,
@@ -287,6 +280,7 @@ export function NotificationsProvider({ children }) {
       hasMoreItems,
       isStreamConnected,
       lastDeliveredEventId,
+      isInitialLoading,
     ]
   );
 
