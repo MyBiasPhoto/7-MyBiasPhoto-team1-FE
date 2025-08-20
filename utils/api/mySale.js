@@ -41,6 +41,7 @@ import api from "@/lib/axiosAuth";
  * - CSR: 인터셉터 + 쿠키 자동
  * - SSR/RSC: extra.cookie 로 받은 쿠키를 헤더로 전달(백엔드 권한 판별용)
  *   ※ SSR에서 /auth/refresh로 내려오는 Set-Cookie는 브라우저로 전달되지 않음.
+ *
  *     브라우저 쿠키를 갱신해야 한다면 /api 프록시 라우트로 중계하는 패턴을 고려.
  */
 export const fetchMySaleData = async (filters = {}, extra = {}) => {
