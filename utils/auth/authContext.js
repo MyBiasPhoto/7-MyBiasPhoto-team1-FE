@@ -18,14 +18,14 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const PUBLIC = ["/login", "/signup"];
-    if (PUBLIC.some(p => pathname?.startsWith(p))) {
+    if (PUBLIC.some((p) => pathname?.startsWith(p))) {
       setBootstrapped(true);
       return;
     }
     let mounted = true;
     api
-      .get("/users/me")
-      .then(res => {
+      .get("/users/me", { _auth: true })
+      .then((res) => {
         if (!mounted) return;
         const me = res.data?.me ?? null;
         setUser(me);
