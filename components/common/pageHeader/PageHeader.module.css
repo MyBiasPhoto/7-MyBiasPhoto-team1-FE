@@ -29,8 +29,6 @@
   justify-content: space-between;
   align-items: center;
   /* border-bottom: 1px solid #fff; */
-  margin-left: 150px;
-  margin-right: 150px;
   padding-bottom: 20px;
   border-bottom: 1px solid #fff;
 }
@@ -114,7 +112,6 @@
     background-color: #0f0f0f;
     border: 1px solid #fff;
     cursor: pointer;
-    margin-left: 10px;
     border-radius: 4px;
   }
 }

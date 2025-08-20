@@ -36,11 +36,14 @@
 .myGallery {
   /* background-color: var(--black); 
   */
-  background-color: var(--black-black, #0f0f0f);
-  min-height: 100vh;
+  background-color: var(--black);
+  height: 100%;
   display: flex;
-  padding-top: 20px;
   flex-direction: column;
+  width: 100%;
+  max-width: 1920px;
+  margin: 60px auto;
+  padding: 0 110px;
 }
 
 .filterBox {
@@ -73,7 +76,6 @@
 
 .myGalleryContainer {
   width: 100%;
-  padding: 0 150px;
 }
 
 .filterSelect {
@@ -84,13 +86,14 @@
 
 .cardList {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   width: 100%;
   margin: 0 auto;
 }
 .cardItem {
   position: static;
+  width: 100%;
 }
 
 .filterBoxTable {
@@ -260,6 +263,10 @@
   .myGalleryContainer {
     padding: 0;
   }
+  .myGallery {
+    max-width: 425px;
+    padding: 0 15px;
+  }
 }
 
 @media (min-width: 746px) and (max-width: 1199px) {
@@ -268,12 +275,16 @@
   }
   .cardList {
     grid-template-columns: repeat(2, 1fr);
-    width: max-content;
+    width: 100%;
+  }
+  .myGallery {
+    max-width: 744px;
+    padding: 0 20px;
   }
 }
 
 /* 태블릿: 747px ~ 1513px */
-@media (min-width: 1200px) and (max-width: 1513px) {
+/* @media (min-width: 1200px) and (max-width: 1513px) {
   .cardList {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -298,7 +309,7 @@
   .myGalleryContainer {
     padding: 0 150px;
   }
-}
+} */
 
 /* 데스크탑: 1514px ~ 1999px */
 @media (min-width: 1514px) and (max-width: 1999px) {
@@ -308,7 +319,6 @@
     gap: 16px;
   }
   .myGalleryContainer {
-    padding: 0 150px;
   }
 }
 
@@ -316,11 +326,10 @@
 @media (min-width: 2000px) {
   .cardList {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
   .myGalleryContainer {
-    padding: 0 150px;
   }
 }
 
@@ -450,7 +459,7 @@
 /* 큰 화면: 2000px 이상 */
 @media (min-width: 2000px) {
   .loadingcardList {
-    grid-template-columns: repeat(4, 1fr); /* 4열 */
+    grid-template-columns: repeat(3, 1fr); /* 4열 */
     gap: 16px;
     padding: 0 150px;
   }

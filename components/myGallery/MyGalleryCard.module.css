@@ -1,5 +1,5 @@
 .cardContainer {
-  width: 440px;
+  width: 100%;
   height: 600px;
   background-color: #111;
   color: white;
@@ -122,17 +122,15 @@
 /* ✅ 태블릿 */
 @media (max-width: 1023px) {
   .cardContainer {
-    width: 343px;
+    width: 100%;
     height: auto;
     padding: 16px;
   }
 
   .responsiveImage {
-    height: 225px;
   }
 
   .soldOutLayer {
-    height: 225px;
   }
 }
 
