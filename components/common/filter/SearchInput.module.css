@@ -1,7 +1,6 @@
 .inputWrap {
   display: flex;
   width: 320px;
-  margin-right: 30px;
 }
 
 .filterInput {
@@ -14,9 +13,9 @@
   gap: 10px;
   flex-shrink: 0;
   border-radius: 2px;
-  border: 1px solid var(--gray-gray200, #ddd);
-  background: var(--black-black, #0f0f0f);
-  color: #fff;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  color: var(--white);
 }
 
 .filterInputMobile {
@@ -26,20 +25,14 @@
   padding: 13px 20px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
   flex-shrink: 0;
   border-radius: 2px;
-  border: 1px solid var(--gray-gray200, #ddd);
-  background: var(--black-black, #0f0f0f);
-  color: #fff;
+  border: 1px solid var(--gray-200);
+  background: var(--black);
+  color: var(--white);
 }
 
-/* PC (데스크탑): 1024px 이상 */
-@media (min-width: 1024px) {
-}
-
-/* 태블릿: 768px ~ 1023px */
-@media (min-width: 746px) and (max-width: 1199px) {
+@media (min-width: 743px) and (max-width: 1199px) {
   .inputWrap {
     width: auto;
     min-width: 0;
@@ -50,7 +43,7 @@
 }
 
 /* 모바일: 0px ~ 767px */
-@media (max-width: 746px) {
+@media (max-width: 743px) {
   .filterInputMobile {
     display: flex;
   }

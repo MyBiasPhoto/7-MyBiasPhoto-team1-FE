@@ -1,60 +1,30 @@
-.titleText {
-  font-size: 62px;
-  color: var(--white);
-  font-weight: 400;
-  font-family: "BR-B", sans-serif;
-}
-
-.titleButton {
-  display: flex;
-  width: 440px;
-  height: 60px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  border-radius: 2px;
-  background: var(--main);
-  border: none;
-}
-
 .titleBox {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #fff;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 2px solid var(--gray-100);
   width: 100%;
   padding-bottom: 20px;
 }
 
-/* 태블릿: 768px ~ 1023px */
-@media (min-width: 746px) and (max-width: 1199px) {
-  /* 태블릿 스타일 */
+.titleText {
+  font-family: "BR-B", sans-serif;
+  color: var(--white);
+  font-size: 62px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
 
-  .titleButton {
-    width: 240px;
-  }
+@media (min-width: 743px) and (max-width: 1199px) {
   .titleText {
-    font-size: 42px;
-  }
-  .titleBox {
-    padding: 0;
-    padding-bottom: 15px;
+    font-size: 48px;
   }
 }
 
-/* 모바일: 0px ~ 767px */
-@media (max-width: 746px) {
-  /* 모바일 스타일 */
-  .titleText {
-    display: none;
-  }
-  .titleButton {
-    position: fixed;
-    bottom: 10px;
-    z-index: 15;
-    left: 10%;
-  }
+@media (max-width: 743px) {
   .titleBox {
-    padding: 10px;
+    display: none;
   }
 }

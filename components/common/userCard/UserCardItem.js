@@ -20,55 +20,56 @@ import style from "./UserCardItem.module.css";
 export default function UserCardItem({ card, mode }) {
   const cardRef = useRef(null);
   return (
-    <div className={`${style.cardContainer}`} ref={cardRef}>
-      {/*카드 이미지 */}
-      <div className={style.contentContainer}>
-        <div className={style.ImageContainer}>
-          <Image
-            src={card.imageUrl || placeholderImage}
-            alt={card.name}
-            className={style.responsiveImage}
-            width={360}
-            height={270}
-            sizes="(max-width: 640px) 50vw,(max-width: 1024px) 33vw, 25vw"
-          />
-        </div>
-        {/* 카드정보 */}
-        {/* 카드 텍스트 정보 영역 */}
-        <div className={style.infoBlock}>
-          <p className={style.title}>{card.name || "제목"}</p>
-          <div className={style.infoRow}>
-            <div className={style.photoCardInformation}>
-              <p
-                className={`${style.cardGrade} ${
-                  style[card.grade.toLowerCase()]
-                }`}
-              >
-                {card.grade || "등급"}
+    <div className={style.box}>
+      <div className={`${style.cardContainer}`} ref={cardRef}>
+        {/*카드 이미지 */}
+        <div className={style.contentContainer}>
+          <div className={style.ImageContainer}>
+            <Image
+              src={card.imageUrl || placeholderImage}
+              alt={card.name}
+              className={style.responsiveImage}
+              fill
+              sizes="(max-width: 640px) 50vw,(max-width: 1024px) 33vw, 25vw"
+            />
+          </div>
+          {/* 카드정보 */}
+          {/* 카드 텍스트 정보 영역 */}
+          <div className={style.infoBlock}>
+            <p className={style.title}>{card.name || "제목"}</p>
+            <div className={style.infoRow}>
+              <div className={style.photoCardInformation}>
+                <p
+                  className={`${style.cardGrade} ${
+                    style[card.grade.toLowerCase()]
+                  }`}
+                >
+                  {card.grade || "등급"}
+                </p>
+                <span className={style.divider}>|</span>
+                <p className={style.genre}>{card.genre || "장르"}</p>
+              </div>
+              <p className={style.cardOwner}>
+                {card.ownerNickName || "판매자 닉네임"}
               </p>
-              <span className={style.divider}>|</span>
-              <p className={style.genre}>{card.genre || "장르"}</p>
             </div>
-            <p className={style.cardOwner}>
-              {card.ownerNickName || "판매자 닉네임"}
+          </div>
+          {/* 가격및 수량 */}
+          <div className={style.saleInformation}>
+            <p className={style.InfoTextContainer}>
+              가격
+              <span className={style.span}>{card.price || "0"} P</span>
+            </p>
+            <p className={style.InfoTextContainer}>
+              수량
+              {/* userCard는 한장씩 백엔드에서 넘어옴으로 수량이 한장으로 고정 */}
+              <span className={style.span}>1</span>
             </p>
           </div>
-        </div>
-        {/* 가격및 수량 */}
-        <div className={style.saleInformation}>
-          <p className={style.InfoTextContainer}>
-            가격
-            <span>{card.price || "0"} P</span>
-          </p>
-          <p className={style.InfoTextContainer}>
-            수량
-            {/* userCard는 한장씩 백엔드에서 넘어옴으로 수량이 한장으로 고정 */}
-            <span>1</span>
-          </p>
-        </div>
-        {/* 로고 */}
-        <div className={style.cardLogo}>
-          <Image src={logo} height={100} width={120} alt={"임시"} />
+          {/* 로고 */}
+          <div className={style.cardLogo}>
+            <Image src={logo} height={18} width={120} alt={"로고"} />
+          </div>
         </div>
       </div>
     </div>

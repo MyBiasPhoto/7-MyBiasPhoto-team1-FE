@@ -213,21 +213,6 @@ export default function CreatePhotoCardPage() {
       const m = res.data?.monthly;
       if (m) {
         setMonthly(m);
-        toast(
-          `이번 달 ${m.created}번째 생성 완료!\n\n(남은 ${m.remaining}/${m.limit})`,
-          {
-            style: {
-              fontFamily: "BR-B",
-              background: "var(--black)",
-              border: "1px solid var(--main)",
-              padding: "16px 20px",
-              color: "var(--white)",
-              fontSize: "20px",
-              textAlign: "center",
-            },
-            duration: 1500,
-          }
-        );
       }
 
       setUserCardCount(res.data.userCardCount ?? 0);
@@ -541,7 +526,7 @@ export default function CreatePhotoCardPage() {
               padding: 20,
             }}
             className={styles.aiModal}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
           >
@@ -550,7 +535,7 @@ export default function CreatePhotoCardPage() {
             <label style={{ fontSize: 14, color: "#ccc" }}>프롬프트</label>
             <textarea
               value={aiPrompt}
-              onChange={(e) => setAiPrompt(e.target.value)}
+              onChange={e => setAiPrompt(e.target.value)}
               placeholder="예) cute lesser panda (영어로 입력) "
               rows={4}
               style={{

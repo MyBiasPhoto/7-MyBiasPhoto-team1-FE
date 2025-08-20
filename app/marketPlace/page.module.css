@@ -126,40 +126,101 @@
   height: 70%;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  padding: 20px;
+  padding: 20px 0;
   position: relative;
 }
 .modalClose {
-  font-size: 24px;
-  color: var(--gray-400);
+  width: 24px;
+  height: 24px;
+  background-image: url(/icons/ic_close_gray.svg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .modalTitle {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 14px 15px;
 }
 
 .modalTitleFont {
-  font-size: 16px;
   color: var(--gray-400);
-  padding: 15px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .modalOption {
-  display: flex;
-  gap: 24px;
-  font-size: 14px;
-  color: var(--gray-400);
-}
-.modalOptionLine {
-  background-color: var(--black);
   width: 100%;
-  height: 2px;
+  height: 52px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 40px;
+  border-bottom: 2px solid var(--black);
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.modalButtonBox {
+  width: 337px;
+  height: 55px;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 10px;
+}
+
+.optionItem {
+  color: var(--gray-300);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  border: 0;
+  padding: 15px;
+}
+
+.optionItemActive {
+  color: white;
+  border-bottom: 2px solid var(--white);
+}
+.modalRefreshBtn {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.modalButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 272px;
+  height: 55px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--main);
+  border: none;
+  color: var(--black);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 
 .options {
   display: flex;
-  padding: 16px 32px;
+  padding: 16px 40px;
   justify-content: space-between;
   color: var(--gray-300);
 }
@@ -183,39 +244,6 @@
 
 .options:hover {
   background-color: #3b3b3b;
-}
-
-.optionItem {
-  color: gray;
-  cursor: pointer;
-  border: 0;
-  padding: 15px;
-}
-
-.optionItemActive {
-  color: white;
-  border-bottom: 1px solid var(--white);
-}
-.modalButton {
-  display: flex;
-  width: 372px;
-  height: 65px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  border-radius: 2px;
-  background: var(--main);
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-}
-.modalButtonBox {
-  display: flex;
-  position: absolute;
-  bottom: 10px;
-  align-items: center;
-  gap: 10px;
-  right: 10px;
-  /* 수정 */
 }
 
 .filterInputMobile {

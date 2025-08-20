@@ -1,37 +1,55 @@
 .pagination {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
-  gap: 8px;
+  align-items: center;
+  margin: 50px 0 0;
+  gap: 15px;
 }
 
 .pageButton {
-  border: 0;
-  padding: 8px 12px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--black);
+  border: 1px solid var(--white);
   border-radius: 4px;
-  background: white;
+  font-family: "BR-B";
+  color: var(--white);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
   cursor: pointer;
-  background-color: var(--black-black);
-  color: #fff;
 }
 
 .pageButton:hover:not(:disabled):not(.active) {
   background: #aaa;
 }
 .pageButton:disabled {
-  background: var(--gray-400);
-  color: #aaa;
-  border-color: #eee;
   cursor: not-allowed;
 }
 
 .active {
-  border: 1px solid #fff;
-  color: white;
+  background-color: var(--main);
+  border: none;
+  color: var(--black);
 }
 
 .ellipsis {
-  padding: 8px 12px;
-  color: gray;
   user-select: none;
+}
+
+@media (max-width: 743px) {
+  .pagination {
+    margin: 20px 0 0;
+    gap: 5px;
+  }
+
+  .pageButton {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+  }
 }

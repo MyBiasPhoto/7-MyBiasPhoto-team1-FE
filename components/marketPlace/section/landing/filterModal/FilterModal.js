@@ -15,15 +15,13 @@ export default function FilterModal({
     <div className={style.modalOverlay}>
       <div className={style.modalContent}>
         <div className={style.modalTitle}>
-          <div></div>
+          <div />
           <p className={style.modalTitleFont}>필터</p>
-          <p className={style.modalClose} onClick={onClose}>
-            x
-          </p>
+          <div className={style.modalClose} onClick={onClose} />
         </div>
 
         <div className={style.modalOption}>
-          {optionTypes.map((opt) => (
+          {optionTypes.map(opt => (
             <p
               key={opt.value}
               onClick={() =>
@@ -37,11 +35,8 @@ export default function FilterModal({
             </p>
           ))}
         </div>
-
-        <div className={style.modalOptionLine}></div>
-
         <div className={style.optionBlock}>
-          {optionMap[selectedOptionType]?.map((opt) => (
+          {optionMap[selectedOptionType]?.map(opt => (
             <div
               key={opt.value}
               className={`${style.options} ${
@@ -75,16 +70,18 @@ export default function FilterModal({
         </div>
 
         <div className={style.modalButtonBox}>
-          <Image
-            onClick={() => {
-              dispatch({ type: "RESET_TEMP" });
-            }}
-            src={recicle}
-            height={30}
-            width={30}
-            alt={"버튼"}
-            className={style.modalButtonImg}
-          />
+          <div className={style.modalRefreshBtn}>
+            <Image
+              onClick={() => {
+                dispatch({ type: "RESET_TEMP" });
+              }}
+              src={recicle}
+              height={25}
+              width={25}
+              alt={"버튼"}
+              className={style.modalButtonImg}
+            />
+          </div>
           <button
             className={style.modalButton}
             onClick={() => {

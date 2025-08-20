@@ -33,3 +33,17 @@
   color: var(--pink);
   border: 1px solid var(--pink);
 }
+
+@media (min-width: 743px) and (max-width: 1199px) {
+  .container {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 743px) {
+  .container {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}

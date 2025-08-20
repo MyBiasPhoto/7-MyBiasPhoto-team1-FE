@@ -20,23 +20,23 @@ export default function FilterContainer({
       <div className={style.rowDesktop}>
         <SearchInput
           value={value?.search ?? ""}
-          onChange={(val) => onFilterChange("search", val)}
+          onChange={val => onFilterChange("search", val)}
         />
         <div className={style.selectContainer}>
           <Select
             option={gradeOption}
             name="등급"
-            onChange={(opt) => onFilterChange("grade", opt?.value ?? "")}
+            onChange={opt => onFilterChange("grade", opt?.value ?? "")}
           />
           <Select
             option={genreOption}
             name="장르"
-            onChange={(opt) => onFilterChange("genre", opt?.value ?? "")}
+            onChange={opt => onFilterChange("genre", opt?.value ?? "")}
           />
           <Select
             option={saleTypeOption}
             name="판매방법"
-            onChange={(opt) => onFilterChange("saleType", opt?.value ?? "")}
+            onChange={opt => onFilterChange("saleType", opt?.value ?? "")}
           />
         </div>
       </div>
@@ -46,11 +46,11 @@ export default function FilterContainer({
           aria-label="필터 열기"
           onClick={onOpenFilterModal}
         >
-          <Image src={filterImg} width={20} height={20} alt="필터 버튼"></Image>
+          <Image src={filterImg} width={30} height={30} alt="필터 버튼"></Image>
         </button>
         <SearchInput
           value={value?.search ?? ""}
-          onChange={(val) => onFilterChange("search", val)}
+          onChange={val => onFilterChange("search", val)}
         ></SearchInput>
       </div>
     </div>
