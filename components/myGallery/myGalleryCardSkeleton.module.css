@@ -2,7 +2,7 @@
 
 /* 카드 컨테이너 */
 .cardContainer {
-  width: 440px;
+  width: 100%;
   height: auto;
   background-color: #111;
   color: white;
@@ -81,7 +81,7 @@
 /* ================= 태블릿 (1023px 이하) ================= */
 @media (max-width: 1023px) {
   .cardContainer {
-    width: 343px;
+    width: 100%;
     padding: 16px;
   }
 
