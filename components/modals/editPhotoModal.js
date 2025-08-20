@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useRef, useState } from "react";
 import styles from "./editPhotoModal.module.css";
 import Image from "next/image";
 import cardImage from "@/public/assets/cardImage.png";
@@ -143,221 +143,278 @@ export default function EditPhotoModal({ sale, onClose }) {
       ? styles.selectCommon
       : "";
 
+  const modalRef = useRef(null);
+  const dragStartY = useRef(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleTouchStart = (e) => {
+    dragStartY.current = e.touches[0].clientY;
+    setIsDragging(true);
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const currentY = e.touches[0].clientY;
+    const diffY = currentY - dragStartY.current;
+    if (diffY > 0) {
+      setDragOffset(diffY);
+      modalRef.current.style.transform = `translateY(${diffY}px)`;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+
+    if (dragOffset > 150) {
+      modalRef.current.style.transition = "transform 0.3s ease-out";
+      modalRef.current.style.transform = `translateY(100vh)`;
+
+      setTimeout(() => {
+        onClose();
+        setDragOffset(0);
+      }, 300);
+    } else {
+      modalRef.current.style.transition = "transform 0.2s ease-out";
+      modalRef.current.style.transform = "translateY(0px)";
+      setDragOffset(0);
+    }
+  };
+
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <h1 className={styles.header}>수정하기</h1>
-        <button className={styles.closeButton} onClick={onClose}>
-          <Image src={CloseIcon} alt="Close" width={32} height={32} />
-        </button>
+      <div
+        className={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+        ref={modalRef}
+      >
+        <div className={styles.modalWrap}>
+          <div
+            className={styles.dragBar}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          ></div>
+          <h1 className={styles.header}>수정하기</h1>
+          <button className={styles.closeButton} onClick={onClose}>
+            <Image src={CloseIcon} alt="Close" width={32} height={32} />
+          </button>
 
-        <div className={styles.titleArea}>
-          <h2 className={styles.titleTxt}>{sale?.photoCard.name}</h2>
-        </div>
-        {console.log(sale)}
+          <div className={styles.titleArea}>
+            <h2 className={styles.titleTxt}>{sale?.photoCard.name}</h2>
+          </div>
+          {console.log(sale)}
 
-        <div className={styles.contentArea}>
-          <div className={styles.detailContainer}>
-            <div className={styles.aboutPhoto}>
-              <div className={styles.cardImage}>
-                <Image
-                  src={sale?.photoCard.imageUrl || cardImage}
-                  alt={"포카 이미지"}
-                  width={50}
-                  height={50}
-                  quality={100}
-                  className={styles.responsiveImage}
-                />
-              </div>
-              <div className={styles.cardInfo}>
-                <div className={styles.cardSubTitle}>
-                  <div className={styles.cardSubTitleBox}>
-                    <p className={`${styles[sale?.photoCard.grade]}`}>
-                      {sale?.photoCard.grade}
-                    </p>
-                    <span className={styles.divider}>|</span>
-                    <p className={styles.kind}>{sale?.photoCard.genre}</p>
-                  </div>
-                  <p className={styles.subTitleWriter}>
-                    {sale?.seller.nickname}
-                  </p>
-                </div>
-
-                <div className={styles.saleDetail}>
-                  <div className={styles.amountRow}>
-                    <label>총 판매 수량</label>
-                    <div className={styles.amountControl}>
-                      <div className={styles.amountControlBox}>
-                        <button
-                          onClick={decreaseQuantity}
-                          className={styles.iconButton}
-                          disabled={state.editedQuantity <= 1}
-                        >
-                          <Image
-                            src={MinusIcon}
-                            alt="감소"
-                            width={20}
-                            height={20}
-                          />
-                        </button>
-                        <span>{state.editedQuantity}</span>
-                        <button
-                          onClick={increaseQuantity}
-                          className={styles.iconButton}
-                          disabled={
-                            state.editedQuantity >= sale.initialQuantity
-                          }
-                        >
-                          <Image
-                            src={PlusIcon}
-                            alt="증가"
-                            width={20}
-                            height={20}
-                          />
-                        </button>
-                      </div>
-                      <div className={styles.amountBox}>
-                        <span className={styles.maxAmount}>
-                          / {sale.maxQuantity || sale.quantity}{" "}
-                          {/* 최대 허용 수량 */}
-                        </span>
-                        <span className={styles.maxHint}>
-                          원래 {sale.initialQuantity}장
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={styles.priceRow}>
-                    <label>장당 가격</label>
-                    <div className={styles.priceInput}>
-                      <input
-                        type="number"
-                        value={state.price}
-                        min="0"
-                        onChange={(e) =>
-                          dispatch({
-                            type: "SET_FIELD",
-                            field: "price",
-                            value: e.target.value,
-                          })
-                        }
-                        placeholder="숫자만 입력"
-                        className={styles.inputField}
-                      />
-                      <span className={styles.point}>P</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 교환 희망 정보 */}
-            <div className={styles.exchangeInfo}>
-              <h2 className={styles.exchangeTitle}>교환 희망 정보</h2>
-              <div className={styles.exchangeDetail}>
-                <div className={styles.exchangeFilterArea}>
-                  <div className={styles.exchangeFilter}>
-                    <div className={styles.filterName}>
-                      <p>등급</p>
-                    </div>
-                    <div className={styles.exchangeFilterBox}>
-                      <select
-                        className={`${styles.gradeSelect} ${selectColorClass}`}
-                        value={state.desiredGrade}
-                        onChange={(e) =>
-                          dispatch({
-                            type: "SET_FIELD",
-                            field: "desiredGrade",
-                            value: e.target.value,
-                          })
-                        }
-                      >
-                        <option disabled value="">
-                          등급을 선택해 주세요
-                        </option>
-                        <option value="LEGENDARY">LEGENDARY</option>
-                        <option value="SUPER_RARE">SUPER RARE</option>
-                        <option value="RARE">RARE</option>
-                        <option value="COMMON">COMMON</option>
-                      </select>
-                      <Image
-                        src={DownIcon}
-                        alt="화살표"
-                        width={28}
-                        height={28}
-                        className={styles.selectIcon}
-                      />
-                    </div>
-                  </div>
-
-                  <div className={styles.exchangeFilter}>
-                    <div className={styles.filterName}>
-                      <p>장르</p>
-                    </div>
-                    <div className={styles.exchangeFilterBox}>
-                      <select
-                        className={styles.genreSelect}
-                        value={state.desiredGenre}
-                        onChange={(e) =>
-                          dispatch({
-                            type: "SET_FIELD",
-                            field: "desiredGenre",
-                            value: e.target.value,
-                          })
-                        }
-                      >
-                        <option disabled value="">
-                          장르를 선택해 주세요
-                        </option>
-                        <option value="ALBUM">앨범</option>
-                        <option value="SPECIAL">특전</option>
-                        <option value="FANSIGN">팬싸</option>
-                        <option value="SEASON_GREETING">시즌그리팅</option>
-                        <option value="FANMEETING">팬미팅</option>
-                        <option value="CONCERT">콘서트</option>
-                        <option value="MD">MD</option>
-                        <option value="COLLAB">콜라보</option>
-                        <option value="FANCLUB">팬클럽</option>
-                        <option value="ETC">기타</option>
-                      </select>
-                      <Image
-                        src={DownIcon}
-                        alt="화살표"
-                        width={28}
-                        height={28}
-                        className={styles.selectIcon}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.exchangeInput}>
-                  <p>교환 희망 설명</p>
-                  <textarea
-                    placeholder="설명을 입력해 주세요"
-                    className={styles.memo}
-                    value={state.desiredDesc}
-                    onChange={(e) =>
-                      dispatch({
-                        type: "SET_FIELD",
-                        field: "desiredDesc",
-                        value: e.target.value,
-                      })
-                    }
+          <div className={styles.contentArea}>
+            <div className={styles.detailContainer}>
+              <div className={styles.aboutPhoto}>
+                <div className={styles.cardImage}>
+                  <Image
+                    src={sale?.photoCard.imageUrl || cardImage}
+                    alt={"포카 이미지"}
+                    width={50}
+                    height={50}
+                    quality={100}
+                    className={styles.responsiveImage}
                   />
                 </div>
-              </div>
-            </div>
+                <div className={styles.cardInfo}>
+                  <div className={styles.cardSubTitle}>
+                    <div className={styles.cardSubTitleBox}>
+                      <p className={`${styles[sale?.photoCard.grade]}`}>
+                        {sale?.photoCard.grade}
+                      </p>
+                      <span className={styles.divider}>|</span>
+                      <p className={styles.kind}>{sale?.photoCard.genre}</p>
+                    </div>
+                    <p className={styles.subTitleWriter}>
+                      {sale?.seller.nickname}
+                    </p>
+                  </div>
 
-            {/* 버튼 */}
-            <div className={styles.btnArea}>
-              <button className={styles.cancelBtn} onClick={onClose}>
-                취소하기
-              </button>
-              <button className={styles.confirmBtn} onClick={handleConfirm}>
-                수정하기
-              </button>
+                  <div className={styles.saleDetail}>
+                    <div className={styles.amountRow}>
+                      <label>총 판매 수량</label>
+                      <div className={styles.amountControl}>
+                        <div className={styles.amountControlBox}>
+                          <button
+                            onClick={decreaseQuantity}
+                            className={styles.iconButton}
+                            disabled={state.editedQuantity <= 1}
+                          >
+                            <Image
+                              src={MinusIcon}
+                              alt="감소"
+                              width={20}
+                              height={20}
+                            />
+                          </button>
+                          <span>{state.editedQuantity}</span>
+                          <button
+                            onClick={increaseQuantity}
+                            className={styles.iconButton}
+                            disabled={
+                              state.editedQuantity >= sale.initialQuantity
+                            }
+                          >
+                            <Image
+                              src={PlusIcon}
+                              alt="증가"
+                              width={20}
+                              height={20}
+                            />
+                          </button>
+                        </div>
+                        <div className={styles.amountBox}>
+                          <span className={styles.maxAmount}>
+                            / {sale.maxQuantity || sale.quantity}{" "}
+                            {/* 최대 허용 수량 */}
+                          </span>
+                          <span className={styles.maxHint}>
+                            원래 {sale.initialQuantity}장
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.priceRow}>
+                      <label>장당 가격</label>
+                      <div className={styles.priceInput}>
+                        <input
+                          type="number"
+                          value={state.price}
+                          min="0"
+                          onChange={(e) =>
+                            dispatch({
+                              type: "SET_FIELD",
+                              field: "price",
+                              value: e.target.value,
+                            })
+                          }
+                          placeholder="숫자만 입력"
+                          className={styles.inputField}
+                        />
+                        <span className={styles.point}>P</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 교환 희망 정보 */}
+              <div className={styles.exchangeInfo}>
+                <h2 className={styles.exchangeTitle}>교환 희망 정보</h2>
+                <div className={styles.exchangeDetail}>
+                  <div className={styles.exchangeFilterArea}>
+                    <div className={styles.exchangeFilter}>
+                      <div className={styles.filterName}>
+                        <p>등급</p>
+                      </div>
+                      <div className={styles.exchangeFilterBox}>
+                        <select
+                          className={`${styles.gradeSelect} ${selectColorClass}`}
+                          value={state.desiredGrade}
+                          onChange={(e) =>
+                            dispatch({
+                              type: "SET_FIELD",
+                              field: "desiredGrade",
+                              value: e.target.value,
+                            })
+                          }
+                        >
+                          <option disabled value="">
+                            등급을 선택해 주세요
+                          </option>
+                          <option value="LEGENDARY">LEGENDARY</option>
+                          <option value="SUPER_RARE">SUPER RARE</option>
+                          <option value="RARE">RARE</option>
+                          <option value="COMMON">COMMON</option>
+                        </select>
+                        <Image
+                          src={DownIcon}
+                          alt="화살표"
+                          width={28}
+                          height={28}
+                          className={styles.selectIcon}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.exchangeFilter}>
+                      <div className={styles.filterName}>
+                        <p>장르</p>
+                      </div>
+                      <div className={styles.exchangeFilterBox}>
+                        <select
+                          className={styles.genreSelect}
+                          value={state.desiredGenre}
+                          onChange={(e) =>
+                            dispatch({
+                              type: "SET_FIELD",
+                              field: "desiredGenre",
+                              value: e.target.value,
+                            })
+                          }
+                        >
+                          <option disabled value="">
+                            장르를 선택해 주세요
+                          </option>
+                          <option value="ALBUM">앨범</option>
+                          <option value="SPECIAL">특전</option>
+                          <option value="FANSIGN">팬싸</option>
+                          <option value="SEASON_GREETING">시즌그리팅</option>
+                          <option value="FANMEETING">팬미팅</option>
+                          <option value="CONCERT">콘서트</option>
+                          <option value="MD">MD</option>
+                          <option value="COLLAB">콜라보</option>
+                          <option value="FANCLUB">팬클럽</option>
+                          <option value="ETC">기타</option>
+                        </select>
+                        <Image
+                          src={DownIcon}
+                          alt="화살표"
+                          width={28}
+                          height={28}
+                          className={styles.selectIcon}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.exchangeInput}>
+                    <p>교환 희망 설명</p>
+                    <textarea
+                      placeholder="설명을 입력해 주세요"
+                      className={styles.memo}
+                      value={state.desiredDesc}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "SET_FIELD",
+                          field: "desiredDesc",
+                          value: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* 버튼 */}
+              <div className={styles.btnArea}>
+                <button className={styles.cancelBtn} onClick={onClose}>
+                  취소하기
+                </button>
+                <button className={styles.confirmBtn} onClick={handleConfirm}>
+                  수정하기
+                </button>
+              </div>
             </div>
           </div>
         </div>

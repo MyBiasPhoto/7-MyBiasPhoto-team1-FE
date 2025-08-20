@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useReducer } from "react";
 import styles from "./sellPhotoModal.module.css";
 import Image from "next/image";
 import cardImage from "@/public/assets/cardImage.png";
@@ -23,7 +23,30 @@ import toast from "react-hot-toast";
 import ModalState from "./state/ModalState";
 import galleryStyle from "@/app/myGallery/page.module.css";
 
+// ✅ 필터 상태 추가
+const initialFilters = {
+  grade: null,
+  genre: null,
+};
+
+function filterReducer(state, action) {
+  switch (action.type) {
+    case "SET_GRADE":
+      return { ...state, grade: action.payload };
+    case "SET_GENRE":
+      return { ...state, genre: action.payload };
+    case "RESET":
+      return initialFilters;
+    default:
+      return state;
+  }
+}
+
 export default function SellPhotoModal({ onClose }) {
+  // ✅ useReducer 추가
+  const [filters, dispatch] = useReducer(filterReducer, initialFilters);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
   const [selectedCard, setSelectedCard] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
   const [cards, setCards] = useState([]);
@@ -58,8 +81,7 @@ export default function SellPhotoModal({ onClose }) {
         /*변경된 api에 맞춰 매핑 수정완료 */
       }
       const list = Array.isArray(res?.myGroupedCards) ? res.myGroupedCards : [];
-      const formattedCards = list.map(card => ({
-        // const formattedCards = res.myGroupedCards.map((card) => ({
+      const formattedCards = list.map((card) => ({
         photoCardId: card.photoCardId,
         name: card.name,
         imageUrl: card.imageUrl,
@@ -89,7 +111,7 @@ export default function SellPhotoModal({ onClose }) {
     fetchCards();
   }, [search, listGrade, listKind]);
 
-  const handleSearchChange = e => {
+  const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
 
@@ -115,7 +137,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    setCardDrafts(prev => ({
+    setCardDrafts((prev) => ({
       ...prev,
       [selectedCard.photoCardId]: {
         amount,
@@ -135,7 +157,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    const handleKeyDown = e => {
+    const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         handleBack();
       }
@@ -242,7 +264,7 @@ export default function SellPhotoModal({ onClose }) {
     if (amount > 1) setAmount(amount - 1);
   };
 
-  const handleTouchStart = e => {
+  const handleTouchStart = (e) => {
     dragStartY.current = e.touches[0].clientY;
     setIsDragging(true);
   };
@@ -254,7 +276,7 @@ export default function SellPhotoModal({ onClose }) {
     };
   }, []);
 
-  const handleTouchMove = e => {
+  const handleTouchMove = (e) => {
     if (!isDragging) return;
     const currentY = e.touches[0].clientY;
     const diffY = currentY - dragStartY.current;
@@ -321,7 +343,7 @@ export default function SellPhotoModal({ onClose }) {
         <div className={styles.overlay} onClick={onClose}>
           <div
             className={styles.modal}
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             ref={modalRef}
           >
             <div className={styles.modalWrap}>
@@ -351,7 +373,7 @@ export default function SellPhotoModal({ onClose }) {
                     <div className={styles.searchArea}>
                       <button
                         className={styles.filterToggleBtn}
-                        onClick={() => setShowMobileFilter(prev => !prev)}
+                        onClick={() => setIsFilterModalOpen(true)}
                       >
                         <Image
                           src={FilterIcon}
@@ -380,12 +402,12 @@ export default function SellPhotoModal({ onClose }) {
                         <Select
                           option={gradeOption}
                           name={"등급"}
-                          onChange={val => setListGrade(val)}
+                          onChange={(val) => setListGrade(val)}
                         />
                         <Select
                           option={genreOption}
                           name={"장르"}
-                          onChange={val => setListKind(val)}
+                          onChange={(val) => setListKind(val)}
                         />
                       </div>
                     </div>
@@ -410,14 +432,14 @@ export default function SellPhotoModal({ onClose }) {
                           <Select
                             option={gradeOption}
                             name={"등급"}
-                            onChange={val => setListGrade(val)}
+                            onChange={(val) => setListGrade(val)}
                           />
                         </div>
                         <div style={{ flex: 1 }}>
                           <Select
                             option={genreOption}
                             name={"장르"}
-                            onChange={val => setListKind(val)}
+                            onChange={(val) => setListKind(val)}
                           />
                         </div>
                       </div>
@@ -436,7 +458,7 @@ export default function SellPhotoModal({ onClose }) {
                           emptyActionHref="/myGallery"
                         />
                       ) : (
-                        cards.map(card => (
+                        cards.map((card) => (
                           <div
                             className={styles.cardItem}
                             key={card.photoCardId}
@@ -521,7 +543,7 @@ export default function SellPhotoModal({ onClose }) {
                                 type="number"
                                 value={price}
                                 min="0"
-                                onChange={e => setPrice(e.target.value)}
+                                onChange={(e) => setPrice(e.target.value)}
                                 placeholder="숫자만 입력"
                                 className={styles.inputField}
                               />
@@ -543,7 +565,7 @@ export default function SellPhotoModal({ onClose }) {
                               <select
                                 className={`${styles.gradeSelect} ${selectColorClass}`}
                                 value={grade}
-                                onChange={e => setGrade(e.target.value)}
+                                onChange={(e) => setGrade(e.target.value)}
                               >
                                 <option disabled value="">
                                   등급을 선택해 주세요
@@ -570,7 +592,7 @@ export default function SellPhotoModal({ onClose }) {
                               <select
                                 className={styles.genreSelect}
                                 value={kind}
-                                onChange={e => setKind(e.target.value)}
+                                onChange={(e) => setKind(e.target.value)}
                               >
                                 <option disabled value="">
                                   장르를 선택해 주세요
@@ -602,7 +624,7 @@ export default function SellPhotoModal({ onClose }) {
                             placeholder="설명을 입력해 주세요"
                             className={styles.memo}
                             value={exchangeMemo}
-                            onChange={e => setExchangeMemo(e.target.value)}
+                            onChange={(e) => setExchangeMemo(e.target.value)}
                           />
                         </div>
                       </div>
@@ -630,132 +652,3 @@ export default function SellPhotoModal({ onClose }) {
     </>
   );
 }
-
-// <div className={styles.saleDetail}>
-//                       <div className={styles.amountRow}>
-//                         <label>총 판매 수량</label>
-//                         <div className={styles.amountControl}>
-//                           <div className={styles.amountControlBox}>
-//                             <button
-//                               onClick={decreaseAmount}
-//                               className={styles.iconButton}
-//                             >
-//                               <Image
-//                                 src={MinusIcon}
-//                                 alt="감소"
-//                                 width={20}
-//                                 height={20}
-//                               />
-//                             </button>
-//                             <span>{amount}</span>
-//                             <button
-//                               onClick={increaseAmount}
-//                               className={styles.iconButton}
-//                             >
-//                               <Image
-//                                 src={PlusIcon}
-//                                 alt="증가"
-//                                 width={20}
-//                                 height={20}
-//                               />
-//                             </button>
-//                           </div>
-//                           <div className={styles.amountBox}>
-//                             <span className={styles.maxAmount}>
-//                               / {selectedCard.amount}
-//                             </span>
-//                             <span className={styles.maxHint}>
-//                               최대 {selectedCard.amount}장
-//                             </span>
-//                           </div>
-//                         </div>
-//                       </div>
-//                       <div className={styles.priceRow}>
-//                         <label>장당 가격</label>
-//                         <div className={styles.priceInput}>
-//                           <input
-//                             type="number"
-//                             value={price}
-//                             min="0"
-//                             onChange={(e) => setPrice(e.target.value)}
-//                             placeholder="숫자만 입력"
-//                             className={styles.inputField}
-//                           />
-//                           <span className={styles.point}>P</span>
-//                         </div>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//                 <div className={styles.exchangeInfo}>
-//                   <h2 className={styles.exchangeTitle}>교환 희망 정보</h2>
-//                   <div className={styles.exchangeDetail}>
-//                     <div className={styles.exchangeFilterArea}>
-//                       <div className={styles.exchangeFilter}>
-//                         <div className={styles.filterName}>
-//                           <p>등급</p>
-//                         </div>
-//                         <div className={styles.exchangeFilterBox}>
-//                           <select
-//                             className={`${styles.gradeSelect} ${selectColorClass}`}
-//                             value={grade}
-//                             onChange={(e) => setGrade(e.target.value)}
-//                           >
-//                             <option disabled value="">
-//                               등급을 선택해 주세요
-//                             </option>
-//                             <option value="LEGENDARY">LEGENDARY</option>
-//                             <option value="SUPER RARE">SUPER RARE</option>
-//                             <option value="RARE">RARE</option>
-//                             <option value="COMMON">COMMON</option>
-//                           </select>
-//                           <Image
-//                             src={DownIcon}
-//                             alt="화살표"
-//                             width={28}
-//                             height={28}
-//                             className={styles.selectIcon}
-//                           />
-//                         </div>
-//                       </div>
-//                       <div className={styles.exchangeFilter}>
-//                         <div className={styles.filterName}>
-//                           <p>장르</p>
-//                         </div>
-//                         <div className={styles.exchangeFilterBox}>
-//                           <select
-//                             className={styles.genreSelect}
-//                             value={kind}
-//                             onChange={(e) => setKind(e.target.value)}
-//                           >
-//                             <option disabled value="">
-//                               장르를 선택해 주세요
-//                             </option>
-//                             <option value="앨범">앨범</option>
-//                             <option value="특전">특전</option>
-//                             <option value="팬싸">팬싸</option>
-//                             <option value="시즌그리팅">시즌그리팅</option>
-//                             <option value="팬미팅">팬미팅</option>
-//                             <option value="콘서트">콘서트</option>
-//                             <option value="MD">MD</option>
-//                             <option value="콜라보">콜라보</option>
-//                             <option value="팬클럽">팬클럽</option>
-//                             <option value="기타">기타</option>
-//                           </select>
-//                           <Image
-//                             src={DownIcon}
-//                             alt="화살표"
-//                             width={28}
-//                             height={28}
-//                             className={styles.selectIcon}
-//                           />
-//                         </div>
-//                       </div>
-//                     </div>
-//                     <div className={styles.exchangeInput}>
-//                       <p>교환 희망 설명</p>
-//                       <textarea
-//                         placeholder="설명을 입력해 주세요"
-//                         className={styles.memo}
-//                         value={exchangeMemo}
-//                         onChange={(e) => setExchangeMemo(e.target.value)}

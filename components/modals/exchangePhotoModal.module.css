@@ -79,6 +79,7 @@
 .searchWrap {
   position: relative;
   display: inline-block;
+  min-width: 0;
 }
 
 .searchInput {
@@ -172,6 +173,11 @@
   font-size: 24px;
 }
 
+.cardImage {
+  width: 100%;
+  max-width: 440px;
+}
+
 .saleDetail {
   display: flex;
   flex-direction: column;
@@ -213,7 +219,6 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid var(--gray-400);
   width: 498px;
   padding-top: 30px;
   margin-top: 60px;
@@ -278,56 +283,8 @@
 
 /* 반응형 */
 
-/* PC(모달보다 작아질 때) */
-@media (min-width: 1024px) and (max-width: 1159px) {
-  .modal {
-    width: 96vw; /* 예: 96% of viewport */
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 60px;
-    padding-bottom: 60px;
-    box-sizing: border-box;
-    overflow-x: hidden;
-  }
-
-  .titleArea,
-  .btnArea,
-  .exchangeTitle,
-  .memo {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .aboutPhoto {
-    flex-direction: row;
-    gap: 32px;
-  }
-
-  .cardImage {
-    flex-shrink: 0;
-  }
-
-  .responsiveImage {
-    max-width: 100%;
-  }
-
-  .memo {
-    width: 432px;
-    height: 120px;
-  }
-
-  .btnArea {
-    gap: 20px;
-  }
-
-  .cancelBtn,
-  .confirmBtn {
-    width: 205px;
-  }
-}
-
 /* 태블릿 용 */
-@media (min-width: 768px) and (max-width: 1023.9px) {
+@media (min-width: 743px) and (max-width: 1199px) {
   .overlay {
     align-items: flex-start;
     padding-top: 40px;
@@ -346,11 +303,17 @@
     transition: transform 0.2s ease-out;
     position: relative;
     overflow-y: auto;
+    align-items: center;
+  }
+
+  .modalWrap {
+    width: 100%;
+    max-width: 744px;
   }
 
   .modal.detail {
     width: 100vw;
-    /*height: calc(100vh - 250px);*/
+    height: calc(100vh - 250px);
     margin: 0;
     border-radius: 0;
     padding: 40px 24px;
@@ -385,20 +348,9 @@
   }
 
   .cardList {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
     width: 100%;
-    gap: 16px;
-  }
-
-  .cardList :global(.cardContainer) {
-    width: 100%;
-    padding: 16px;
-  }
-
-  .cardImage :global(.cardContainer) {
-    width: 320px;
-    padding: 16px;
   }
 
   .aboutPhoto {
@@ -408,7 +360,8 @@
   }
 
   .cardImage {
-    width: 330px;
+    width: 100%;
+    max-width: 342px;
     flex-shrink: 0;
   }
 
@@ -462,7 +415,7 @@
 }
 
 /* 모바일 용 */
-@media (min-width: 426px) and (max-width: 767.9px) {
+@media (max-width: 743px) {
   .overlay {
     align-items: flex-start;
     padding-top: 40px;
@@ -481,124 +434,15 @@
     transition: transform 0.2s ease-out;
     position: relative;
     overflow-y: auto;
-  }
-
-  .modal.detail {
-    width: 100vw;
-    /*height: calc(100vh - 300px);*/
-    margin: 0;
-    border-radius: 0;
-    padding: 40px 24px;
-    transition: transform 0.2s ease-out;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow-y: auto;
-  }
-
-  .titleArea,
-  .btnArea,
-  .exchangeTitle,
-  .memo {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .titleTxt {
-    font-size: 32px;
-  }
-
-  .searchArea {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 24px;
-  }
-
-  .searchInput {
-    font-size: 14px;
-    width: 160px;
-    height: 44px;
-  }
-
-  .filterBox {
-    gap: 24px;
-  }
-
-  .cardList {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    width: 100%;
-    gap: 16px;
-  }
-
-  .cardItem {
-    width: 100px;
-  }
-
-  .aboutPhoto {
     align-items: center;
   }
 
-  .cardImage {
-    width: 200px;
-    flex-shrink: 0;
+  .modalWrap {
+    width: 100%;
+    max-width: 375px;
   }
 
-  .memo {
-    height: 120px;
-  }
-
-  .btnArea {
-    gap: 20px;
-  }
-
-  .cancelBtn,
-  .confirmBtn {
-    width: 174px;
-  }
-
-  .closeButton {
-    display: none;
-  }
-
-  .dragBar {
-    display: block;
-    position: absolute;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 48px;
-    height: 6px;
-    background: var(--gray-400);
-    border-radius: 50px;
-    margin: 0 auto 16px auto;
-    touch-action: none;
-  }
-
-  .modal::-webkit-scrollbar,
-  .cardList::-webkit-scrollbar {
-    display: none;
-  }
-
-  .modal,
-  .cardList {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
-@media (max-width: 425.9px) {
-  .overlay {
-    align-items: flex-start;
-    padding-top: 40px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  .modal {
+  .modal.detail {
     width: 100vw;
     height: calc(100vh - 40px);
     margin: 0;
@@ -607,20 +451,7 @@
     transition: transform 0.2s ease-out;
     position: relative;
     overflow-y: auto;
-  }
-
-  .modal.detail {
-    width: 100vw;
-    /*height: calc(100vh - 300px);*/
-    margin: 0;
-    border-radius: 0;
-    padding: 40px 24px;
-    transition: transform 0.2s ease-out;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow-y: auto;
+    align-items: center;
   }
 
   .titleArea,
@@ -628,7 +459,7 @@
   .exchangeTitle,
   .memo {
     width: 100%;
-    max-width: 100%;
+    max-width: 375px;
   }
 
   .titleTxt {
@@ -665,97 +496,36 @@
   }
 
   .cardList {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    width: 100%;
-    gap: 2px;
-  }
-
-  .cardItem {
+    gap: 5px;
     width: 100%;
   }
 
   .aboutPhoto {
     flex-direction: column;
     align-items: center;
-  }
-
-  .responsiveImage {
-    width: 370px;
-    height: 250px;
+    gap: 50px;
   }
 
   .cardImage {
-    width: 60%;
-    height: 100%;
-  }
-
-  .cardSubTitle {
     width: 100%;
-    flex-wrap: nowrap;
-    gap: 8px;
-    padding-bottom: 16px;
-  }
-
-  .saleDetail {
-    flex-wrap: nowrap;
-    justify-content: center;
-  }
-
-  .amountRow {
-    width: 400px;
-    gap: 50px;
-    font-size: 18px;
-  }
-
-  .priceRow {
-    width: 400px;
-    gap: 71.5px;
-    font-size: 18px;
-  }
-
-  .amountControlBox {
-    width: 150px;
-  }
-
-  .inputField {
-    width: 200px;
-  }
-
-  .amountBox {
-    width: 100%;
-    min-width: 50px;
-    max-width: 80px;
-  }
-
-  .exchangeFilterArea {
-    justify-content: center;
-    gap: 20px;
-  }
-
-  .exchangeFilter {
-    font-size: 16px;
-  }
-
-  .gradeSelect,
-  .genreSelect {
-    width: 180px;
-    font-size: 12px;
+    max-width: 345px;
+    position: relative;
+    left: 80px;
   }
 
   .memo {
-    height: 140px;
+    height: 120px;
   }
 
   .btnArea {
-    gap: 15px;
-    padding-bottom: 40px;
     margin-top: 40px;
+    gap: 20px;
   }
 
   .cancelBtn,
   .confirmBtn {
-    width: 180px;
+    width: 174px;
   }
 
   .closeButton {

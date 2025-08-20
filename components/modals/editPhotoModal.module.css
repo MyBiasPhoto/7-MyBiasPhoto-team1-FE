@@ -499,3 +499,381 @@
 .selectCommon {
   color: var(--main);
 }
+
+/* 반응형 */
+
+/* 태블릿 용 */
+@media (min-width: 743px) and (max-width: 1199px) {
+  .overlay {
+    align-items: flex-start;
+    padding-top: 40px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .modal {
+    width: 100vw;
+    height: calc(100vh - 40px);
+    margin: 0;
+    border-radius: 0;
+    padding: 40px 24px;
+    transition: transform 0.2s ease-out;
+    position: relative;
+    overflow-y: auto;
+    align-items: center;
+  }
+
+  .modalWrap {
+    width: 100%;
+    max-width: 744px;
+  }
+
+  .titleArea,
+  .btnArea,
+  .exchangeTitle,
+  .memo {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .titleTxt {
+    font-size: 32px;
+  }
+
+  .searchArea {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .filterBox {
+    gap: 24px;
+  }
+
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+  }
+
+  .aboutPhoto {
+    flex-direction: row;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .cardImage {
+    flex-shrink: 0;
+  }
+
+  .cardInfo {
+    width: 100%;
+    min-width: 300px;
+  }
+
+  .cardSubTitle {
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding-bottom: 16px;
+    align-items: flex-start;
+  }
+
+  .cardSubTitleBox {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .subTitleWriter {
+    font-size: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 0;
+    white-space: normal;
+  }
+
+  .responsiveImage {
+    width: 342px;
+    height: 255px;
+  }
+
+  .saleDetail {
+    flex-wrap: nowrap;
+  }
+
+  .amountRow {
+    width: 400px;
+    gap: 50px;
+    font-size: 18px;
+  }
+
+  .priceRow {
+    width: 400px;
+    gap: 71.5px;
+    font-size: 18px;
+  }
+
+  .amountControlBox {
+    width: 150px;
+  }
+
+  .inputField {
+    width: 200px;
+  }
+
+  .amountBox {
+    width: 100%;
+    min-width: 50px;
+    max-width: 80px;
+  }
+
+  .gradeSelect,
+  .genreSelect {
+    width: 350px;
+    max-width: 362px;
+  }
+
+  .exchangeFilter {
+    width: 100%;
+    max-width: 362px;
+  }
+
+  .exchangeFilterArea {
+    flex-direction: row;
+    gap: 30px;
+    justify-content: center;
+    width: 100%;
+    max-width: 744px;
+  }
+
+  .memo {
+    width: 100%;
+    height: 120px;
+  }
+
+  .btnArea {
+    gap: 30px;
+    width: 100%;
+    max-width: 744px;
+  }
+
+  .cancelBtn,
+  .confirmBtn {
+    width: 350px;
+  }
+
+  .closeButton {
+    display: none;
+  }
+
+  .dragBar {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 6px;
+    background: var(--gray-400);
+    border-radius: 50px;
+    margin: 0 auto 16px auto;
+    touch-action: none;
+  }
+
+  .modal::-webkit-scrollbar,
+  .cardList::-webkit-scrollbar {
+    display: none;
+  }
+
+  .modal,
+  .cardList {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* 모바일 용 */
+@media (max-width: 743px) {
+  .overlay {
+    align-items: flex-start;
+    padding-top: 40px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .modal {
+    width: 100vw;
+    height: calc(100vh - 40px);
+    margin: 0;
+    border-radius: 0;
+    padding: 40px 24px;
+    transition: transform 0.2s ease-out;
+    position: relative;
+    overflow-y: auto;
+    align-items: center;
+  }
+
+  .modalWrap {
+    width: 100%;
+    max-width: 375px;
+  }
+
+  .titleArea,
+  .btnArea,
+  .exchangeTitle,
+  .memo {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .titleTxt {
+    font-size: 32px;
+  }
+
+  .searchArea {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .searchInput {
+    font-size: 14px;
+    width: 160px;
+    height: 44px;
+  }
+
+  .filterBox {
+    display: none;
+  }
+
+  .filterToggleBtn {
+    display: inline-block;
+    margin-right: 8px;
+    align-items: center;
+  }
+
+  .mobileFilterBox {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+    z-index: 100;
+  }
+
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    width: 100%;
+  }
+
+  .aboutPhoto {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .responsiveImage {
+    width: 370px;
+    height: 250px;
+  }
+
+  .cardSubTitle {
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding-bottom: 16px;
+  }
+
+  .saleDetail {
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+
+  .amountRow {
+    width: 400px;
+    gap: 50px;
+    font-size: 18px;
+  }
+
+  .priceRow {
+    width: 400px;
+    gap: 71.5px;
+    font-size: 18px;
+  }
+
+  .amountControlBox {
+    width: 150px;
+  }
+
+  .inputField {
+    width: 200px;
+  }
+
+  .amountBox {
+    width: 100%;
+    min-width: 50px;
+    max-width: 80px;
+  }
+
+  .exchangeFilterArea {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .exchangeFilter {
+    font-size: 16px;
+  }
+
+  .gradeSelect,
+  .genreSelect {
+    width: 180px;
+    font-size: 12px;
+  }
+
+  .memo {
+    height: 140px;
+  }
+
+  .btnArea {
+    gap: 15px;
+    padding-bottom: 40px;
+    margin-top: 40px;
+  }
+
+  .cancelBtn,
+  .confirmBtn {
+    width: 180px;
+  }
+
+  .closeButton {
+    display: none;
+  }
+
+  .dragBar {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 6px;
+    background: var(--gray-400);
+    border-radius: 50px;
+    margin: 0 auto 16px auto;
+    touch-action: none;
+  }
+
+  .modal::-webkit-scrollbar,
+  .cardList::-webkit-scrollbar {
+    display: none;
+  }
+
+  .modal,
+  .cardList {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
