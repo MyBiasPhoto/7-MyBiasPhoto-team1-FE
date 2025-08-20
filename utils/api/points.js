@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/lib/axiosAuth.js";
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000",
