@@ -7,7 +7,7 @@ import CustomInput from "../../customInput/customInput.js";
 import { useEffect, useState } from "react";
 import PurchasePhotoModal from "@/components/modals/purchasePhotoModal.js";
 import LoginModal from "@/components/modals/loginModal.js";
-
+import api from "@/lib/axiosAuth.js";
 export default function Buy({ sale }) {
   const [count, setCount] = useState(1);
   const [total, setTotal] = useState(sale?.price * count);
