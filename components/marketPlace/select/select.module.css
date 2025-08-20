@@ -57,10 +57,7 @@
 }
 
 .modalEvent:hover {
-  background-color: var(--main);
-}
-.modalEvent:hover .madalText {
-  color: var(--black);
+  background-color: #3b3b3b;
 }
 
 .selectContainerFilter {
