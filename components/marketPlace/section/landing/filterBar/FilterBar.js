@@ -57,7 +57,7 @@ function FilterBar({
       </div>
 
       <button className={style.filterBoxTable} onClick={onToggleFilterModal}>
-        <Image src={buttonS} height={35} width={35} alt={"버튼"} />
+        <Image src={buttonS} height={24} width={24} alt={"버튼"} />
       </button>
 
       <div className={style.filterSelect}>

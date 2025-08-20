@@ -58,7 +58,7 @@ export default function SellPhotoModal({ onClose }) {
         /*변경된 api에 맞춰 매핑 수정완료 */
       }
       const list = Array.isArray(res?.myGroupedCards) ? res.myGroupedCards : [];
-      const formattedCards = list.map((card) => ({
+      const formattedCards = list.map(card => ({
         // const formattedCards = res.myGroupedCards.map((card) => ({
         photoCardId: card.photoCardId,
         name: card.name,
@@ -89,7 +89,7 @@ export default function SellPhotoModal({ onClose }) {
     fetchCards();
   }, [search, listGrade, listKind]);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = e => {
     setSearch(e.target.value);
   };
 
@@ -115,7 +115,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    setCardDrafts((prev) => ({
+    setCardDrafts(prev => ({
       ...prev,
       [selectedCard.photoCardId]: {
         amount,
@@ -135,7 +135,7 @@ export default function SellPhotoModal({ onClose }) {
   useEffect(() => {
     if (!selectedCard) return;
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = e => {
       if (e.key === "Escape") {
         handleBack();
       }
@@ -242,7 +242,7 @@ export default function SellPhotoModal({ onClose }) {
     if (amount > 1) setAmount(amount - 1);
   };
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = e => {
     dragStartY.current = e.touches[0].clientY;
     setIsDragging(true);
   };
@@ -254,7 +254,7 @@ export default function SellPhotoModal({ onClose }) {
     };
   }, []);
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = e => {
     if (!isDragging) return;
     const currentY = e.touches[0].clientY;
     const diffY = currentY - dragStartY.current;
@@ -321,7 +321,7 @@ export default function SellPhotoModal({ onClose }) {
         <div className={styles.overlay} onClick={onClose}>
           <div
             className={styles.modal}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             ref={modalRef}
           >
             <div className={styles.modalWrap}>
@@ -351,7 +351,7 @@ export default function SellPhotoModal({ onClose }) {
                     <div className={styles.searchArea}>
                       <button
                         className={styles.filterToggleBtn}
-                        onClick={() => setShowMobileFilter((prev) => !prev)}
+                        onClick={() => setShowMobileFilter(prev => !prev)}
                       >
                         <Image
                           src={FilterIcon}
@@ -380,12 +380,12 @@ export default function SellPhotoModal({ onClose }) {
                         <Select
                           option={gradeOption}
                           name={"등급"}
-                          onChange={(val) => setListGrade(val)}
+                          onChange={val => setListGrade(val)}
                         />
                         <Select
                           option={genreOption}
                           name={"장르"}
-                          onChange={(val) => setListKind(val)}
+                          onChange={val => setListKind(val)}
                         />
                       </div>
                     </div>
@@ -410,14 +410,14 @@ export default function SellPhotoModal({ onClose }) {
                           <Select
                             option={gradeOption}
                             name={"등급"}
-                            onChange={(val) => setListGrade(val)}
+                            onChange={val => setListGrade(val)}
                           />
                         </div>
                         <div style={{ flex: 1 }}>
                           <Select
                             option={genreOption}
                             name={"장르"}
-                            onChange={(val) => setListKind(val)}
+                            onChange={val => setListKind(val)}
                           />
                         </div>
                       </div>
@@ -436,7 +436,7 @@ export default function SellPhotoModal({ onClose }) {
                           emptyActionHref="/myGallery"
                         />
                       ) : (
-                        cards.map((card) => (
+                        cards.map(card => (
                           <div
                             className={styles.cardItem}
                             key={card.photoCardId}
@@ -521,7 +521,7 @@ export default function SellPhotoModal({ onClose }) {
                                 type="number"
                                 value={price}
                                 min="0"
-                                onChange={(e) => setPrice(e.target.value)}
+                                onChange={e => setPrice(e.target.value)}
                                 placeholder="숫자만 입력"
                                 className={styles.inputField}
                               />
@@ -543,7 +543,7 @@ export default function SellPhotoModal({ onClose }) {
                               <select
                                 className={`${styles.gradeSelect} ${selectColorClass}`}
                                 value={grade}
-                                onChange={(e) => setGrade(e.target.value)}
+                                onChange={e => setGrade(e.target.value)}
                               >
                                 <option disabled value="">
                                   등급을 선택해 주세요
@@ -570,7 +570,7 @@ export default function SellPhotoModal({ onClose }) {
                               <select
                                 className={styles.genreSelect}
                                 value={kind}
-                                onChange={(e) => setKind(e.target.value)}
+                                onChange={e => setKind(e.target.value)}
                               >
                                 <option disabled value="">
                                   장르를 선택해 주세요
@@ -602,7 +602,7 @@ export default function SellPhotoModal({ onClose }) {
                             placeholder="설명을 입력해 주세요"
                             className={styles.memo}
                             value={exchangeMemo}
-                            onChange={(e) => setExchangeMemo(e.target.value)}
+                            onChange={e => setExchangeMemo(e.target.value)}
                           />
                         </div>
                       </div>

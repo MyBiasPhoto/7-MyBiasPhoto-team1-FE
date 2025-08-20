@@ -13,7 +13,7 @@ export default function PageHeader({
   return (
     <div className={styles.title_Box}>
       <button className={styles.filterBoxTable} onClick={onToggleFilterModal}>
-        <Image src={buttonS} height={45} width={45} alt={"버튼"} />
+        <Image src={buttonS} height={24} width={24} alt={"버튼"} />
       </button>
       <input placeholder={placeholder} className={styles.filterInputMobile} />
       <p className={styles.title_Text}>{title}</p>
