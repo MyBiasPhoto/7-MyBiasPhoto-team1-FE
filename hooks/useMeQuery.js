@@ -6,7 +6,7 @@ export function useMeQuery(options = {}) {
   return useQuery({
     queryKey: ["me"],
     queryFn: async () => {
-      const res = await api.get("/users/me");
+      const res = await api.get("/users/me", { _auth: true });
       return res.data.me ?? null;
     },
     staleTime: 0,
