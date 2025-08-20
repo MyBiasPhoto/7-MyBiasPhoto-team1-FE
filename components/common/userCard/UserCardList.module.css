@@ -9,7 +9,16 @@
   width: 100%;
   position: static;
 }
-
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: "BR-B";
+  color: var(--white);
+  font-size: 30px;
+  margin-top: 50px;
+}
 @media (min-width: 743px) and (max-width: 1199px) {
   .cardList {
     grid-template-columns: repeat(2, 1fr);

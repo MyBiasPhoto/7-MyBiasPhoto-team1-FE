@@ -10,13 +10,13 @@ function CardList({ cards, currentUserNickname, onCardClick }) {
     return (
       <div className={style.emptyMessageBox}>
         <p>결과가 없습니다</p>
-        <Image src={photo} alt={"로고"} width={200} height={200}></Image>
+        <Image src={photo} alt={"로고"} width={300} height={200}></Image>
       </div>
     );
   }
   return (
     <div className={style.cardList}>
-      {cards.map((card) => (
+      {cards.map(card => (
         <div
           key={card.saleId}
           className={style.cardItem}
