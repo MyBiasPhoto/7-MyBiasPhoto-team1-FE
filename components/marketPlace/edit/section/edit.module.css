@@ -4,7 +4,7 @@
 
 .Title {
   display: flex;
-  border-bottom: 1px solid var(--white);
+  border-bottom: 2px solid var(--white);
   padding-bottom: 20px;
   font-size: 40px;
   color: var(--white);
@@ -12,28 +12,44 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  margin-top: 40px;
 }
 
 .Content {
   display: flex;
-  margin-top: 30px;
+  max-width: 1300px;
+  width: 100%;
+  margin: 60px auto 0;
+  gap: 40px;
 }
 
 .ContentRight {
   display: flex;
   flex-direction: column;
-  padding-left: 80px;
+  flex: 1;
+  min-width: 0;
+  padding-left: 0;
+  gap: 40px;
 }
 
 .ContentHeader {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid var(--white);
+  border-bottom: 1px solid var(--gray-400);
   padding-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .ContentHeaderTags {
   display: flex;
+  min-width: 0;
+}
+
+.ContentHeader > :last-child {
+  margin-left: auto;
+  flex: 0 1 auto;
+  min-width: max-content;
+  text-align: right;
 }
 
 .TitleFont {
@@ -48,7 +64,7 @@
 
 .ContentHeaderGrade {
   display: flex;
-  width: 141px;
+  /* width: 141px; */
   height: 35px;
   padding-bottom: 6px;
   justify-content: center;
@@ -87,6 +103,8 @@
   text-decoration-thickness: auto;
   text-underline-offset: auto;
   text-underline-position: from-font;
+  white-space: nowrap;
+  flex-shrink: 1;
 }
 
 .descripiton {
@@ -96,15 +114,17 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  padding-top: 20px;
+  /* padding-top: 20px; */
+  margin-top: -20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid var(--white);
+  border-bottom: 1px solid var(--gray-400);
 }
 
 .info {
   display: flex;
   flex-direction: column;
-  padding-top: 20px;
+  /* padding-top: 20px; */
+  margin-top: -20px;
   padding-bottom: 65px;
   gap: 10px;
 }
@@ -258,6 +278,8 @@
 .ContentImg {
   width: 760px;
   height: 720px;
+  object-fit: contain;
+  background-color: #000;
 }
 
 .common {
@@ -289,8 +311,45 @@
 }
 @media (min-width: 743px) and (max-width: 1199px) {
   .ContentImg {
-    width: 360px;
-    height: 250px;
+    width: 600px;
+    height: 417px;
+  }
+
+  .ContentHeader {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ContentHeaderTags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .ContentHeaderTag {
+    display: flex;
+    margin-left: -10px;
+  }
+  .infoBuyCount,
+  .infoTotal {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    align-items: center;
+    column-gap: 16px;
+  }
+  .infoBuyCount > div {
+    min-width: 0;
+  }
+
+  .infoTotalPrice {
+    white-space: nowrap;
+    justify-content: flex-end;
+    gap: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .buyButton,
+  .deleteButton {
+    inline-size: 100%;
   }
 }
 @media (max-width: 743px) {
@@ -298,6 +357,12 @@
     width: 100%;
     height: 450px;
   }
+  .ContentHeader {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
   .Content {
     flex-direction: column;
   }

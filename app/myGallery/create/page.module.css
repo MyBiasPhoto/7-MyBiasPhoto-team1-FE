@@ -237,13 +237,12 @@
   animation: spin 5s linear infinite;
   text-shadow: 0 0 8px #ff00ff, 0 0 16px #00e5ff, 0 0 24px #6a5acd;
 }
-/* 오버레이는 그대로 */
+
 .aiModalOverlay {
   animation: overlayFadeIn 0.3s ease-out both;
   perspective: 1000px;
 }
 
-/* 프로펠러 스핀 인 */
 @keyframes modalPropellerIn {
   0% {
     transform: translateY(80px) scale(0.9) rotate(-4320deg);
@@ -262,11 +261,11 @@
 }
 
 /* 제출전에 삭제해야함 */
-.aiModal {
+/* .aiModal {
   transform-origin: center;
   will-change: transform, opacity, filter;
   animation: modalPropellerIn 6.2s cubic-bezier(0.22, 0.7, 0.26, 1) both;
-}
+} */
 
 /* 접근성 */
 @media (prefers-reduced-motion: reduce) {
