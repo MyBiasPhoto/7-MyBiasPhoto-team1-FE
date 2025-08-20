@@ -1,14 +1,15 @@
 .cardContainer {
-  width: 440px;
-  height: 600px;
-  background-color: #111;
-  color: white;
-  border: 1px solid #fff;
+  width: 100%;
+  height: 100%;
+  background-color: var(--gray-500);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px;
+  padding: 25px;
+  position: relative;
 }
 
 .cardBox {
@@ -21,14 +22,14 @@
 .cardImageBox {
   width: 100%;
   height: 300px;
-  padding-bottom: 16px;
+  /*padding-bottom: 16px;*/
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .soldOutLayer {
   display: none;
   width: 100%;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   object-fit: cover;
   position: absolute;
   pointer-events: none;
@@ -44,32 +45,40 @@
 
 .responsiveImage {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
+  height: 100%;
   object-fit: cover;
 }
 
 .CardTextBox {
   width: 100%;
-  padding: 0 10px;
-  margin-bottom: 16px;
   margin-top: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gray-400);
 }
 
 .CardTextBoxTitle {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 10px;
 }
 
 .CardSubTitle {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
-  border-bottom: 1px solid #fff;
-  padding-bottom: 8px;
-  margin-bottom: 12px;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.subTitleWriter {
+  color: var(--white);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: underline;
 }
 
 .CardSubTitleBox {
@@ -78,11 +87,21 @@
   gap: 10px;
 }
 
+.CardTextSubBox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 20px 0 47px;
+  gap: 10px;
+}
+
 .CardSubTitle2 {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
-  font-size: 14px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
 }
 
 .subDiv {
@@ -91,34 +110,97 @@
   background-color: var(--gray-400);
 }
 
-.subTitleWriter {
-  font-size: 12px;
-  color: #aaa;
-}
-
 .cardLogo {
   text-align: center;
-  padding-top: 12px;
 }
 
-.common {
+.COMMON {
   color: var(--main);
+  /* border: 1px solid gray; */
 }
-.rare {
+.RARE {
   color: var(--blue);
+  /* border: 1px solid blue; */
 }
-.super_rare {
+.SUPER_RARE {
   color: var(--purple);
+  /* border: 1px solid purple; */
 }
-.legendary {
+.LEGENDARY {
   color: var(--pink);
+  /* border: 1px solid gold; */
 }
-.etc {
+.ETC {
   color: darkgray;
   /* border: 1px solid darkgray; */
 }
 
-@media (min-width: 768px) and (max-width: 1023.9px) {
+@media (min-width: 743px) and (max-width: 1199px) {
+  .cardContainer {
+    padding: 20px;
+  }
+  .cardImageBox {
+    height: 227px;
+  }
+
+  .CardTextBox {
+    margin-top: 25px;
+  }
+
+  .CardTextBoxTitle {
+    font-size: 14px;
+  }
+
+  .soldOutLayer {
+    height: 100%;
+  }
+}
+
+@media (max-width: 743px) {
+  .cardContainer {
+    padding: 10px;
+    max-width: 185px;
+  }
+  .cardImageBox {
+    height: 112px;
+  }
+
+  .cardLogo {
+    display: none;
+  }
+
+  .CardTextBoxTitle {
+    font-size: 16px;
+  }
+
+  .CardSubTitle2 {
+    font-size: 12px;
+  }
+  .soldOutLayer {
+    height: 155px;
+  }
+  .CardTextBox {
+    margin: 0;
+  }
+  .cardBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .CardTextBoxUpgrade {
+    margin-top: 137px;
+  }
+  .CardSubTitleBox {
+    font-size: 10px;
+  }
+  .subTitleWriter {
+    font-size: 10px;
+  }
+}
+
+/* @media (min-width: 768px) and (max-width: 1023.9px) {
   .cardContainer {
     width: 100%;
     padding: 16px;
@@ -176,7 +258,7 @@
     height: 100%;
   }
 }
-/*임시*/
+
 @media (max-width: 425.9px) {
   .cardContainer {
     width: 100%;
@@ -218,7 +300,7 @@
   .cardBox {
     height: 100%;
   }
-}
+} */
 /* @keyframes shimmer {
   0%,
   100% {

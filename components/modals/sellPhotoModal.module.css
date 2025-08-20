@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   position: fixed;
-  z-index: 50;
+  z-index: 1002;
   padding-left: 90px;
   padding-top: 60px;
   box-sizing: border-box;
@@ -132,9 +132,10 @@
 }
 
 .cardList {
+  width: 92%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  grid-gap: 16px;
   height: 600px;
   margin-top: 40px;
   overflow-y: auto;
@@ -198,6 +199,7 @@
   width: 500px;
   min-width: 0;
   flex-shrink: 1;
+  flex-wrap: wrap;
 }
 
 .cardSubTitleBox {
@@ -272,6 +274,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  white-space: nowrap;
 }
 
 .saleDetail {
@@ -579,7 +582,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 49;
+  z-index: 1001;
 }
 
 /* 드롭다운 목록의 각 항목 텍스트 색상 (브라우저별로 배경/굵기 등은 제한적) */
@@ -615,10 +618,9 @@
 
 /* 반응형 */
 
-/* PC(모달보다 작아질 때) */
-@media (min-width: 1024px) and (max-width: 1159px) {
+/* @media (min-width: 1024px) and (max-width: 1159px) {
   .modal {
-    width: 96vw; /* 예: 96% of viewport */
+    width: 96vw; 
     padding-left: 40px;
     padding-right: 40px;
     padding-top: 60px;
@@ -703,10 +705,10 @@
   .confirmBtn {
     width: 440px;
   }
-}
+} */
 
 /* 태블릿 용 */
-@media (min-width: 768px) and (max-width: 1023.9px) {
+@media (min-width: 743px) and (max-width: 1199px) {
   .overlay {
     align-items: flex-start;
     padding-top: 40px;
@@ -725,6 +727,12 @@
     transition: transform 0.2s ease-out;
     position: relative;
     overflow-y: auto;
+    align-items: center;
+  }
+
+  .modalWrap {
+    width: 100%;
+    max-width: 744px;
   }
 
   .titleArea,
@@ -750,10 +758,9 @@
   }
 
   .cardList {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
     width: 100%;
-    gap: 16px;
   }
 
   .aboutPhoto {
@@ -776,6 +783,8 @@
     flex-wrap: nowrap;
     gap: 8px;
     padding-bottom: 16px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .cardSubTitleBox {
@@ -784,10 +793,12 @@
   }
 
   .subTitleWriter {
-    font-size: 20px;
+    font-size: 24px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-left: 0;
+    white-space: normal;
   }
 
   .responsiveImage {
@@ -881,7 +892,7 @@
 }
 
 /* 모바일 용 */
-@media (min-width: 426px) and (max-width: 767.9px) {
+@media (max-width: 743px) {
   .overlay {
     align-items: flex-start;
     padding-top: 40px;
@@ -900,6 +911,12 @@
     transition: transform 0.2s ease-out;
     position: relative;
     overflow-y: auto;
+    align-items: center;
+  }
+
+  .modalWrap {
+    width: 100%;
+    max-width: 375px;
   }
 
   .titleArea,
@@ -927,18 +944,26 @@
   }
 
   .filterBox {
-    gap: 24px;
+    display: none;
+  }
+
+  .filterToggleBtn {
+    display: inline-block;
+    margin-right: 8px;
+    align-items: center;
+  }
+
+  .mobileFilterBox {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+    z-index: 100;
   }
 
   .cardList {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
     width: 100%;
-    gap: 2px;
-  }
-
-  .cardItem {
-    width: 100px;
   }
 
   .aboutPhoto {
@@ -1049,7 +1074,7 @@
   }
 }
 
-@media (max-width: 425.9px) {
+/* @media (max-width: 425.9px) {
   .overlay {
     align-items: flex-start;
     padding-top: 40px;
@@ -1228,4 +1253,4 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-}
+} */

@@ -120,7 +120,7 @@ function Card({
             </div>
           </div>
           <div className={style.cardLogo}>
-            <Image src={logo} hegiht={18} width={120} alt={"로고"} />
+            <Image src={logo} height={18} width={120} alt={"로고"} />
           </div>
         </div>
         {/* <div className={style.cardBack}>
