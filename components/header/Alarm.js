@@ -5,6 +5,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useNotifications } from "@/utils/notifications/notificationsContext";
 import { formatTimeAgo } from "@/utils/formatTimeAgo";
+import AlarmSkeleton from "./AlarmSkeleton";
 
 export default function Alarm() {
   const {
@@ -14,6 +15,7 @@ export default function Alarm() {
     loadInitialList,
     markOneAsRead,
     markAllAsRead,
+    isInitialLoading,
   } = useNotifications();
 
   const router = useRouter();
@@ -65,14 +67,14 @@ export default function Alarm() {
   };
 
   // 🚀 처음 렌더 후 리스트 높이가 부족하면 즉시 1회 더 로드
-  useEffect(() => {
-    const el = listRef.current;
-    if (!el) return;
-    if (el.scrollHeight <= el.clientHeight && hasMoreItems) {
-      // 쿨다운 무시하고 한 번만 더
-      loadMoreList({ force: true });
-    }
-  }, [notificationItems, hasMoreItems, loadMoreList]);
+  // useEffect(() => {
+  //   const el = listRef.current;
+  //   if (!el) return;
+  //   if (el.scrollHeight <= el.clientHeight && hasMoreItems) {
+  //     // 쿨다운 무시하고 한 번만 더
+  //     loadMoreList({ force: true });
+  //   }
+  // }, [notificationItems, hasMoreItems, loadMoreList]);
 
   return (
     <div className={styles.area}>
@@ -88,9 +90,20 @@ export default function Alarm() {
       </div>
 
       <div className={styles.alarmList} ref={listRef}>
-        {notificationItems.length === 0 && (
+        {/* {isInitialLoading && notificationItems.length === 0 && (
+          <div className={styles.loading} aria-live="polite">
+            알림을 불러오고 있습니다
+          </div>
+        )} */}
+
+        {isInitialLoading && notificationItems.length === 0 && (
+          <AlarmSkeleton rows={4} />
+        )}
+
+        {!isInitialLoading && notificationItems.length === 0 && (
           <div className={styles.empty}>새 알림이 없어요</div>
         )}
+
         {notificationItems.map((notification) => (
           <button
             key={notification.id}

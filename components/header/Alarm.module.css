@@ -98,3 +98,96 @@
   color: #888;
   text-align: center;
 }
+
+.loading {
+  padding: 16px;
+  color: var(--gray-300);
+  text-align: center;
+  font-size: 12px;
+  font-family: "BR-B", sans-serif;
+}
+
+/* 접근성: 화면에 안 보이는 설명 텍스트 */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 스켈레톤 리스트 컨테이너 */
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 각 스켈레톤 아이템은 실제 카드와 동일한 높이/패딩/보더 */
+.skeletonItem {
+  height: 107px;
+  padding: 20px;
+  border-bottom: 1px solid var(--gray-400);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--gray-500);
+}
+
+/* 상단(텍스트 영역) 더미 두 줄 */
+.skeletonTop {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 반짝임 효과가 들어가는 바 */
+.skeletonBar {
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.14) 20%,
+    rgba(255, 255, 255, 0.06) 40%
+  );
+  background-size: 200% 100%;
+  animation: alarm-shimmer 1.2s linear infinite;
+}
+
+/* 줄 크기 다양화 */
+.skeletonLineLong {
+  width: 80%;
+  height: 12px;
+}
+.skeletonLineMid {
+  width: 60%;
+  height: 12px;
+}
+.skeletonLineShort {
+  width: 30%;
+  height: 10px;
+}
+
+/* 반짝임 애니메이션 */
+@keyframes alarm-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 모션 최소화 환경 존중 */
+@media (prefers-reduced-motion: reduce) {
+  .skeletonBar {
+    animation: none;
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
