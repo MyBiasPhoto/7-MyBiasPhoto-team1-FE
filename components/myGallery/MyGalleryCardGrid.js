@@ -85,7 +85,7 @@ export default function MyGalleryCardGrid({ items, isLoading, isPending }) {
   if (!items || items.length === 0) {
     return (
       <div className={style.notFoundContainer}>
-        <p className={style.notFound}>검색결과 없음</p>
+        <p className={style.notFound}>그런 카드는 없어요!</p>
         <Image src={logo} width={300} height={200} alt={"로고"} />
       </div>
     );

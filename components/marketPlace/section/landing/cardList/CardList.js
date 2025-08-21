@@ -9,7 +9,7 @@ function CardList({ cards, currentUserNickname, onCardClick }) {
   if (!cards || cards.length === 0) {
     return (
       <div className={style.emptyMessageBox}>
-        <p>결과가 없습니다</p>
+        <p>그런 카드는 없어요!</p>
         <Image src={photo} alt={"로고"} width={300} height={200}></Image>
       </div>
     );

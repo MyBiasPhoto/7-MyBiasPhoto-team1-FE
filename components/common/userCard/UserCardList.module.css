@@ -19,6 +19,7 @@
   font-size: 30px;
   margin-top: 50px;
 }
+
 @media (min-width: 743px) and (max-width: 1199px) {
   .cardList {
     grid-template-columns: repeat(2, 1fr);
