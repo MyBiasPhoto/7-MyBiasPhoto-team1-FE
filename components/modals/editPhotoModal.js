@@ -41,6 +41,21 @@ function reducer(state, action) {
   }
 }
 
+function toGradeKey(value) {
+  return String(value || "")
+    .trim()
+    .replaceAll(" ", "_") // "SUPER RARE" → "SUPER_RARE"
+    .toUpperCase(); // "common" → "COMMON"
+}
+
+const gradeClassMap = {
+  COMMON: styles.common,
+  RARE: styles.rare,
+  SUPER_RARE: styles.super_rare,
+  LEGENDARY: styles.legendary,
+  ETC: styles.etc,
+};
+
 export default function EditPhotoModal({ sale, onClose }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const queryClient = useQueryClient();
@@ -228,7 +243,12 @@ export default function EditPhotoModal({ sale, onClose }) {
                 <div className={styles.cardInfo}>
                   <div className={styles.cardSubTitle}>
                     <div className={styles.cardSubTitleBox}>
-                      <p className={`${styles[sale?.photoCard.grade]}`}>
+                      <p
+                        className={
+                          gradeClassMap[toGradeKey(sale?.photoCard.grade)] ||
+                          styles.etc
+                        }
+                      >
                         {sale?.photoCard.grade}
                       </p>
                       <span className={styles.divider}>|</span>
