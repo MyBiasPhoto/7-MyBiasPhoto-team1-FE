@@ -39,7 +39,6 @@ export default function Providers({ children }) {
           <NotificationsProvider>{children}</NotificationsProvider>
         </CooldownProvider>
       </AuthProvider>
-      {/* 우진수정 @TODO 나중에 환경변수 설정통해 개발모드에서만 보이게 */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

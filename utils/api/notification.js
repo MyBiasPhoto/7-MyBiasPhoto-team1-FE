@@ -4,7 +4,8 @@
 import api from "@/lib/axiosAuth";
 import { notificationType } from "../constants/enums";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL; //|| "http://localhost:4000";
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
 /** 공통: undefined 제거 */
 const cleanParams = (obj = {}) => {

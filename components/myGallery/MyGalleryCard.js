@@ -44,7 +44,6 @@ export default function MyGalleryCard({
               </div>
               <p className={style.subTitleWriter}>
                 {ownerNickName || "판매자 id"}
-                {/* @TODO 추후 id가 아닌 nickname 으로 변경 필요 */}
               </p>
             </div>
           </div>

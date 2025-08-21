@@ -50,7 +50,6 @@ export default function MyGalleryClient({ initialFilters }) {
   });
 
   const myGalleryList = data?.myGroupedCards ?? [];
-  // const myGalleryList = data?.myMarketList ?? [];
 
   const totalCount = data?.totalCount ?? 0;
   const currentPage = data?.page ?? filters.page;

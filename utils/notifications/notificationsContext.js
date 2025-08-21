@@ -196,9 +196,6 @@ export function NotificationsProvider({ children }) {
   };
 
   // 추가로딩 페이지네이션
-  // const loadMoreList = async () => {
-  // if (!hasMoreItems || !nextCursorId) return;
-
   const loadMoreList = async ({ force = false } = {}) => {
     // nextCursorId가 0 또는 ""여도 허용하려면 == null 로 체크
     if (!hasMoreItems || nextCursorId == null) return;
