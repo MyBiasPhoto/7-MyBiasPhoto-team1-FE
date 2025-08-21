@@ -49,7 +49,7 @@ export default function SellPhotoModal({ onClose }) {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const [selectedCard, setSelectedCard] = useState(null);
-  const [showResultModal, setShowResultModal] = useState({ show: false });
+  const [showResultModal, setShowResultModal] = useState(false);
   const [cards, setCards] = useState([]);
   const [search, setSearch] = useState("");
   const [amount, setAmount] = useState(1);
@@ -108,7 +108,6 @@ export default function SellPhotoModal({ onClose }) {
       if (g) params.grade = g;
       const ge = pickValue(listKind);
       if (ge) params.genre = ge;
-
       const res = await fetchMyGalleryData(params);
 
       {
@@ -197,6 +196,10 @@ export default function SellPhotoModal({ onClose }) {
       },
     }));
   }, [amount, price, grade, kind, exchangeMemo, selectedCard]);
+
+  function closeMobileFilter() {
+    setShowMobileFilter(false);
+  }
 
   function handleBack() {
     setSelectedCard(null);
@@ -460,7 +463,6 @@ export default function SellPhotoModal({ onClose }) {
                         />
                       </div>
                     </div>
-                    {/* ★ 교환 모달과 동일한 모바일 필터 헤더 구조로 통일 */}
                     <div
                       className={`${galleryStyle.MobileModal} ${
                         showMobileFilter ? galleryStyle.show : ""
@@ -479,9 +481,7 @@ export default function SellPhotoModal({ onClose }) {
                       <FilterBartwo
                         filters={getFilterProxy()}
                         dispatch={filterDispatch}
-                        onClose={function () {
-                          setShowMobileFilter(false);
-                        }}
+                        onClose={closeMobileFilter}
                       />
                     </div>
                     <div className={styles.cardList}>
@@ -566,91 +566,106 @@ export default function SellPhotoModal({ onClose }) {
                                   />
                                 </button>
                               </div>
-                              <p className={styles.amountDesc}>
-                                보유 수량 : {selectedCard.amount}
-                              </p>
+                              <div className={styles.amountBox}>
+                                <span className={styles.maxAmount}>
+                                  / {selectedCard.amount}
+                                </span>
+                                <span className={styles.maxHint}>
+                                  최대 {selectedCard.amount}장
+                                </span>
+                              </div>
                             </div>
                           </div>
-
                           <div className={styles.priceRow}>
                             <label>장당 가격</label>
-                            <div className={styles.priceInputWrap}>
+                            <div className={styles.priceInput}>
                               <input
                                 type="number"
-                                placeholder="가격 입력"
-                                className={styles.priceInput}
                                 value={price}
+                                min="0"
                                 onChange={(e) => setPrice(e.target.value)}
+                                placeholder="숫자만 입력"
+                                className={styles.inputField}
                               />
-                              <span className={styles.unit}>₩</span>
+                              <span className={styles.point}>P</span>
                             </div>
                           </div>
-
-                          <div className={styles.selectWrap}>
-                            <div className={styles.selectBox}>
-                              <label>희망 등급</label>
-                              <div
-                                className={`${styles.selectCustom} ${selectColorClass}`}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.exchangeInfo}>
+                      <h2 className={styles.exchangeTitle}>교환 희망 정보</h2>
+                      <div className={styles.exchangeDetail}>
+                        <div className={styles.exchangeFilterArea}>
+                          <div className={styles.exchangeFilter}>
+                            <div className={styles.filterName}>
+                              <p>등급</p>
+                            </div>
+                            <div className={styles.exchangeFilterBox}>
+                              <select
+                                className={`${styles.gradeSelect} ${selectColorClass}`}
+                                value={grade}
+                                onChange={(e) => setGrade(e.target.value)}
                               >
-                                <select
-                                  className={`${styles.select} ${selectColorClass}`}
-                                  value={grade}
-                                  onChange={(e) => setGrade(e.target.value)}
-                                >
-                                  <option value="">전체</option>
-                                  <option value="COMMON">COMMON</option>
-                                  <option value="RARE">RARE</option>
-                                  <option value="SUPER RARE">SUPER RARE</option>
-                                  <option value="LEGENDARY">LEGENDARY</option>
-                                  <option value="ETC">ETC</option>
-                                </select>
-                                <Image
-                                  src={DownIcon}
-                                  alt="화살표"
-                                  width={28}
-                                  height={28}
-                                  className={styles.selectIcon}
-                                />
-                              </div>
-                            </div>
-                            <div className={styles.selectBox}>
-                              <label>희망 장르</label>
-                              <div className={styles.selectCustom}>
-                                <select
-                                  className={styles.select}
-                                  value={kind}
-                                  onChange={(e) => setKind(e.target.value)}
-                                >
-                                  <option value="">전체</option>
-                                  <option value="앨범">앨범</option>
-                                  <option value="포토카드팩">포토카드팩</option>
-                                  <option value="시즌그리팅">시즌그리팅</option>
-                                  <option value="팬미팅">팬미팅</option>
-                                  <option value="콘서트">콘서트</option>
-                                  <option value="MD">MD</option>
-                                  <option value="콜라보">콜라보</option>
-                                  <option value="팬클럽">팬클럽</option>
-                                  <option value="기타">기타</option>
-                                </select>
-                                <Image
-                                  src={DownIcon}
-                                  alt="화살표"
-                                  width={28}
-                                  height={28}
-                                  className={styles.selectIcon}
-                                />
-                              </div>
+                                <option disabled value="">
+                                  등급을 선택해 주세요
+                                </option>
+                                <option value="LEGENDARY">LEGENDARY</option>
+                                <option value="SUPER_RARE">SUPER RARE</option>
+                                <option value="RARE">RARE</option>
+                                <option value="COMMON">COMMON</option>
+                              </select>
+                              <Image
+                                src={DownIcon}
+                                alt="화살표"
+                                width={28}
+                                height={28}
+                                className={styles.selectIcon}
+                              />
                             </div>
                           </div>
-                          <div className={styles.exchangeInput}>
-                            <p>교환 희망 설명</p>
-                            <textarea
-                              placeholder="설명을 입력해 주세요"
-                              className={styles.memo}
-                              value={exchangeMemo}
-                              onChange={(e) => setExchangeMemo(e.target.value)}
-                            />
+                          <div className={styles.exchangeFilter}>
+                            <div className={styles.filterName}>
+                              <p>장르</p>
+                            </div>
+                            <div className={styles.exchangeFilterBox}>
+                              <select
+                                className={styles.genreSelect}
+                                value={kind}
+                                onChange={(e) => setKind(e.target.value)}
+                              >
+                                <option disabled value="">
+                                  장르를 선택해 주세요
+                                </option>
+                                <option value="앨범">앨범</option>
+                                <option value="특전">특전</option>
+                                <option value="팬싸">팬싸</option>
+                                <option value="시즌그리팅">시즌그리팅</option>
+                                <option value="팬미팅">팬미팅</option>
+                                <option value="콘서트">콘서트</option>
+                                <option value="MD">MD</option>
+                                <option value="콜라보">콜라보</option>
+                                <option value="팬클럽">팬클럽</option>
+                                <option value="기타">기타</option>
+                              </select>
+                              <Image
+                                src={DownIcon}
+                                alt="화살표"
+                                width={28}
+                                height={28}
+                                className={styles.selectIcon}
+                              />
+                            </div>
                           </div>
+                        </div>
+                        <div className={styles.exchangeInput}>
+                          <p>교환 희망 설명</p>
+                          <textarea
+                            placeholder="설명을 입력해 주세요"
+                            className={styles.memo}
+                            value={exchangeMemo}
+                            onChange={(e) => setExchangeMemo(e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>
