@@ -55,7 +55,10 @@ https://www.notion.so/23fbb64da38080e78b66c50a46302974
 
 ### 김태홍
 
-- 자신이 개발한 기능에 대한 사진이나 gif 파일 첨부
+- 랜딩페이지 구현
+- navBar 구현
+- Refresh Token 코드 구현
+- Google & Kakao OAuth 로그인 구현
 
 ### 정남영
 
@@ -128,7 +131,8 @@ https://www.notion.so/23fbb64da38080e78b66c50a46302974
 
 ## 구현 홈페이지
 
-https://7-my-bias-photo-team1-fe-theta.vercel.app/
+- [프론트 배포 사이트](https://7-my-bias-photo-team1-fe-theta.vercel.app)
+- [백엔드 배포 사이트](https://7-mybiasphoto-team1-be-production.up.railway.app)
 
 ---
 
