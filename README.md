@@ -61,7 +61,9 @@ https://www.notion.so/23fbb64da38080e78b66c50a46302974
 
 ### 정우진
 
-- 자신이 개발한 기능에 대한 사진이나 gif 파일 첨부
+- 마이갤러리 페이지 구현 ( Prefetch, React query 적용 )
+- 실시간 알림 기능 구현 ( SSE )
+- 쿠팡광고 적용
 
 ---
 
