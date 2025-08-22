@@ -48,6 +48,7 @@ https://www.notion.so/23fbb64da38080e78b66c50a46302974
 - 로그인 & 회원가입 페이지 UI
 - 포토카드 생성 페이지 UI
 - AI 포토카드 생성하기(Hugging Face API 사용)
+- 포토카드 이미지 업로드 기능 (S3 Presigned URL 활용)
 
 ### 김제성
 
