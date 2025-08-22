@@ -1,5 +1,6 @@
 "use client";
 
+import api from "@/lib/axiosAuth";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import MakePhotoModal from "@/components/modals/makePhotoModal";
@@ -11,17 +12,6 @@ import CreateUpload from "@/components/myGallery/photoCardCreate/CreateUpload";
 import CreateTextarea from "@/components/myGallery/photoCardCreate/CreateTextarea";
 import toast from "react-hot-toast";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-
-// 동일 이미지 재사용
-async function sha256Hex(file) {
-  const buf = await file.arrayBuffer();
-  const hash = await crypto.subtle.digest("SHA-256", buf);
-  return Array.from(new Uint8Array(hash))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
 async function uploadToS3(file, userId) {
   if (!file?.type?.startsWith("image/")) {
     throw new Error("이미지 파일만 업로드 가능합니다.");
@@ -29,7 +19,11 @@ async function uploadToS3(file, userId) {
 
   let hashHex;
   try {
-    hashHex = await sha256Hex(file);
+    const buf = await file.arrayBuffer();
+    const hash = await crypto.subtle.digest("SHA-256", buf);
+    hashHex = Array.from(new Uint8Array(hash))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
   } catch {
     hashHex = undefined;
   }
@@ -41,14 +35,16 @@ async function uploadToS3(file, userId) {
   });
   if (hashHex) params.set("sha256", hashHex);
 
-  const presignRes = await fetch(
-    `${API_BASE}/api/photoCard/upload/s3-url?` + params
-  );
-  if (!presignRes.ok) {
-    const err = await presignRes.json().catch(() => ({}));
-    throw new Error(err.message || "presign 실패");
-  }
-  const data = await presignRes.json();
+  const presign = await api.get("/api/photoCard/upload/s3-url", {
+    params: {
+      contentType: file.type,
+      size: String(file.size),
+      userId: String(userId),
+      ...(hashHex ? { sha256: hashHex } : {}),
+    },
+    _auth: true,
+  });
+  const data = presign.data;
 
   // 같은 파일이면 업로드 생략
   if (data.alreadyExists) {
@@ -56,12 +52,13 @@ async function uploadToS3(file, userId) {
   }
 
   // S3에 직접 업로드
-  const put = await fetch(data.uploadUrl, {
-    method: "PUT",
-    headers: { "Content-Type": file.type },
-    body: file,
+  await axios.put(data.uploadUrl, file, {
+    headers: {
+      "Content-Type": file.type,
+      "Cache-Control": "public, max-age=31536000, immutable",
+    },
+    withCredentials: false,
   });
-  if (!put.ok) throw new Error("S3 업로드 실패");
 
   return { url: data.publicUrl, key: data.key, alreadyExists: false };
 }
@@ -178,11 +175,11 @@ export default function CreatePhotoCardPage() {
     const fetchQuota = async () => {
       if (!user?.id) return;
       try {
-        const r = await fetch(
-          `${API_BASE}/api/photoCard/upload/quota?userId=${user.id}`
-        );
-        const j = await r.json();
-        setMonthly(j.monthly);
+        const r = await api.get("/api/photoCard/upload/quota", {
+          params: { userId: user.id },
+          _auth: true,
+        });
+        setMonthly(r.data.monthly);
       } catch (e) {
         console.warn("quota 조회 실패:", e);
       }
@@ -208,7 +205,7 @@ export default function CreatePhotoCardPage() {
 
       console.log("payload", payload);
 
-      const res = await axios.post(`${API_BASE}/api/photoCard`, payload);
+      const res = await api.post("/api/photoCard", payload, { _auth: true });
 
       const m = res.data?.monthly;
       if (m) {
@@ -229,12 +226,10 @@ export default function CreatePhotoCardPage() {
       if (axios.isAxiosError(err) && err.response?.status === 409) {
         try {
           if (uploadedKey && !alreadyExists) {
-            await fetch(
-              `${API_BASE}/api/photoCard/upload/object?key=${encodeURIComponent(
-                uploadedKey
-              )}`,
-              { method: "DELETE" }
-            );
+            await api.delete("/api/photoCard/upload/object", {
+              params: { key: uploadedKey },
+              _auth: true,
+            });
           }
         } catch (e) {
           console.warn("S3 정리 실패:", e);
@@ -527,7 +522,7 @@ export default function CreatePhotoCardPage() {
               padding: 20,
             }}
             className={styles.aiModal}
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
           >
@@ -536,7 +531,7 @@ export default function CreatePhotoCardPage() {
             <label style={{ fontSize: 14, color: "#ccc" }}>프롬프트</label>
             <textarea
               value={aiPrompt}
-              onChange={e => setAiPrompt(e.target.value)}
+              onChange={(e) => setAiPrompt(e.target.value)}
               placeholder="예) cute lesser panda (영어로 입력) "
               rows={4}
               style={{
